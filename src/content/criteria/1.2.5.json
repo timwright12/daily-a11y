@@ -1,0 +1,25 @@
+{
+  "id": "1.2.5",
+  "name": "Audio Description (Prerecorded)",
+  "level": "AA",
+  "principle": "Perceivable",
+  "explanation": "This criterion applies to prerecorded video that has an audio track — the same kind of content covered by SC 1.2.3, such as a product demo, a training video, or a film with dialogue. If the video conveys important information visually that isn't already spoken in the dialogue (on-screen text, a silent action, a chart that appears briefly, a scene change), you must provide an audio description track: narration inserted into pauses in the dialogue that describes what's happening on screen. At this AA level, that audio description is required — unlike SC 1.2.3 at Level A, a full text transcript or alternative is no longer an acceptable substitute, because a text alternative can't be experienced in sync with the video as it plays. If the dialogue already explains everything visually important as it happens, no separate description track is needed.",
+  "whoItAffects": "Blind users and people with low vision who listen to a video's soundtrack rather than watching the screen depend on the audio description track to know what's happening visually — without it, a silent demo of someone clicking through settings, or a scene where a character reads a note on screen, is simply missing information no matter how good their screen reader or player is, because there's no text on screen for a screen reader to announce in the first place. This matters most for anyone who wants to experience the video in real time alongside sighted viewers — in a shared viewing, a live class, or a meeting — where pausing to read a separate transcript isn't practical. People with some cognitive disabilities also benefit from having key visual events narrated aloud instead of having to infer them from context.",
+  "codeExample": {
+    "lang": "html",
+    "bad": "<!-- Silent software demo: presenter clicks through settings with no narration of what's on screen. A transcript link alone satisfied SC 1.2.3 at Level A, but is not sufficient at AA. -->\n<video controls width=\"640\" height=\"360\">\n  <source src=\"settings-walkthrough.mp4\" type=\"video/mp4\">\n  <track kind=\"captions\" src=\"settings-walkthrough-en.vtt\" srclang=\"en\" label=\"English\">\n  Your browser does not support the video tag.\n</video>\n<p><a href=\"settings-walkthrough-transcript.html\">Read the full text alternative</a>, which describes every on-screen action and setting change.</p>",
+    "good": "<!-- Same demo with a narrated audio description track that plays back in sync with the video -->\n<video controls width=\"640\" height=\"360\">\n  <source src=\"settings-walkthrough.mp4\" type=\"video/mp4\">\n  <track kind=\"captions\" src=\"settings-walkthrough-en.vtt\" srclang=\"en\" label=\"English\">\n  <track kind=\"descriptions\" src=\"settings-walkthrough-ad-en.vtt\" srclang=\"en\" label=\"English audio description\">\n  Your browser does not support the video tag.\n</video>"
+  },
+  "howToTest": "Watch each prerecorded video with your eyes closed, or turn your monitor off, and listen only to the audio track. Note every point where something happens visually that isn't described in words — a silent gesture, on-screen text, a chart, a scene change, a character entering a room. Then check whether the video actually offers a narrated audio description track you can turn on (look for a 'descriptions' or 'audio description' option in the player's settings/track menu, or a separately labeled audio-described version of the video). A linked transcript or text alternative does not satisfy this criterion at Level AA — if you noticed visual gaps while listening and no narrated description track is available, it fails, even if a transcript exists elsewhere on the page.",
+  "check": {
+    "question": "A training video has captions for its spoken audio and also links to a full text transcript describing everything shown on screen, but has no narrated audio description track. Does this satisfy SC 1.2.5 (Level AA)?",
+    "choices": [
+      "Yes, because a full text transcript is an acceptable alternative to audio description at any level",
+      "No, because at Level AA an audio description track is required and a text transcript alone is not a substitute",
+      "Yes, because captions alone are sufficient for any prerecorded video",
+      "No, because captions are never required alongside audio description"
+    ],
+    "answer": 1
+  },
+  "references": []
+}
