@@ -1,0 +1,25 @@
+{
+  "id": "1.4.3",
+  "name": "Contrast (Minimum)",
+  "level": "AA",
+  "principle": "Perceivable",
+  "explanation": "This criterion sets a minimum contrast ratio between text and its background so that text is legible. Normal-size text (roughly below 18pt, or below 14pt if bold) needs a contrast ratio of at least 4.5:1 against its background. Large text (18pt/24px and up, or 14pt/18.66px and up if bold) needs at least 3:1, since larger characters are easier to distinguish at lower contrast. This applies to real text and also to images of text used in place of real text. It does not apply to logos or incidental text in a photo, and it does not apply to text that's purely decorative and conveys no information. Contrast ratio is a precise, calculable number — not a subjective judgment of 'looks readable' — based on the relative luminance of the two colors, and it's a completely different measurement from whether color alone is used to convey meaning (that's SC 1.4.1).",
+  "whoItAffects": "People with low vision, including many older adults with age-related vision changes, often cannot distinguish low-contrast text from its background even with corrective lenses. People with certain forms of color blindness may find some color combinations (like medium gray on white, or red on green) especially hard to read even though a sighted person without color vision deficiency might not notice a problem. Anyone using a phone or laptop outdoors in bright sunlight, or on a low-quality or glare-prone screen, effectively loses contrast and relies on sufficiently high ratios to still read the text. This is a large, common-condition population, unlike some criteria that address a narrow assistive-technology use case.",
+  "codeExample": {
+    "lang": "css",
+    "bad": "/* Body text at 16px (normal size): #999999 on #FFFFFF is only 2.85:1 — fails the 4.5:1 minimum */\n.card-subtext {\n  color: #999999;\n  background-color: #FFFFFF;\n  font-size: 16px;\n  font-weight: normal;\n}",
+    "good": "/* Same 16px text: #595959 on #FFFFFF is 7.0:1 — comfortably passes the 4.5:1 minimum for normal text */\n.card-subtext {\n  color: #595959;\n  background-color: #FFFFFF;\n  font-size: 16px;\n  font-weight: normal;\n}"
+  },
+  "howToTest": "Use a contrast checker (such as the free WebAIM Contrast Checker, or the eyedropper/contrast tools built into most browsers' DevTools) to sample the actual foreground text color and the actual background color behind it, then read off the calculated ratio. Check the text's font size and weight first: if it's 18pt/24px or larger (or 14pt/18.66px or larger and bold), it only needs 3:1; all other text needs 4.5:1. Do this for every distinct text/background color combination on the page, including placeholder text, disabled-looking text that's actually interactive, text over images or gradients, and text in different states like hover or focus — a single low-contrast pairing anywhere fails the page even if the rest of the design passes.",
+  "check": {
+    "question": "A page displays 16px, normal-weight body text with a measured contrast ratio of 3.8:1 against its background. Does this pass SC 1.4.3 Contrast (Minimum)?",
+    "choices": [
+      "Yes, because 3.8:1 exceeds the 3:1 threshold used for large text",
+      "No, because normal-size text requires at least 4.5:1, and 3.8:1 falls short",
+      "Yes, because contrast ratio only matters for images of text, not real text",
+      "It depends on whether the text also relies on color alone to convey meaning"
+    ],
+    "answer": 1
+  },
+  "references": []
+}
