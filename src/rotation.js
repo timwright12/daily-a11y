@@ -4,7 +4,7 @@ export function daysSinceEpoch(date) {
   const utcMidnight = Date.UTC(
     date.getUTCFullYear(),
     date.getUTCMonth(),
-    date.getUTCDate()
+    date.getUTCDate(),
   );
   return Math.floor(utcMidnight / MS_PER_DAY);
 }

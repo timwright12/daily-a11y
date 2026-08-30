@@ -1,17 +1,22 @@
-import { loadCriteria } from './content/loadCriteria.js';
-import { daysSinceEpoch, getTodayIndex } from './rotation.js';
-import { readState, writeState } from './storage.js';
-import { recordAnswer } from './gamification/streak.js';
-import { markSeen, coverageSummary } from './gamification/coverage.js';
-import { buildShareText } from './gamification/shareCard.js';
-import Prism from 'prismjs';
-import 'prismjs/themes/prism.css';
-import 'prismjs/components/prism-css.js';
-import 'prismjs/components/prism-javascript.js';
+import { loadCriteria } from "./content/loadCriteria.js";
+import { daysSinceEpoch, getTodayIndex } from "./rotation.js";
+import { readState, writeState } from "./storage.js";
+import { recordAnswer } from "./gamification/streak.js";
+import { markSeen, coverageSummary } from "./gamification/coverage.js";
+import { buildShareText } from "./gamification/shareCard.js";
+import Prism from "prismjs";
+import "prismjs/themes/prism.css";
+import "prismjs/components/prism-css.js";
+import "prismjs/components/prism-javascript.js";
 
-const rawModules = import.meta.glob('./content/criteria/*.json', { eager: true, import: 'default' });
+const rawModules = import.meta.glob("./content/criteria/*.json", {
+  eager: true,
+  import: "default",
+});
 const rawEntries = Object.values(rawModules);
-const criteria = loadCriteria(rawEntries).sort((a, b) => a.id.localeCompare(b.id, undefined, { numeric: true }));
+const criteria = loadCriteria(rawEntries).sort((a, b) =>
+  a.id.localeCompare(b.id, undefined, { numeric: true }),
+);
 
 const today = new Date();
 const todayDayNumber = daysSinceEpoch(today);
@@ -22,7 +27,7 @@ let state = readState();
 state = { ...state, coverage: markSeen(state.coverage, criterion.id) };
 writeState(state);
 
-const app = document.getElementById('app');
+const app = document.getElementById("app");
 app.innerHTML = `
   <header>
     <div class="masthead">
@@ -82,16 +87,16 @@ app.innerHTML = `
   </main>
 `;
 
-document.getElementById('criterion-id').textContent = criterion.id;
-document.getElementById('criterion-name').textContent = criterion.name;
-document.getElementById('level-badge').textContent = `Level ${criterion.level}`;
-document.getElementById('principle-badge').textContent = criterion.principle;
-document.getElementById('explanation').textContent = criterion.explanation;
-document.getElementById('who-it-affects').textContent = criterion.whoItAffects;
-document.getElementById('how-to-test').textContent = criterion.howToTest;
+document.getElementById("criterion-id").textContent = criterion.id;
+document.getElementById("criterion-name").textContent = criterion.name;
+document.getElementById("level-badge").textContent = `Level ${criterion.level}`;
+document.getElementById("principle-badge").textContent = criterion.principle;
+document.getElementById("explanation").textContent = criterion.explanation;
+document.getElementById("who-it-affects").textContent = criterion.whoItAffects;
+document.getElementById("how-to-test").textContent = criterion.howToTest;
 
-const codeBad = document.getElementById('code-bad');
-const codeGood = document.getElementById('code-good');
+const codeBad = document.getElementById("code-bad");
+const codeGood = document.getElementById("code-good");
 codeBad.textContent = criterion.codeExample.bad;
 codeGood.textContent = criterion.codeExample.good;
 codeBad.className = `language-${criterion.codeExample.lang}`;
@@ -99,29 +104,32 @@ codeGood.className = `language-${criterion.codeExample.lang}`;
 Prism.highlightElement(codeBad);
 Prism.highlightElement(codeGood);
 
-const choicesContainer = document.getElementById('check-choices');
-document.getElementById('check-question').textContent = criterion.check.question;
+const choicesContainer = document.getElementById("check-choices");
+document.getElementById("check-question").textContent =
+  criterion.check.question;
 criterion.check.choices.forEach((choice, index) => {
   const id = `check-choice-${index}`;
-  const wrapper = document.createElement('div');
+  const wrapper = document.createElement("div");
   wrapper.innerHTML = `
     <input type="radio" name="check-choice" id="${id}" value="${index}">
     <label for="${id}"></label>
   `;
-  wrapper.querySelector('label').textContent = choice;
+  wrapper.querySelector("label").textContent = choice;
   choicesContainer.appendChild(wrapper);
 });
 
 let lastCheckResult = null;
 
-document.getElementById('check-form').addEventListener('submit', (event) => {
+document.getElementById("check-form").addEventListener("submit", (event) => {
   event.preventDefault();
-  const selected = event.target.elements['check-choice'].value;
-  if (selected === '') return;
+  const selected = event.target.elements["check-choice"].value;
+  if (selected === "") return;
 
   const isCorrect = Number(selected) === criterion.check.answer;
-  const resultEl = document.getElementById('check-result');
-  resultEl.textContent = isCorrect ? 'Correct!' : 'Not quite — review the explanation above.';
+  const resultEl = document.getElementById("check-result");
+  resultEl.textContent = isCorrect
+    ? "Correct!"
+    : "Not quite — review the explanation above.";
 
   state = { ...state, streak: recordAnswer(state.streak, todayDayNumber) };
   writeState(state);
@@ -131,17 +139,17 @@ document.getElementById('check-form').addEventListener('submit', (event) => {
 
 function renderGamificationStatus() {
   const { seen, total } = coverageSummary(state.coverage, criteria.length);
-  document.getElementById('gamification-status').textContent =
-    `Streak: ${state.streak.count} day${state.streak.count === 1 ? '' : 's'} — ${seen} of ${total} criteria seen`;
+  document.getElementById("gamification-status").textContent =
+    `Streak: ${state.streak.count} day${state.streak.count === 1 ? "" : "s"} — ${seen} of ${total} criteria seen`;
 }
 renderGamificationStatus();
 
-document.getElementById('share-button').addEventListener('click', async () => {
+document.getElementById("share-button").addEventListener("click", async () => {
   const text = buildShareText(criterion, todayDayNumber, lastCheckResult);
-  const statusEl = document.getElementById('share-status');
+  const statusEl = document.getElementById("share-status");
   try {
     await navigator.clipboard.writeText(text);
-    statusEl.textContent = 'Copied to clipboard!';
+    statusEl.textContent = "Copied to clipboard!";
   } catch {
     statusEl.textContent = text;
   }

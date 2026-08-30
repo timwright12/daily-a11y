@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { z } from "zod";
 
 const codeExampleSchema = z.object({
   lang: z.string().min(1),
@@ -13,15 +13,17 @@ const checkSchema = z
     answer: z.number().int().min(0),
   })
   .refine((check) => check.answer < check.choices.length, {
-    message: 'answer index must be within choices bounds',
-    path: ['answer'],
+    message: "answer index must be within choices bounds",
+    path: ["answer"],
   });
 
 export const criterionSchema = z.object({
-  id: z.string().regex(/^\d\.\d+\.\d+$/, 'id must look like a WCAG SC number, e.g. 1.4.3'),
+  id: z
+    .string()
+    .regex(/^\d\.\d+\.\d+$/, "id must look like a WCAG SC number, e.g. 1.4.3"),
   name: z.string().min(1),
-  level: z.enum(['A', 'AA', 'AAA']),
-  principle: z.enum(['Perceivable', 'Operable', 'Understandable', 'Robust']),
+  level: z.enum(["A", "AA", "AAA"]),
+  principle: z.enum(["Perceivable", "Operable", "Understandable", "Robust"]),
   explanation: z.string().min(1),
   whoItAffects: z.string().min(1),
   codeExample: codeExampleSchema,

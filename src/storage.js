@@ -1,4 +1,4 @@
-const STORAGE_KEY = 'daily-a11y-state';
+const STORAGE_KEY = "daily-a11y-state";
 
 function defaultState() {
   return { streak: { count: 0, lastAnsweredDay: null }, coverage: [] };

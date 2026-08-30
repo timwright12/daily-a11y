@@ -24,9 +24,9 @@
   --moss-panel-label: #334a33;
   --rule: #d9d3c7;
 
-  --font-display: 'Fraunces', Georgia, serif;
-  --font-body: 'Source Sans 3', system-ui, sans-serif;
-  --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Consolas, monospace;
+  --font-display: "Fraunces", Georgia, serif;
+  --font-body: "Source Sans 3", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Consolas, monospace;
 
   /* Rhythm: every vertical gap is a multiple of this unit. */
   --space: 0.5rem;
@@ -224,11 +224,11 @@ pre {
   padding: 1rem;
 }
 
-.code-panel.code-panel-bad pre[class*='language-'] {
+.code-panel.code-panel-bad pre[class*="language-"] {
   background: color-mix(in srgb, var(--signal-bg) 55%, #f5f3ef);
 }
 
-.code-panel.code-panel-good pre[class*='language-'] {
+.code-panel.code-panel-good pre[class*="language-"] {
   background: color-mix(in srgb, var(--moss-bg) 55%, #f5f3ef);
 }
 
@@ -317,7 +317,7 @@ legend {
   border-radius: 0.4em;
 }
 
-#check-choices input[type='radio'] {
+#check-choices input[type="radio"] {
   margin-top: 0.2em;
   accent-color: var(--signal);
   flex-shrink: 0;
