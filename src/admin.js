@@ -1,0 +1,78 @@
+import { loadCriteria } from "./content/loadCriteria.js";
+import { renderCriterionContent } from "./render.js";
+import "prismjs/themes/prism.css";
+import "prismjs/components/prism-css.js";
+import "prismjs/components/prism-javascript.js";
+
+const rawModules = import.meta.glob("./content/criteria/*.json", {
+  eager: true,
+  import: "default",
+});
+const rawEntries = Object.values(rawModules);
+const criteria = loadCriteria(rawEntries).sort((a, b) =>
+  a.id.localeCompare(b.id, undefined, { numeric: true }),
+);
+
+const app = document.getElementById("app");
+app.innerHTML = `
+  <header>
+    <div class="masthead">
+      <span class="masthead-mark">Daily Accessibility</span>
+      <span class="admin-label">Browse criteria</span>
+    </div>
+  </header>
+  <div class="admin-layout">
+    <nav class="admin-list" aria-label="WCAG success criteria">
+      <ul id="criteria-list"></ul>
+    </nav>
+    <main id="admin-content">
+      <h1 class="admin-placeholder-heading">Browse WCAG success criteria</h1>
+      <p class="admin-placeholder">Select a criterion from the list to preview it.</p>
+    </main>
+  </div>
+`;
+
+const list = document.getElementById("criteria-list");
+criteria.forEach((criterion) => {
+  const item = document.createElement("li");
+  const button = document.createElement("button");
+  button.type = "button";
+  button.className = "admin-list-item";
+  button.dataset.criterionId = criterion.id;
+  button.innerHTML = `<span class="admin-list-id"></span><span class="admin-list-name"></span>`;
+  button.querySelector(".admin-list-id").textContent = criterion.id;
+  button.querySelector(".admin-list-name").textContent = criterion.name;
+  item.appendChild(button);
+  list.appendChild(item);
+});
+
+const content = document.getElementById("admin-content");
+
+function showCriterion(criterion) {
+  renderCriterionContent(content, criterion);
+
+  content.querySelector("#check-form").addEventListener("submit", (event) => {
+    event.preventDefault();
+    const selected = event.target.elements["check-choice"].value;
+    if (selected === "") return;
+
+    const isCorrect = Number(selected) === criterion.check.answer;
+    content.querySelector("#check-result").textContent = isCorrect
+      ? "Correct!"
+      : "Not quite — review the explanation above.";
+  });
+
+  list.querySelectorAll(".admin-list-item").forEach((button) => {
+    button.classList.toggle(
+      "is-active",
+      button.dataset.criterionId === criterion.id,
+    );
+  });
+}
+
+list.addEventListener("click", (event) => {
+  const button = event.target.closest(".admin-list-item");
+  if (!button) return;
+  const criterion = criteria.find((c) => c.id === button.dataset.criterionId);
+  showCriterion(criterion);
+});

@@ -411,3 +411,111 @@ button:hover {
     transform: translateY(0);
   }
 }
+
+/* ---------- Admin: browse all criteria ---------- */
+
+body.admin .masthead {
+  max-width: none;
+}
+
+.admin-label {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--ink-quiet);
+  letter-spacing: 0.01em;
+}
+
+.admin-layout {
+  display: grid;
+  grid-template-columns: 18rem 1fr;
+  align-items: start;
+}
+
+@media (max-width: 720px) {
+  .admin-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.admin-list {
+  border-right: 1px solid var(--rule);
+  height: calc(100vh - 4.5rem);
+  overflow-y: auto;
+  position: sticky;
+  top: 0;
+}
+
+@media (max-width: 720px) {
+  .admin-list {
+    position: static;
+    height: auto;
+    max-height: 20rem;
+    border-right: none;
+    border-bottom: 1px solid var(--rule);
+  }
+}
+
+.admin-list ul {
+  list-style: none;
+  margin: 0;
+  padding: calc(var(--space) * 1.5) 0;
+}
+
+.admin-list-item {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  width: 100%;
+  text-align: left;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: var(--ink);
+  background: none;
+  border: none;
+  border-left: 3px solid transparent;
+  border-radius: 0;
+  padding: 0.55rem 1.25rem;
+  cursor: pointer;
+}
+
+.admin-list-item:hover {
+  background: var(--signal-bg);
+}
+
+.admin-list-item.is-active {
+  background: var(--signal-bg);
+  border-left-color: var(--signal);
+}
+
+.admin-list-id {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--ink-quiet);
+  flex-shrink: 0;
+}
+
+.admin-list-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+#admin-content {
+  max-width: 42rem;
+  margin: 0;
+  padding: calc(var(--space) * 5) 2rem calc(var(--space) * 10);
+}
+
+.admin-placeholder-heading {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 1.75rem;
+  line-height: 1.2;
+  margin: 0 0 calc(var(--space) * 1.5);
+}
+
+.admin-placeholder {
+  color: var(--ink-quiet);
+  font-size: 1.0625rem;
+  margin: 0;
+}

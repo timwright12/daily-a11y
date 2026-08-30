@@ -4,7 +4,7 @@ import { readState, writeState } from "./storage.js";
 import { recordAnswer } from "./gamification/streak.js";
 import { markSeen, coverageSummary } from "./gamification/coverage.js";
 import { buildShareText } from "./gamification/shareCard.js";
-import Prism from "prismjs";
+import { renderCriterionContent } from "./render.js";
 import "prismjs/themes/prism.css";
 import "prismjs/components/prism-css.js";
 import "prismjs/components/prism-javascript.js";
@@ -38,88 +38,20 @@ app.innerHTML = `
       <p id="gamification-status"></p>
     </div>
   </header>
-  <main>
-    <div class="hero">
-      <span class="eyebrow">§<span id="criterion-id"></span> · WCAG 2.2</span>
-      <h1 id="criterion-name"></h1>
-      <div class="badges">
-        <span id="level-badge" class="badge"></span>
-        <span id="principle-badge" class="badge"></span>
-      </div>
-    </div>
-    <section aria-labelledby="explanation-heading">
-      <h2 id="explanation-heading">What this means</h2>
-      <p id="explanation"></p>
-    </section>
-    <section aria-labelledby="who-heading">
-      <h2 id="who-heading">Who it affects</h2>
-      <p id="who-it-affects"></p>
-    </section>
-    <section aria-labelledby="code-heading">
-      <h2 id="code-heading">Code example</h2>
-      <div class="code-spread">
-        <div class="code-panel code-panel-bad">
-          <p class="code-panel-label"><span class="mark" aria-hidden="true">✕</span> Bad</p>
-          <pre><code id="code-bad"></code></pre>
-        </div>
-        <div class="code-panel code-panel-good">
-          <p class="code-panel-label"><span class="mark" aria-hidden="true">✓</span> Good</p>
-          <pre><code id="code-good"></code></pre>
-        </div>
-      </div>
-    </section>
-    <section aria-labelledby="test-heading">
-      <h2 id="test-heading">How to test it</h2>
-      <p id="how-to-test"></p>
-    </section>
-    <section aria-labelledby="check-heading">
-      <h2 id="check-heading">Check your understanding</h2>
-      <form id="check-form">
-        <fieldset>
-          <legend id="check-question"></legend>
-          <div id="check-choices"></div>
-        </fieldset>
-        <button type="submit">Submit answer</button>
-      </form>
-      <p id="check-result" role="status"></p>
-    </section>
-    <div class="share">
-      <button id="share-button" type="button">Copy today's result</button>
-      <p id="share-status" role="status"></p>
-    </div>
-  </main>
+  <main></main>
 `;
 
-document.getElementById("criterion-id").textContent = criterion.id;
-document.getElementById("criterion-name").textContent = criterion.name;
-document.getElementById("level-badge").textContent = `Level ${criterion.level}`;
-document.getElementById("principle-badge").textContent = criterion.principle;
-document.getElementById("explanation").textContent = criterion.explanation;
-document.getElementById("who-it-affects").textContent = criterion.whoItAffects;
-document.getElementById("how-to-test").textContent = criterion.howToTest;
-
-const codeBad = document.getElementById("code-bad");
-const codeGood = document.getElementById("code-good");
-codeBad.textContent = criterion.codeExample.bad;
-codeGood.textContent = criterion.codeExample.good;
-codeBad.className = `language-${criterion.codeExample.lang}`;
-codeGood.className = `language-${criterion.codeExample.lang}`;
-Prism.highlightElement(codeBad);
-Prism.highlightElement(codeGood);
-
-const choicesContainer = document.getElementById("check-choices");
-document.getElementById("check-question").textContent =
-  criterion.check.question;
-criterion.check.choices.forEach((choice, index) => {
-  const id = `check-choice-${index}`;
-  const wrapper = document.createElement("div");
-  wrapper.innerHTML = `
-    <input type="radio" name="check-choice" id="${id}" value="${index}">
-    <label for="${id}"></label>
-  `;
-  wrapper.querySelector("label").textContent = choice;
-  choicesContainer.appendChild(wrapper);
-});
+const main = document.querySelector("main");
+renderCriterionContent(main, criterion);
+main.insertAdjacentHTML(
+  "beforeend",
+  `
+  <div class="share">
+    <button id="share-button" type="button">Copy today's result</button>
+    <p id="share-status" role="status"></p>
+  </div>
+`,
+);
 
 let lastCheckResult = null;
 
