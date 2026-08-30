@@ -34,7 +34,7 @@ const app = document.getElementById("app");
 app.innerHTML = `
   <header>
     <div class="masthead">
-      <span class="masthead-mark">daily-a11y</span>
+      <span class="masthead-mark">Daily Accessibility</span>
       <p id="gamification-status"></p>
     </div>
   </header>

@@ -1,5 +1,5 @@
 export function buildShareText(criterion, dayNumber, checkResult) {
-  const header = `daily-a11y — Day ${dayNumber}: ${criterion.id} ${criterion.name}`;
+  const header = `Daily Accessibility — Day ${dayNumber}: ${criterion.id} ${criterion.name}`;
 
   if (checkResult === true) {
     return `${header}\nI got it right! 🎯`;
