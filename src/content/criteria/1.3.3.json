@@ -1,0 +1,25 @@
+{
+  "id": "1.3.3",
+  "name": "Sensory Characteristics",
+  "level": "A",
+  "principle": "Perceivable",
+  "explanation": "When you give someone instructions for understanding or operating something on a page, those instructions can't rely SOLELY on a sensory characteristic — shape, size, visual location, orientation, or sound — to identify the thing they need to find or interact with. \"Click the round button,\" \"select the option on the right,\" \"see the diagram above,\" and \"a chime will sound when your order is ready\" are all examples of instructions that only work if you can perceive that specific sensory detail. This doesn't mean you can never mention shape, position, or sound — it means those references can't be the ONLY way to identify something. Pair them with a non-sensory identifier: a name, a label, or text that stands on its own, such as \"select the Continue button on the right\" or \"see the sales chart above showing revenue by quarter.\" The sensory description can stay as a helpful extra cue for people who can perceive it — it just can't be load-bearing.",
+  "whoItAffects": "Blind and low-vision screen reader users (JAWS, NVDA, VoiceOver) can't see shape, size, on-screen position, or orientation at all, so an instruction like \"click the round icon\" or \"the button on the right\" gives them nothing to act on — they need the accessible name of the control instead. Low-vision users who zoom the page to 200%+ or use a screen magnifier often only see one region of the layout at a time, so \"above\" or \"in the top corner\" may no longer correspond to what's currently on their screen. Deaf and hard-of-hearing users can't rely on instructions like \"listen for the beep to know your form was submitted\" — they need a visible or text-based confirmation instead. People with certain cognitive or learning disabilities may also struggle to reliably map an abstract sensory description (like distinguishing several similarly-shaped icons) to the correct control, and benefit from an explicit name or label instead.",
+  "codeExample": {
+    "lang": "html",
+    "bad": "<form>\n  <p>To submit your order, press the round button below.</p>\n  <p>To cancel, press the square button.</p>\n  <button type=\"submit\" class=\"btn-round\">Submit</button>\n  <button type=\"button\" class=\"btn-square\">Cancel</button>\n</form>\n<!-- Instructions identify controls only by shape (\"round\", \"square\") -->\n<!-- A screen reader user hears the button labels fine, but the instructional -->\n<!-- text above gives them no way to tell which shape corresponds to which button. -->",
+    "good": "<form>\n  <p>To submit your order, press the round “Submit” button below.</p>\n  <p>To cancel, press the square “Cancel” button.</p>\n  <button type=\"submit\" class=\"btn-round\">Submit</button>\n  <button type=\"button\" class=\"btn-square\">Cancel</button>\n</form>\n<!-- Shape is still mentioned as a helpful visual cue, but each instruction also -->\n<!-- names the control by its accessible label, so identification doesn't depend -->\n<!-- on being able to perceive the shape. -->"
+  },
+  "howToTest": "Read through the page's instructional text (form guidance, help text, error messages, onboarding steps) and, for each instruction that points to a specific control or piece of content, ask: if I couldn't see shape, size, or position — and couldn't hear any sound — would I still know exactly what to do? Try covering the page layout or reading only the text of the instructions out loud, ignoring anything that describes appearance or location. If an instruction only makes sense with a sensory reference (\"the button on the right,\" \"the round icon,\" \"scroll down to the box\") and never also gives a name, label, or other text-based identifier, it fails this criterion.",
+  "check": {
+    "question": "A page tells users: \"To continue, click the button on the right.\" Why does this fail SC 1.3.3 Sensory Characteristics?",
+    "choices": [
+      "The instruction identifies the button only by its visual position, with no accessible name or label given as an alternative",
+      "The word \"right\" could be confused with the word \"correct\"",
+      "Buttons should never be positioned on the right side of a page",
+      "The instruction uses color to convey information"
+    ],
+    "answer": 0
+  },
+  "references": []
+}
