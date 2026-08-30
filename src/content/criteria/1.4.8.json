@@ -1,0 +1,25 @@
+{
+  "id": "1.4.8",
+  "name": "Visual Presentation",
+  "level": "AAA",
+  "principle": "Perceivable",
+  "explanation": "This criterion applies to blocks of text — paragraphs of body copy, not headings, labels, or single lines. It requires that the site provide a mechanism letting users customize how that text is presented, covering five specific properties: (1) users can choose their own foreground and background colors, (2) text can be constrained to no more than 80 characters per line, (3) text is not fully justified (aligned on both left and right edges) — a ragged right edge is required, since justified text stretches and compresses word spacing in ways that make lines harder to track for some readers, (4) line spacing within a paragraph is at least 1.5 times the font size, and paragraph spacing is at least 1.5 times that line spacing, and (5) text can be resized up to 200% without needing to scroll horizontally to read a line. The site doesn't have to force all of these as the default appearance — but a user must be able to select or adjust each of them, whether through a site-provided display mode, a CSS override mechanism, or reliance on the user's own browser/OS settings actually being able to take effect (i.e. the page doesn't fight them with hard-coded colors, fixed widths, or justified text that ignores user style sheets).",
+  "whoItAffects": "People with low vision who need a specific high-contrast or low-glare color combination (e.g. cream text on a dark background) to read comfortably, and who are blocked when a site hard-codes its own colors and ignores custom or user style sheets. People with dyslexia or other reading disabilities who lose their place on very long lines of text, or who find justified text's uneven word gaps create distracting 'rivers' of whitespace that break up words visually. People with cognitive or attention-related disabilities who rely on generous line and paragraph spacing to visually separate ideas and avoid losing their place line-to-line. Anyone using browser zoom or a mobile device who needs text to reflow into a single readable column instead of forcing horizontal scrolling to read each line.",
+  "codeExample": {
+    "lang": "css",
+    "bad": "/* Justified body text with single line-height and no user override path.\n   Justification creates uneven word spacing, and 1.0 line-height gives\n   readers no visual breathing room between lines. */\n.article-body p {\n  text-align: justify;\n  line-height: 1;\n  margin-bottom: 0.5em;\n  color: #222;\n  background: #fff;\n}",
+    "good": "/* Ragged-right alignment, generous line and paragraph spacing, and a\n   max character width. Colors are left to user/browser style sheets\n   to override rather than hard-coded as !important. */\n.article-body {\n  max-width: 80ch;\n}\n\n.article-body p {\n  text-align: left;\n  line-height: 1.5;\n  margin-bottom: 2.25em; /* 1.5x the 1.5 line-height, in em units */\n}"
+  },
+  "howToTest": "Pick a page with a paragraph of body text. First, check line length: resize the browser window to full width and confirm text doesn't stretch into very long lines (roughly 80 characters or fewer per line — you can select a line of text and count, or just judge whether it's a comfortable reading width). Second, look at the right edge of the paragraph: if every line ends flush at the same right margin, the text is justified and fails this check — it should be ragged/uneven on the right. Third, use your browser's zoom to increase text size to 200% and confirm you can still read every line without scrolling sideways. Finally, try applying a custom style sheet or your browser's reader/high-contrast mode (e.g. Firefox's Reader View, or a browser extension that forces user colors) and confirm the page's own styles don't override your chosen colors or spacing.",
+  "check": {
+    "question": "A site displays article body text fully justified (flush on both left and right edges) with a line-height of 1. Which part of SC 1.4.8 (Visual Presentation) does this fail, and why?",
+    "choices": [
+      "It fails because justified text with tight line spacing is harder to read for some users — both the ragged-right and 1.5x line-spacing sub-requirements are violated",
+      "It doesn't fail anything, since SC 1.4.8 only concerns color contrast",
+      "It fails only because justified text is always invalid HTML",
+      "It fails because line-height of 1 makes the text too small to resize"
+    ],
+    "answer": 0
+  },
+  "references": []
+}
