@@ -1,4 +1,4 @@
-name: PR Checks
+name: Health checks
 
 on:
   pull_request:
