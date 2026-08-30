@@ -1,0 +1,25 @@
+{
+  "id": "1.2.4",
+  "name": "Captions (Live)",
+  "level": "AA",
+  "principle": "Perceivable",
+  "explanation": "This criterion applies to live audio content delivered through synchronized media — for example, a live-streamed webinar, a live news broadcast, or a live-captioned video call. You must provide real-time captions that are synchronized with the spoken audio as it happens. This is the live counterpart to SC 1.2.2 (Captions for prerecorded video): because the content hasn't been produced or reviewed in advance, captions can't be authored ahead of time and checked for accuracy — they have to be generated as the broadcast happens, typically through a live captioning service, a human stenographer, or automatic speech recognition (ASR) feeding a caption display. The bar for accuracy is necessarily lower than prerecorded captions (some lag and occasional errors are expected), but captions must still be present and reasonably track what's being said. This does not apply to live audio that isn't part of synchronized media, such as a plain audio-only phone call.",
+  "whoItAffects": "Deaf and hard-of-hearing users watching a live stream, webcast, or broadcast have no way to perceive spoken audio in real time without captions — unlike prerecorded video, they can't pause and check a transcript afterward if they want to follow along as it happens. People joining a live event in a sound-off or noisy environment, such as watching a company all-hands from a shared office or a conference livestream on a phone without headphones, rely on live captions to follow along. Non-native speakers of the broadcast's language and some users with cognitive or learning disabilities benefit from reading captions alongside fast or accented live speech that's harder to process by ear alone.",
+  "codeExample": {
+    "lang": "html",
+    "bad": "<!-- Live webinar player with no caption track or region at all -->\n<div class=\"live-player\">\n  <video id=\"live-stream\" autoplay controls></video>\n</div>",
+    "good": "<!-- Live webinar player with a captions region fed by a live captioning/ASR service -->\n<div class=\"live-player\">\n  <video id=\"live-stream\" autoplay controls></video>\n  <div id=\"live-captions\" class=\"live-captions\" role=\"region\" aria-label=\"Live captions\" aria-live=\"polite\">\n    <!-- Caption text is pushed here in real time as the captioning service transcribes the live audio -->\n  </div>\n  <button type=\"button\" id=\"toggle-captions\" aria-pressed=\"true\">Captions: On</button>\n</div>"
+  },
+  "howToTest": "Join or start a live stream, webinar, or broadcast that has spoken audio, and look for a visible 'CC' or captions control in the player. Turn captions on and confirm that text appears on screen while people are speaking, with only a short delay, rather than staying blank or appearing minutes late. Watch for a stretch of a minute or two to check that captions keep pace with new speech instead of freezing or falling permanently behind. If there's no caption option offered for a live audio/video stream, or captions stop updating partway through, it fails.",
+  "check": {
+    "question": "A company hosts a live all-hands webinar with a presenter speaking over live video. According to SC 1.2.4, what is required?",
+    "choices": [
+      "A transcript of the webinar posted to the company wiki after it ends",
+      "Real-time synchronized captions of the spoken audio as the webinar happens",
+      "Nothing, since live events are exempt from captioning requirements",
+      "A sign-language interpreter window is required instead of captions"
+    ],
+    "answer": 1
+  },
+  "references": []
+}
