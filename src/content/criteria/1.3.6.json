@@ -1,0 +1,25 @@
+{
+  "id": "1.3.6",
+  "name": "Identify Purpose",
+  "level": "AAA",
+  "principle": "Perceivable",
+  "explanation": "This criterion extends the idea of \"identify purpose\" beyond form fields (covered by SC 1.3.5) to the broader set of icons, regions, and UI components that make up a page. When an icon, a landmark region, or a component has a well-known, standardized purpose — like a search icon, a \"main navigation\" region, or a \"add to cart\" button — that purpose should be identifiable in code, not just conveyed by its visual appearance or an unlabeled icon. In practice this means using semantic HTML and ARIA to expose what things are: landmark roles (`<nav>`, `<main>`, `role=\"search\"`) for regions, and an accessible name that states the real-world purpose (via `aria-label`, visible text, or `aria-labelledby`) for icon-only controls and components. This lets assistive technology and user-customization tools — for example, a symbol-set browser extension that swaps in pictograms for people with cognitive or language disabilities — recognize and adapt these elements automatically, instead of leaving every user to decode an ambiguous icon or an unmarked block of content for themselves.",
+  "whoItAffects": "This affects people with cognitive, language, or learning disabilities who rely on symbol-support browser extensions or AAC-style tools that replace text and icons with familiar pictograms, personalized icon sets, or simplified language — those tools can only substitute the right symbol when the underlying purpose (e.g. \"this is a search control\" or \"this is the navigation region\") is exposed in code, not just implied by a generic-looking magnifying-glass image. It affects screen reader users navigating by landmark (e.g. jumping to \"navigation\" or \"main\" with a rotor or landmarks list) when a page uses only visual layout (styled `<div>`s) instead of semantic regions, since there is nothing to jump to. It also affects screen reader and switch-access users encountering icon-only buttons — a trash-can icon, a gear icon, a heart icon — with no accessible name, since they hear only \"button\" with no indication of what pressing it does. People with low vision using screen magnification benefit too, since landmark navigation lets them jump directly to a page region without having to visually scan and pan across the full layout.",
+  "codeExample": {
+    "lang": "html",
+    "bad": "<!-- Bad: icon-only buttons and a plain div layout with no identifiable purpose -->\n<div class=\"top-bar\">\n  <button><i class=\"icon-search\"></i></button>\n  <button><i class=\"icon-cart\"></i></button>\n</div>\n<div class=\"site-links\">\n  <a href=\"/products\">Products</a>\n  <a href=\"/pricing\">Pricing</a>\n</div>",
+    "good": "<!-- Good: landmark role identifies the region, aria-label identifies each icon button's purpose -->\n<div class=\"top-bar\" role=\"search\">\n  <button aria-label=\"Search\"><i class=\"icon-search\" aria-hidden=\"true\"></i></button>\n  <button aria-label=\"View cart\"><i class=\"icon-cart\" aria-hidden=\"true\"></i></button>\n</div>\n<nav aria-label=\"Site\">\n  <a href=\"/products\">Products</a>\n  <a href=\"/pricing\">Pricing</a>\n</nav>"
+  },
+  "howToTest": "Use the keyboard or a screen reader's landmark/regions list (e.g. VoiceOver's Rotor, NVDA's Elements List filtered to Landmarks) to check that major page regions — navigation, search, main content, footer — show up as named landmarks rather than being absent. Then tab to every icon-only control on the page (one with no visible text label) and listen to what your screen reader announces, or hover it to check for a tooltip/accessible name in the browser's accessibility inspector — if it announces only \"button\" or \"link\" with no indication of purpose (e.g. \"search\", \"close\", \"add to cart\"), the purpose has not been identified programmatically even if the icon looks self-explanatory to a sighted user.",
+  "check": {
+    "question": "A page has a `<div>` styled to look like a navigation bar containing links, and a trash-can icon `<button>` with no text or `aria-label`. Which best explains why this fails SC 1.3.6 (Level AAA)?",
+    "choices": [
+      "It doesn't fail, because the icon and the div's visual styling make their purpose obvious to any user",
+      "It fails because neither the region's purpose (navigation) nor the icon button's purpose (delete) is exposed in a way assistive technology or symbol-substitution tools can read",
+      "It fails only because the div lacks a landmark role; the icon button is fine since icons are self-explanatory",
+      "It fails only because the icon button lacks a label; unmarked divs are always acceptable for layout"
+    ],
+    "answer": 1
+  },
+  "references": []
+}
