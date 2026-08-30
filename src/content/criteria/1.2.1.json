@@ -1,0 +1,25 @@
+{
+  "id": "1.2.1",
+  "name": "Audio-only and Video-only (Prerecorded)",
+  "level": "A",
+  "principle": "Perceivable",
+  "explanation": "This criterion applies to prerecorded media that has no synchronized combination of both audio and video — for example, a podcast episode (audio-only) or a silent product-demo screen capture (video-only). For a prerecorded audio-only clip, you must provide a text transcript that includes all the spoken content and any meaningful non-speech sounds. For a prerecorded video-only clip, you must provide either a text description of what's happening on screen, or an audio track that narrates it — either alternative lets someone who can't perceive the original medium still get the information. This does not apply to media that is itself a text alternative and clearly labeled as such (e.g. a video of someone signing the content of a page).",
+  "whoItAffects": "Deaf and hard-of-hearing users get nothing from an audio-only podcast or voicemail-style clip unless a transcript is provided — captions don't apply here since there's no video track to caption. Blind and low-vision users get nothing from a silent video-only screen capture unless someone narrates what's happening or describes it in text; screen readers (e.g. VoiceOver, NVDA, JAWS) can't describe pixels on their own. People in sound-sensitive or noisy environments (a shared office, a library, a loud commute) rely on the transcript of an audio clip rather than turning on speakers or headphones. People with slow or capped internet connections often skip loading media entirely and rely on the text alternative to get the same information faster and more cheaply.",
+  "codeExample": {
+    "lang": "html",
+    "bad": "<!-- Audio-only podcast episode with no transcript -->\n<figure>\n  <figcaption>Episode 12: Designing for Screen Readers</figcaption>\n  <audio controls src=\"episode-12.mp3\"></audio>\n</figure>\n\n<!-- Silent video-only product walkthrough with no description -->\n<video controls src=\"dashboard-walkthrough.mp4\"></video>",
+    "good": "<!-- Audio-only podcast episode with a linked text transcript -->\n<figure>\n  <figcaption>Episode 12: Designing for Screen Readers</figcaption>\n  <audio controls src=\"episode-12.mp3\"></audio>\n  <p><a href=\"episode-12-transcript.html\">Read the full transcript</a></p>\n</figure>\n\n<!-- Silent video-only product walkthrough with a linked text description -->\n<video controls src=\"dashboard-walkthrough.mp4\"></video>\n<p><a href=\"dashboard-walkthrough-description.html\">Read a text description of this video</a></p>"
+  },
+  "howToTest": "Find every prerecorded audio-only clip (podcasts, voice memos) and video-only clip (silent screen captures, animated demos) on the page. For each audio-only clip, check that a text transcript is provided nearby or linked, and that it covers the spoken content plus any meaningful sounds (e.g. '[phone rings]'). For each video-only clip, check that either a text description or a narrated audio track is provided that conveys what's visually happening. Try consuming the alternative on its own — with the media itself off — and confirm it gives you the same information a sighted/hearing person would get from the original.",
+  "check": {
+    "question": "A company publishes a silent screen-recording video that shows the steps to reset a password, with on-screen text callouts but no audio track. What does SC 1.2.1 require?",
+    "choices": [
+      "Nothing, since the on-screen text callouts already provide information",
+      "A text description or narrated audio track that conveys what happens in the video, since it's prerecorded video-only content",
+      "Captions must be added to the video",
+      "A sign-language interpretation video must be provided"
+    ],
+    "answer": 1
+  },
+  "references": []
+}
