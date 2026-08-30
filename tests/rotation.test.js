@@ -1,5 +1,9 @@
 import { describe, it, expect } from "vitest";
-import { daysSinceEpoch, getTodayIndex } from "../src/rotation.js";
+import {
+  daysSinceEpoch,
+  getTodayIndex,
+  puzzleDayNumber,
+} from "../src/rotation.js";
 
 describe("daysSinceEpoch", () => {
   it("returns 0 for the Unix epoch", () => {
@@ -51,6 +55,32 @@ describe("getTodayIndex", () => {
     const wrapDate = new Date(Date.UTC(1970, 0, 1 + availableCount));
     expect(getTodayIndex(wrapDate, availableCount)).toBe(
       getTodayIndex(new Date(Date.UTC(1970, 0, 1)), availableCount),
+    );
+  });
+});
+
+describe("puzzleDayNumber", () => {
+  const launchDate = new Date("2026-08-30T00:00:00Z");
+
+  it("returns 1 on the launch date itself", () => {
+    expect(puzzleDayNumber(launchDate, launchDate)).toBe(1);
+  });
+
+  it("returns 2 the day after launch", () => {
+    expect(puzzleDayNumber(new Date("2026-08-31T00:00:00Z"), launchDate)).toBe(
+      2,
+    );
+  });
+
+  it("ignores time-of-day, using UTC calendar date only", () => {
+    expect(puzzleDayNumber(new Date("2026-08-30T23:59:59Z"), launchDate)).toBe(
+      1,
+    );
+  });
+
+  it("computes a known later date correctly", () => {
+    expect(puzzleDayNumber(new Date("2026-09-29T00:00:00Z"), launchDate)).toBe(
+      31,
     );
   });
 });

@@ -1,5 +1,5 @@
 import { loadCriteria } from "./content/loadCriteria.js";
-import { daysSinceEpoch, getTodayIndex } from "./rotation.js";
+import { daysSinceEpoch, getTodayIndex, puzzleDayNumber } from "./rotation.js";
 import { readState, writeState } from "./storage.js";
 import { recordAnswer } from "./gamification/streak.js";
 import { markSeen, coverageSummary } from "./gamification/coverage.js";
@@ -18,8 +18,11 @@ const criteria = loadCriteria(rawEntries).sort((a, b) =>
   a.id.localeCompare(b.id, undefined, { numeric: true }),
 );
 
+const LAUNCH_DATE = new Date("2026-08-30T00:00:00Z");
+
 const today = new Date();
 const todayDayNumber = daysSinceEpoch(today);
+const todayPuzzleDay = puzzleDayNumber(today, LAUNCH_DATE);
 const todayIndex = getTodayIndex(today, criteria.length);
 const criterion = criteria[todayIndex];
 
@@ -145,7 +148,7 @@ function renderGamificationStatus() {
 renderGamificationStatus();
 
 document.getElementById("share-button").addEventListener("click", async () => {
-  const text = buildShareText(criterion, todayDayNumber, lastCheckResult);
+  const text = buildShareText(criterion, todayPuzzleDay, lastCheckResult);
   const statusEl = document.getElementById("share-status");
   try {
     await navigator.clipboard.writeText(text);

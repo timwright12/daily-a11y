@@ -12,3 +12,7 @@ export function daysSinceEpoch(date) {
 export function getTodayIndex(date, availableCount) {
   return daysSinceEpoch(date) % availableCount;
 }
+
+export function puzzleDayNumber(date, launchDate) {
+  return daysSinceEpoch(date) - daysSinceEpoch(launchDate) + 1;
+}
