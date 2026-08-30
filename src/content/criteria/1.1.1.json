@@ -1,0 +1,25 @@
+{
+  "id": "1.1.1",
+  "name": "Non-text Content",
+  "level": "A",
+  "principle": "Perceivable",
+  "explanation": "Anything on the page that isn't text — images, icons, buttons made of images, charts, CAPTCHAs, video thumbnails — needs a text alternative that says what it is or what it does. That text alternative can then be read aloud by a screen reader, shown when the image fails to load, translated, or displayed in braille. Purely decorative graphics (a background flourish, a divider line) are the exception: they should be marked so assistive technology skips over them entirely, since announcing them just adds noise.",
+  "whoItAffects": "Screen reader users (e.g. VoiceOver, NVDA, JAWS) hear nothing meaningful for an image unless it has alt text, so an unlabeled 'submit' icon button becomes just 'button' with no indication of what it submits. Users with low vision who use browser zoom or a screen magnifier may lose surrounding context and rely on the alt text tooltip to identify an image. People on slow or unreliable connections benefit when alt text displays in place of an image that fails to load. Users of voice-control software (e.g. Dragon, Voice Control) reference visible labels or alt text to say 'click submit' — an unlabeled icon gives them nothing to target.",
+  "codeExample": {
+    "lang": "html",
+    "bad": "<!-- Icon-only button with no accessible name -->\n<button type=\"submit\">\n  <img src=\"send-icon.svg\">\n</button>\n\n<!-- Informative image with no alt attribute -->\n<img src=\"quarterly-sales-chart.png\">",
+    "good": "<!-- Icon-only button: alt text describes the action -->\n<button type=\"submit\">\n  <img src=\"send-icon.svg\" alt=\"Send message\">\n</button>\n\n<!-- Informative image: alt text conveys the same information -->\n<img src=\"quarterly-sales-chart.png\" alt=\"Q3 sales rose 18% over Q2, driven by online orders\">\n\n<!-- Purely decorative image: empty alt hides it from assistive tech -->\n<img src=\"divider-swirl.png\" alt=\"\">"
+  },
+  "howToTest": "Turn off images in your browser (or use a text-only browsing mode) and read through the page: does every image that conveys information have replacement text that makes sense in context, and does every decorative image disappear without leaving a gap in meaning? Then hover each image with your mouse — if it has meaningful alt text, a tooltip with that text should appear. Separately, tab to any icon-only buttons or linked images and confirm a screen reader (or the browser's accessibility inspector) announces a clear name for what the control does, not just 'button' or 'image'.",
+  "check": {
+    "question": "A website has a search button that shows only a magnifying-glass icon, with no visible text label. What does SC 1.1.1 require for this button?",
+    "choices": [
+      "Nothing, since icons are self-explanatory to sighted users",
+      "The icon image needs a text alternative (e.g. alt text or aria-label) that identifies it as a search action",
+      "The button must display visible text instead of an icon",
+      "The icon should be marked as decorative so screen readers skip it"
+    ],
+    "answer": 1
+  },
+  "references": []
+}
