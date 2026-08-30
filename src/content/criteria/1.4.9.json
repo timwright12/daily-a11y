@@ -1,0 +1,25 @@
+{
+  "id": "1.4.9",
+  "name": "Images of Text (No Exception)",
+  "level": "AAA",
+  "principle": "Perceivable",
+  "explanation": "This is the stricter, AAA-level version of SC 1.4.5 Images of Text. At the AA level, an image of text is allowed if a particular visual presentation is 'essential' — meaning the specific look can't be reproduced with real text and CSS. This criterion removes that exception entirely: essential presentation is no longer an excuse. The only image of text still permitted is a logo or brand name, where the image itself IS the thing being identified. Everything else — headings, pull quotes, stylized callouts, decorative typographic treatments — must be real text, even if the exact visual effect (a hand-lettered look, a specific kerning trick, a texture applied to letterforms) can't be perfectly recreated. In practice this means teams must get as close as possible using a real web font and CSS, and accept that a small amount of visual fidelity may be sacrificed in exchange for text that is genuinely resizable, reflowable, and machine-readable.",
+  "whoItAffects": "People with low vision who rely on browser zoom, custom stylesheets, or OS-level text scaling get no benefit from an image no matter how 'necessary' its designer felt the visual treatment was — the AA essential-presentation exception offered them nothing in practice, which is exactly why AAA removes it. People using reading and translation tools (browser translate features, text-to-speech extensions, reading-mode simplifiers) cannot process words baked into pixels, so a decorative image of text silently drops out of translation or read-aloud entirely, even when it was 'unavoidable' at AA. Screen reader users are left entirely dependent on whatever alt text was authored, with no way to inspect the actual typography, weight, or emphasis the sighted design conveys. Organizations adopting AAA — often government, education, or health services aiming for the highest conformance level — commit to prioritizing this universal access over preserving a specific decorative effect.",
+  "codeExample": {
+    "lang": "html",
+    "bad": "<!-- Acceptable under AA's 'essential presentation' exception (a genuinely\n     unreproducible hand-lettered ink effect for a campaign headline) but NOT\n     acceptable under AAA, which has no essential-presentation exception. -->\n<h1>\n  <img src=\"campaign-headline-inked.png\"\n       alt=\"Handwritten with Heart: Our 2026 Community Campaign\">\n</h1>",
+    "good": "<!-- AAA requires real text even though the ink-brush effect can't be\n     perfectly reproduced -- get as close as possible with a web font. -->\n<h1 class=\"campaign-headline\">Handwritten with Heart: Our 2026 Community Campaign</h1>\n\n<style>\n  .campaign-headline {\n    font-family: 'Caveat', cursive;\n    font-weight: 600;\n    font-size: 3rem;\n    color: #7a2e2e;\n  }\n</style>"
+  },
+  "howToTest": "First apply the SC 1.4.5 test (zoom to 200% and look for blurring/pixelation, try to select the text, check for 'Save Image As'). Then, for any image of text you find, ask whether it's a logo or brand name — if so, it's still fine at AAA. If it is NOT a logo, it fails this criterion regardless of any justification about the visual presentation being 'essential' or 'impossible to reproduce in CSS' — at AAA that justification, which would have been a valid excuse at AA, no longer applies. The only question that matters here is: is it a logo, yes or no?",
+  "check": {
+    "question": "A page uses a PNG image for a section heading because the designer used a highly customized letter-spacing and outline effect that genuinely cannot be reproduced with CSS or any available web font. It is not a logo. Does this satisfy SC 1.4.9 Images of Text (No Exception)?",
+    "choices": [
+      "Yes, because the visual presentation is essential and unreproducible, which excuses it",
+      "No, because SC 1.4.9 removes the essential-presentation exception that exists at AA — only logos are exempt",
+      "Yes, as long as the image has descriptive alt text",
+      "No, but only because the image file is a PNG rather than an SVG"
+    ],
+    "answer": 1
+  },
+  "references": []
+}
