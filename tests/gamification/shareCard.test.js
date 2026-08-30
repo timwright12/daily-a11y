@@ -1,0 +1,24 @@
+import { describe, it, expect } from 'vitest';
+import { buildShareText } from '../../src/gamification/shareCard.js';
+
+describe('buildShareText', () => {
+  const criterion = { id: '1.4.3', name: 'Contrast (Minimum)' };
+
+  it('includes criterion id, name, and day number with no check result', () => {
+    const text = buildShareText(criterion, 42, null);
+    expect(text).toContain('Day 42');
+    expect(text).toContain('1.4.3');
+    expect(text).toContain('Contrast (Minimum)');
+    expect(text).not.toMatch(/correct|incorrect/i);
+  });
+
+  it('includes a correct-answer note when checkResult is true', () => {
+    const text = buildShareText(criterion, 42, true);
+    expect(text).toMatch(/got it right|correct/i);
+  });
+
+  it('includes an incorrect-answer note when checkResult is false', () => {
+    const text = buildShareText(criterion, 42, false);
+    expect(text).toMatch(/missed it|incorrect/i);
+  });
+});
