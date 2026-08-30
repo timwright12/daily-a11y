@@ -1,0 +1,25 @@
+{
+  "id": "1.2.9",
+  "name": "Audio-only (Live)",
+  "level": "AAA",
+  "principle": "Perceivable",
+  "explanation": "This criterion applies to live audio content that has no video component at all — for example, a live radio broadcast streamed on a website, or a live audio-only webinar or call-in show. It requires an alternative that presents equivalent information to that live audio as it happens. Because the content is live, there's no chance to author a transcript in advance or review it for accuracy, so in practice this means real-time captioning or live transcription of the audio stream, produced by a human captioner/stenographer or an automatic speech recognition (ASR) service. This is the live counterpart to SC 1.2.1 (Audio-only, Prerecorded), which allows a transcript written after the fact because the audio isn't changing; here there is no 'after the fact' until the broadcast ends. It's also distinct from SC 1.2.4 (Captions, Live), which covers live content that has a video track — 1.2.9 is specifically for live audio with no video at all, so there's nothing on screen to caption alongside, only the live text alternative itself.",
+  "whoItAffects": "Deaf and hard-of-hearing users listening to a live radio stream, a live audio-only town hall, or a call-in show have no way to follow along in real time unless a live transcript or captioning feed is provided — waiting for a transcript afterward isn't equivalent when the value of the content (a news update, a live Q&A, a stock-market call) is in following it as it happens. People in sound-off environments, such as an open office or a public space where playing audio isn't an option, can read the live text feed instead. Non-native speakers and some users with cognitive or learning disabilities also benefit from being able to read fast or accented live speech as text rather than relying on audio alone.",
+  "codeExample": {
+    "lang": "html",
+    "bad": "<!-- Live audio-only broadcast with no live text alternative -->\n<div class=\"live-radio-player\">\n  <h2>Live: Morning Markets Radio</h2>\n  <audio id=\"live-audio\" autoplay controls src=\"https://stream.example.com/live-radio\"></audio>\n</div>",
+    "good": "<!-- Live audio-only broadcast with a live transcription feed alongside it -->\n<div class=\"live-radio-player\">\n  <h2>Live: Morning Markets Radio</h2>\n  <audio id=\"live-audio\" autoplay controls src=\"https://stream.example.com/live-radio\"></audio>\n  <div id=\"live-transcript\" class=\"live-transcript\" role=\"region\" aria-label=\"Live transcript\" aria-live=\"polite\">\n    <!-- Text is pushed here in real time by a live captioning/ASR service transcribing the audio stream -->\n  </div>\n</div>"
+  },
+  "howToTest": "Find a live audio-only stream on the site (a live radio player, a live audio-only webinar with no video track) and check whether a live transcript or real-time captioning feed is offered alongside it. Turn on or open that text feed and listen to the audio while watching the text, confirming that new text appears within a short delay of what's being said rather than staying blank or only showing up once the broadcast ends. If the only alternative offered is a transcript that becomes available after the stream is over, or no text alternative exists at all, it fails — the whole point is being able to follow the live content as it happens.",
+  "check": {
+    "question": "A website streams a live, audio-only call-in radio show with no video component. According to SC 1.2.9, what is required?",
+    "choices": [
+      "A transcript published on the website after the show ends",
+      "A real-time text alternative (such as live captioning or live transcription) presented while the broadcast is happening",
+      "Nothing, since SC 1.2.1 already covers audio-only content",
+      "Captions burned into a video player showing the hosts"
+    ],
+    "answer": 1
+  },
+  "references": []
+}

@@ -1,0 +1,25 @@
+{
+  "id": "1.4.11",
+  "name": "Non-text Contrast",
+  "level": "AA",
+  "principle": "Perceivable",
+  "explanation": "This criterion requires a contrast ratio of at least 3:1 for visual information that isn't text but is still needed to understand or operate the page. That covers two categories: (1) the visual boundaries of user interface components, such as a form input's border, a checkbox's outline, a button's edge, or a focus indicator, measured against the color(s) right next to it; and (2) graphical objects required to understand content, such as icons that carry meaning, or the lines and bars in a simple chart. It does NOT cover text (that's SC 1.4.3 Contrast Minimum, which requires 4.5:1 or 3:1 depending on size), and it doesn't apply to a component's disabled state, to decorative graphics that add no information, or to logos. In practice, this criterion exists because a UI element can be perfectly legible in terms of text while still being invisible as a shape: a text input with a border only 1.2:1 different from the page background is readable once you're focused in it, but you might not be able to tell where the box even is.",
+  "whoItAffects": "People with low vision who can perceive shapes and edges but not subtle tonal differences often cannot tell where a form field starts and ends, whether a checkbox is present, or where the currently focused element is on the page, when borders and backgrounds are too close in contrast. Older adults with common age-related contrast sensitivity loss face the same problem even without a diagnosed condition. People with certain color vision deficiencies may be unable to distinguish an icon or chart element from its background when the difference relies on hue rather than lightness. Anyone navigating by keyboard depends on a visible focus indicator with sufficient contrast against the page to know where they are — without it, keyboard and switch-device users effectively lose their place on the page.",
+  "codeExample": {
+    "lang": "css",
+    "bad": "/* Input border #A6A6A6 on white #FFFFFF background is only 2.43:1 -- fails the 3:1 minimum, so the field's edges are hard to locate */\n.text-input {\n  border: 1px solid #A6A6A6;\n  background-color: #FFFFFF;\n  padding: 8px;\n}",
+    "good": "/* Input border #767676 on white #FFFFFF background is 4.54:1 -- passes the 3:1 minimum, so the field boundary is clearly visible */\n.text-input {\n  border: 1px solid #767676;\n  background-color: #FFFFFF;\n  padding: 8px;\n}"
+  },
+  "howToTest": "Identify the interactive components and meaningful graphics on the page: form field borders, checkbox/radio outlines, button boundaries, the keyboard focus indicator, toggle switches, and any icons or chart elements that carry information. For each one, use a contrast checker (such as the WebAIM Contrast Checker, or a browser DevTools eyedropper) to sample the component's border or graphic color and the color of whatever is directly adjacent to it (usually the page or container background), then confirm the ratio is at least 3:1. Pay particular attention to the focus indicator: tab through the page with the keyboard and check the focus outline's contrast against the background behind it in every state, since a focus ring that vanishes at low contrast is a common failure even on otherwise well-designed sites.",
+  "check": {
+    "question": "A checkbox has a 1px outline that measures 2.1:1 contrast against the page background. The checkbox's label text is dark gray on white at 8.5:1 contrast. Does this page pass SC 1.4.11 Non-text Contrast?",
+    "choices": [
+      "Yes, because the label text contrast of 8.5:1 is what matters for this criterion",
+      "No, because the checkbox outline is a UI component boundary and needs at least 3:1, but only measures 2.1:1",
+      "Yes, because 1.4.11 only applies to charts and icons, not form controls",
+      "No, because all non-text elements need the same 4.5:1 ratio required for text"
+    ],
+    "answer": 1
+  },
+  "references": []
+}

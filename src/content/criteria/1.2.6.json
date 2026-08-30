@@ -1,0 +1,25 @@
+{
+  "id": "1.2.6",
+  "name": "Sign Language (Prerecorded)",
+  "level": "AAA",
+  "principle": "Perceivable",
+  "explanation": "This criterion applies to prerecorded synchronized media that has an audio track — the same kind of video covered by captions (SC 1.2.2) and audio description (SC 1.2.5), such as a training video, a public announcement, or a film with dialogue. At this AAA level, you must also provide a sign language interpretation of that audio content, played back in sync with the video (commonly a picture-in-picture interpreter overlay, or a separate synchronized video track the viewer can switch to). This is a distinct requirement from captions: captions convert speech into written text, but for someone whose first language is a signed language, written text is a second-language experience, not a direct translation. Sign language interpretation delivers the content in the viewer's native language and grammar, the same way audio description or a dubbed track would for other audiences. If the video has no meaningful spoken content (e.g. it's already fully captioned but conveys nothing through audio), this criterion doesn't add anything beyond what's already required.",
+  "whoItAffects": "This helps people who are deaf and whose first or preferred language is a signed language (such as American Sign Language in the US, or British Sign Language in the UK) rather than the written form of the surrounding spoken language. For many Deaf sign language users, a spoken language's written form is acquired later and read less fluently than their native sign language — so captions alone, while necessary for other deaf and hard-of-hearing users, do not give this group the same quality of access that hearing viewers get from the audio. A sign language interpretation track restores that: it's the difference between reading a translated transcript of a speech and watching someone deliver it fluently in your own language. This benefits Deaf viewers watching public service announcements, news broadcasts, educational content, and government or emergency communications in particular, where accurate comprehension matters most.",
+  "codeExample": {
+    "lang": "html",
+    "bad": "<!-- Training video has synchronized captions, satisfying SC 1.2.2, but no sign language interpretation track for Deaf sign language users -->\n<video controls width=\"640\" height=\"360\">\n  <source src=\"safety-briefing.mp4\" type=\"video/mp4\">\n  <track kind=\"captions\" src=\"safety-briefing-en.vtt\" srclang=\"en\" label=\"English\" default>\n  Your browser does not support the video tag.\n</video>",
+    "good": "<!-- Same video, plus a picture-in-picture sign language interpreter burned into a second rendition the viewer can choose from the player's quality/version menu -->\n<video controls width=\"640\" height=\"360\" poster=\"safety-briefing-poster.jpg\">\n  <source src=\"safety-briefing-with-asl-interpreter.mp4\" type=\"video/mp4\" data-label=\"With ASL interpreter\">\n  <source src=\"safety-briefing.mp4\" type=\"video/mp4\" data-label=\"Standard\">\n  <track kind=\"captions\" src=\"safety-briefing-en.vtt\" srclang=\"en\" label=\"English\" default>\n  Your browser does not support the video tag.\n</video>\n<p>\n  <a href=\"safety-briefing-with-asl-interpreter.mp4\">Watch the version with an ASL interpreter overlay</a>\n</p>"
+  },
+  "howToTest": "Find each prerecorded video that has spoken dialogue or narration. Check whether the page offers a version of the video (or a toggle within the player) that includes a visible sign language interpreter — typically a picture-in-picture inset of a person signing in sync with the audio. Play that version and confirm the interpreter is present for the full duration of the spoken content, not just an intro or disclaimer, and that the video quality is high enough to actually see the interpreter's hand shapes and facial expressions clearly. If captions are the only accommodation offered and no sign-language version exists anywhere on the page or in the player's settings, it fails this criterion (note that this is a Level AAA criterion, so many sites intentionally don't attempt full-site conformance to it — check what conformance level the site claims before treating this as a defect).",
+  "check": {
+    "question": "A government video has accurate synchronized captions covering all narration. Does this alone satisfy SC 1.2.6 Sign Language (Prerecorded)?",
+    "choices": [
+      "Yes, because captions are an equivalent alternative to sign language for all deaf users",
+      "No, because SC 1.2.6 requires a synchronized sign language interpretation track in addition to captions, since written text is not a Deaf sign language user's first language",
+      "Yes, because SC 1.2.6 only applies to live broadcasts, not prerecorded video",
+      "No, because captions must be replaced entirely by a sign language track"
+    ],
+    "answer": 1
+  },
+  "references": []
+}

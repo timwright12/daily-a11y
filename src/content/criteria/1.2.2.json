@@ -1,0 +1,25 @@
+{
+  "id": "1.2.2",
+  "name": "Captions (Prerecorded)",
+  "level": "A",
+  "principle": "Perceivable",
+  "explanation": "This criterion applies to prerecorded video that has an audio track — for example, a tutorial with narration, an interview, or a marketing video with dialogue. You must provide synchronized captions for all of that spoken content and for meaningful non-speech sounds (like '[phone ringing]' or '[applause]'), timed to appear alongside the audio they represent. Captions are different from a transcript: a transcript is a separate block of text read independently of the video, while captions are burned into or overlaid on the video itself, in sync with what's happening on screen. This does not apply to video-only content with no audio track (that's covered by SC 1.2.1) or to media that is itself an alternative for other content and is clearly labeled as such.",
+  "whoItAffects": "Deaf and hard-of-hearing users can't perceive narration, dialogue, or sound effects at all, and captions are their primary way of getting that information while still watching the video. People watching in sound-off environments — an open office, a train, a phone with the ringer down — rely on captions to follow videos without headphones. People who process written language more easily than fast or accented speech, including some users with cognitive or learning disabilities and non-native speakers of the video's language, use captions to reinforce or replace the audio. Anyone in a noisy environment, like a gym or a busy kitchen, benefits from being able to follow a video by reading instead of listening.",
+  "codeExample": {
+    "lang": "html",
+    "bad": "<!-- Tutorial video with narrated audio but no captions track -->\n<video controls src=\"install-guide.mp4\" width=\"640\" height=\"360\">\n  Your browser does not support the video tag.\n</video>",
+    "good": "<!-- Tutorial video with narrated audio and a synchronized captions track -->\n<video controls width=\"640\" height=\"360\">\n  <source src=\"install-guide.mp4\" type=\"video/mp4\">\n  <track kind=\"captions\" src=\"install-guide-en.vtt\" srclang=\"en\" label=\"English\" default>\n  Your browser does not support the video tag.\n</video>"
+  },
+  "howToTest": "Find every prerecorded video on the page that has spoken dialogue or narration. Play it and turn the sound off, or look for a 'CC' control in the video player. Check that captions appear on screen in sync with the speech, that they include meaningful non-speech sounds (like '[music playing]' or '[door slams]'), and that they're reasonably accurate to what's actually said — not just an auto-generated caption full of errors. If there's no caption control at all, or the captions are missing chunks of dialogue, it fails.",
+  "check": {
+    "question": "A company posts a prerecorded onboarding video with a narrator explaining each step out loud. What does SC 1.2.2 require?",
+    "choices": [
+      "Nothing, since the video also has on-screen text callouts",
+      "A downloadable transcript linked below the video is sufficient on its own",
+      "Synchronized captions covering the narration and any meaningful sounds in the video",
+      "A sign-language interpreter overlay in the corner of the video"
+    ],
+    "answer": 2
+  },
+  "references": []
+}

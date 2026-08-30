@@ -2,3 +2,6 @@
 
 docs
 .claude/
+node_modules
+dist
+.playwright-mcp

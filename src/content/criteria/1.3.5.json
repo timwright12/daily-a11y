@@ -1,0 +1,25 @@
+{
+  "id": "1.3.5",
+  "name": "Identify Input Purpose",
+  "level": "AA",
+  "principle": "Perceivable",
+  "explanation": "This criterion requires that when a form field collects a common piece of information about the user — their name, email address, postal address, phone number, credit card number, and similar well-known fields defined by the HTML autocomplete specification — the field's purpose is identified in a way software can read, not just conveyed through a visible label. In practice this means adding the correct `autocomplete` attribute value (for example `autocomplete=\"email\"` or `autocomplete=\"given-name\"`) to each matching input, in addition to whatever visible label already describes it. This lets browsers and assistive technology recognize what a field is actually for, offer accurate autofill suggestions, and describe the field's real-world purpose to the user — it doesn't remove the need for a visible label, and it only applies to the specific list of input purposes defined by the spec, not every form field on a page.",
+  "whoItAffects": "This affects people with cognitive, language, or memory disabilities who find it hard to read a label and work out what information a field wants, or who struggle to type long strings like an address or account number from memory — correct autocomplete lets the browser fill the field for them or lets a screen reader announce a clearer purpose than the visible label alone. It also affects people with motor disabilities who use switch access, voice control, or other input methods where typing is slow or effortful, since browser autofill or password-manager integration can complete the form for them with a single action instead of many keystrokes. Screen reader users benefit when their assistive technology or browser surfaces the recognized purpose (e.g. announcing \"email\" as a known field type) alongside the label. People with low vision who rely on browser or OS-level autofill styling and prompts are affected too, since those features only activate reliably when the input purpose is correctly identified.",
+  "codeExample": {
+    "lang": "html",
+    "bad": "<!-- Bad: visible label only — no programmatic purpose identified -->\n<form>\n  <label for=\"email\">Email address</label>\n  <input type=\"email\" id=\"email\" name=\"email\">\n\n  <label for=\"phone\">Phone number</label>\n  <input type=\"tel\" id=\"phone\" name=\"phone\">\n</form>",
+    "good": "<!-- Good: autocomplete tokens match the field's real-world purpose -->\n<form>\n  <label for=\"email\">Email address</label>\n  <input type=\"email\" id=\"email\" name=\"email\" autocomplete=\"email\">\n\n  <label for=\"phone\">Phone number</label>\n  <input type=\"tel\" id=\"phone\" name=\"phone\" autocomplete=\"tel\">\n</form>"
+  },
+  "howToTest": "Open the form in a browser with a saved autofill profile (name, email, address, phone) configured in the browser's own autofill settings. Click into each field that asks for one of these common personal details and check whether the browser offers to autofill it with the matching saved value, or shows an autofill icon/suggestion for that field. If the browser doesn't recognize the field's purpose at all (no suggestion appears where one should), that's a strong sign the correct `autocomplete` attribute is missing. You can confirm by viewing the page source or inspecting the element to check whether an `autocomplete` attribute with an appropriate value (e.g. `email`, `given-name`, `street-address`, `tel`) is present on the input.",
+  "check": {
+    "question": "A checkout form has a text input labeled \"Full name\" that visually looks correct and is properly associated with its label, but has no `autocomplete` attribute. Does this satisfy SC 1.3.5 (Level AA)?",
+    "choices": [
+      "Yes, because a correctly associated visible label is all this criterion requires",
+      "No, because a field collecting a common user input purpose like name must also identify that purpose programmatically, typically via the autocomplete attribute",
+      "Yes, as long as the input has an accessible name from any source",
+      "No, but only if the form is part of an e-commerce checkout flow"
+    ],
+    "answer": 1
+  },
+  "references": []
+}

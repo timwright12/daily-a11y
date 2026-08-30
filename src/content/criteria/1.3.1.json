@@ -1,0 +1,25 @@
+{
+  "id": "1.3.1",
+  "name": "Info and Relationships",
+  "level": "A",
+  "principle": "Perceivable",
+  "explanation": "When you use visual formatting to show structure — bold or larger text to signal a heading, columns of aligned text to signal a table, indentation to signal a list, spacing to group a label with its input — that structure has to also exist in the underlying markup, not just in how it looks. This criterion requires that any information, structure, or relationship conveyed visually can be determined programmatically (through the right HTML elements and attributes) or is available as text. In practice this means: real headings (`<h1>`-`<h6>`) instead of styled paragraphs, real list markup (`<ul>`/`<ol>`/`<li>`) instead of manually typed bullets, real tables (`<table>`, `<th>`, `<td>`) with headers associated to their data cells, and form inputs with a `<label>` actually connected to them. If the only way to know something is a heading, a table, or a label is to look at it, that structure isn't available to anyone who can't rely on the visual presentation.",
+  "whoItAffects": "Screen reader users (e.g. on NVDA, JAWS, or VoiceOver) rely on headings to jump through a page's outline and on table headers being announced with each cell (\"Total, column 3\") to make sense of data — if a heading is just bold text or a table is built from styled `<div>`s, screen readers announce it as plain undifferentiated text and that structure disappears entirely. Screen magnifier users who see only one part of a table or form at a time depend on labels and headers being read aloud or exposed in tooltips to stay oriented as they lose the surrounding visual context. Voice control software users (e.g. Dragon) need form fields to have a real programmatic label so a spoken command like \"click Email\" can find the field at all. People with cognitive disabilities also benefit from real semantic structure, since browser reader-view modes and other tools that simplify or restyle a page depend on that same underlying markup to work correctly.",
+  "codeExample": {
+    "lang": "html",
+    "bad": "<!-- Looks like a data table but is built from styled divs with no header markup or cell/header relationships -->\n<div class=\"table\">\n  <div class=\"row header\">\n    <div class=\"cell\">Plan</div>\n    <div class=\"cell\">Monthly Price</div>\n    <div class=\"cell\">Storage</div>\n  </div>\n  <div class=\"row\">\n    <div class=\"cell\">Basic</div>\n    <div class=\"cell\">$5</div>\n    <div class=\"cell\">10 GB</div>\n  </div>\n  <div class=\"row\">\n    <div class=\"cell\">Pro</div>\n    <div class=\"cell\">$15</div>\n    <div class=\"cell\">100 GB</div>\n  </div>\n</div>",
+    "good": "<!-- Real table markup: header cells are marked with <th scope=\"col\"> so a screen reader announces the column header with every data cell -->\n<table>\n  <caption>Plan pricing and storage</caption>\n  <thead>\n    <tr>\n      <th scope=\"col\">Plan</th>\n      <th scope=\"col\">Monthly Price</th>\n      <th scope=\"col\">Storage</th>\n    </tr>\n  </thead>\n  <tbody>\n    <tr>\n      <td>Basic</td>\n      <td>$5</td>\n      <td>10 GB</td>\n    </tr>\n    <tr>\n      <td>Pro</td>\n      <td>$15</td>\n      <td>100 GB</td>\n    </tr>\n  </tbody>\n</table>"
+  },
+  "howToTest": "Turn off CSS (in Firefox: Menu > View > Page Style > No Style, or Chrome DevTools > Rendering > \"Emulate CSS media\" won't do this, so use an extension like Web Developer's 'Disable CSS' instead) and look at the raw, unstyled page. Anything that visually read as a heading, list, or table should still clearly read that way in the plain, unstyled output — headings should appear as distinct heading-sized text, list items should show bullets or numbers, and tables should render as an actual grid, not a single run of text. If a 'heading' collapses into an ordinary paragraph, a 'list' becomes plain sentences, or a 'table' becomes a jumble of unrelated words in a line, the structure was only visual and fails this criterion.",
+  "check": {
+    "question": "A pricing table is built using <div> and <span> elements styled with CSS to look like rows and columns, with no <table>, <th>, or <td> elements anywhere in the markup. What does this fail to do?",
+    "choices": [
+      "Nothing — as long as the table looks correct visually, screen readers can infer the row and column structure automatically",
+      "It fails to make the table's structure and header/data relationships programmatically determinable, so assistive technology can't announce them",
+      "It fails only if the table has more than five rows",
+      "It fails color contrast requirements, not Info and Relationships"
+    ],
+    "answer": 1
+  },
+  "references": []
+}

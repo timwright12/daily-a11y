@@ -1,0 +1,25 @@
+{
+  "id": "1.3.2",
+  "name": "Meaningful Sequence",
+  "level": "A",
+  "principle": "Perceivable",
+  "explanation": "When the order in which content is presented affects its meaning — a form's fields, the steps in a process, an article's paragraphs, a multi-column layout that reads top-to-bottom then column-by-column — that reading order has to be something a browser or assistive technology can figure out automatically, not just something that looks right visually. In practice this almost always means: the order elements appear in the HTML (the DOM source order) should match the order a sighted user reads them in. A screen reader, a braille display, and a screen magnifier all rely on source order (or another programmatic order, like CSS Grid's `order` combined with proper structure) rather than on how things are positioned visually with CSS. If CSS is used to visually rearrange content — reversing a flex row, repositioning something with absolute positioning, reordering grid items — without the DOM order matching, sighted users and screen reader users end up experiencing two different, disconnected sequences.",
+  "whoItAffects": "Screen reader users (JAWS, NVDA, VoiceOver) navigate and listen to content in DOM source order, not visual order — if CSS has visually reordered content so it no longer matches the markup, they'll hear a sequence that doesn't make sense, such as an answer being read before its question, or a form's submit button being announced before the fields it submits. Screen magnifier users who zoom in and pan around a page also rely on a logical underlying order as they move focus or scan region by region, since they can only see a portion of the visually reordered layout at once. Switch-access and keyboard-only users are affected too, when tab order (which typically follows DOM order) jumps around in a way that doesn't match what's visually adjacent on screen, making the interface feel unpredictable. People with cognitive disabilities benefit from a reading order that follows a natural, logical progression rather than one that's been visually rearranged in a way that breaks the narrative or logical flow.",
+  "codeExample": {
+    "lang": "css",
+    "bad": "/* HTML has Question then Answer in that order, but CSS visually reverses them for sighted users. \n   A screen reader still announces \"Question\" first, then \"Answer\" — matching sighted intent —\n   but here the visual reversal makes sighted users read Answer before Question while DOM order\n   says the opposite, so the two experiences diverge. */\n.qa-pair {\n  display: flex;\n  flex-direction: row-reverse; /* Answer renders visually first (left), Question visually second (right) */\n}",
+    "good": "/* Reorder the HTML itself so DOM order matches the intended reading order,\n   then let CSS lay elements out normally — sighted and screen reader users get the same sequence. */\n.qa-pair {\n  display: flex;\n  flex-direction: row;\n}"
+  },
+  "howToTest": "Turn off CSS in your browser's developer tools (or use a browser extension/reader-mode view that strips styling) and read the page from top to bottom in its now-unstyled, source order. Does that raw order still make logical sense — do headings, paragraphs, form labels/fields, and steps in a process appear in the same sequence a sighted user would naturally read them? If content that visually appeared first (like a summary or a set of instructions) now appears after content it depends on, or a multi-column layout collapses into a jumbled single column, the DOM order doesn't match the meaningful reading order and the page fails this criterion.",
+  "check": {
+    "question": "A page uses CSS `flex-direction: row-reverse` to visually swap two side-by-side panels, but doesn't change the underlying HTML order. What is the accessibility problem this creates?",
+    "choices": [
+      "Screen reader users will hear the panels in DOM order, which no longer matches what sighted users see, creating two different sequences",
+      "The page will fail to render in older browsers that don't support flexbox",
+      "There is no problem, because CSS reordering never affects assistive technology",
+      "The panels will become impossible to focus using the keyboard"
+    ],
+    "answer": 0
+  },
+  "references": []
+}

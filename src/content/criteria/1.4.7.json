@@ -1,0 +1,25 @@
+{
+  "id": "1.4.7",
+  "name": "Low or No Background Audio",
+  "level": "AAA",
+  "principle": "Perceivable",
+  "explanation": "This criterion applies to prerecorded audio-only content that is primarily speech — a podcast episode, an audiobook chapter, a recorded lecture — where music or ambient sound has been mixed in behind the narration. It requires that background sound either be absent, be able to be turned off separately from the speech (so a listener can mute the music bed but keep the voice), or be mixed at least 20 decibels quieter than the foreground speech, which is roughly four times quieter to the ear. Brief incidental sounds, such as a short sound logo at the start of an episode, or a sound effect that occurs only occasionally, are exempt, as is content where the audio is primarily a live performance (like a recorded music performance) where the 'background' sound is actually the point. This is not about captions or transcripts — those are covered by SC 1.2.x and provide an alternative to the audio. This criterion is about the raw audio mix itself: whether the speech is intelligible on its own without a text alternative in the room.",
+  "whoItAffects": "People who are hard of hearing benefit most directly — a mixed-in music bed or ambient background track can mask consonant sounds and make speech difficult to distinguish even when overall volume is turned up, especially for listeners with high-frequency hearing loss. People with auditory processing disorders, some autistic listeners, and some people with cognitive disabilities can find it hard to separate simultaneous sounds (foreground speech from background music) even with typical hearing, so an unclear mix can make an otherwise-accessible podcast or audiobook effectively unusable. Older adults with age-related hearing decline and anyone listening in a noisy environment, such as a train or an open office, also benefit from a clean speech-to-background ratio or the ability to switch off the music bed entirely.",
+  "codeExample": {
+    "lang": "html",
+    "bad": "<!-- Podcast player: narration and background music are mixed into one file with no way to separate them -->\n<div class=\"podcast-player\">\n  <h2>Episode 42: Interview with a Climate Scientist</h2>\n  <audio controls src=\"episode-42-mixed.mp3\"></audio>\n  <!-- Background music bed plays under the entire interview at a level close to the narrator's voice -->\n</div>",
+    "good": "<!-- Podcast player: narration and music bed are separate tracks with independent volume controls -->\n<div class=\"podcast-player\">\n  <h2>Episode 42: Interview with a Climate Scientist</h2>\n  <audio id=\"narration-track\" controls src=\"episode-42-narration.mp3\"></audio>\n\n  <div class=\"track-control\">\n    <label for=\"music-volume\">Background music volume</label>\n    <input type=\"range\" id=\"music-volume\" min=\"0\" max=\"100\" value=\"20\"\n           aria-describedby=\"music-volume-hint\">\n    <p id=\"music-volume-hint\">Lower this or set it to 0 to mute the background music bed while keeping the narration audible.</p>\n  </div>\n  <audio id=\"music-track\" src=\"episode-42-music-bed.mp3\" loop></audio>\n</div>"
+  },
+  "howToTest": "Find a prerecorded, speech-based audio-only item on the site, such as a podcast episode or audiobook chapter, that has audible background music or ambient sound mixed in. Listen to a representative section with your eyes closed or the screen off, focusing only on whether you can follow every word of the narration without straining, even during the loudest part of the background sound. If the background is distracting, competing with the voice, or occasionally drowns out a word, and there's no control to turn the background off separately from the speech, it fails. Also check whether the site offers an alternate 'narration-only' version or a volume control specifically for background music — if so, verify it actually reduces or removes the background rather than just lowering the whole mix (which would reduce the speech too).",
+  "check": {
+    "question": "A company publishes a spoken-word audiobook chapter with a quiet ambient music track mixed in behind the narrator. According to SC 1.4.7, which of these mixes would satisfy the criterion?",
+    "choices": [
+      "The music is mixed at roughly the same volume as the narrator's voice",
+      "The music is at least 20 decibels quieter than the narration, or can be turned off separately from the speech",
+      "The music is provided as a separate download so listeners can play it if they want",
+      "Captions are provided alongside the audio, describing both the speech and the music"
+    ],
+    "answer": 1
+  },
+  "references": []
+}
