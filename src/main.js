@@ -25,14 +25,20 @@ writeState(state);
 const app = document.getElementById('app');
 app.innerHTML = `
   <header>
-    <p id="gamification-status"></p>
+    <div class="masthead">
+      <span class="masthead-mark">daily-a11y</span>
+      <p id="gamification-status"></p>
+    </div>
   </header>
   <main>
-    <h1><span id="criterion-id"></span> <span id="criterion-name"></span></h1>
-    <p>
-      <span id="level-badge" class="badge"></span>
-      <span id="principle-badge" class="badge"></span>
-    </p>
+    <div class="hero">
+      <span class="eyebrow">§<span id="criterion-id"></span> · WCAG 2.2</span>
+      <h1 id="criterion-name"></h1>
+      <div class="badges">
+        <span id="level-badge" class="badge"></span>
+        <span id="principle-badge" class="badge"></span>
+      </div>
+    </div>
     <section aria-labelledby="explanation-heading">
       <h2 id="explanation-heading">What this means</h2>
       <p id="explanation"></p>
@@ -43,10 +49,16 @@ app.innerHTML = `
     </section>
     <section aria-labelledby="code-heading">
       <h2 id="code-heading">Code example</h2>
-      <h3>Bad</h3>
-      <pre><code id="code-bad"></code></pre>
-      <h3>Good</h3>
-      <pre><code id="code-good"></code></pre>
+      <div class="code-spread">
+        <div class="code-panel code-panel-bad">
+          <p class="code-panel-label"><span class="mark" aria-hidden="true">✕</span> Bad</p>
+          <pre><code id="code-bad"></code></pre>
+        </div>
+        <div class="code-panel code-panel-good">
+          <p class="code-panel-label"><span class="mark" aria-hidden="true">✓</span> Good</p>
+          <pre><code id="code-good"></code></pre>
+        </div>
+      </div>
     </section>
     <section aria-labelledby="test-heading">
       <h2 id="test-heading">How to test it</h2>
@@ -63,8 +75,10 @@ app.innerHTML = `
       </form>
       <p id="check-result" role="status"></p>
     </section>
-    <button id="share-button" type="button">Copy today's result</button>
-    <p id="share-status" role="status"></p>
+    <div class="share">
+      <button id="share-button" type="button">Copy today's result</button>
+      <p id="share-status" role="status"></p>
+    </div>
   </main>
 `;
 
