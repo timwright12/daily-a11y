@@ -5,6 +5,7 @@ import { recordAnswer } from './gamification/streak.js';
 import { markSeen, coverageSummary } from './gamification/coverage.js';
 import { buildShareText } from './gamification/shareCard.js';
 import Prism from 'prismjs';
+import 'prismjs/themes/prism.css';
 import 'prismjs/components/prism-css.js';
 import 'prismjs/components/prism-javascript.js';
 

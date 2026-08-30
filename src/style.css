@@ -42,3 +42,47 @@ pre {
   background: #f5f5f5;
   border-radius: 0.3em;
 }
+
+/* Prism's default theme fails WCAG AA (4.5:1) for several tokens against our
+   #f5f5f5 code background; these darken just the failing tokens to pass.
+   The extra `pre` ancestor selector raises specificity above Prism's own
+   theme rules, which load after this file and would otherwise win the
+   cascade despite matching the same token classes. */
+pre .token.punctuation {
+  color: #666666;
+}
+
+pre .token.comment,
+pre .token.prolog,
+pre .token.doctype,
+pre .token.cdata {
+  color: #5b6472;
+}
+
+pre .token.operator,
+pre .token.entity,
+pre .token.url,
+pre.language-css .token.string,
+pre.style .token.string {
+  color: #805327;
+}
+
+pre .token.function,
+pre .token.class-name {
+  color: #c22a4d;
+}
+
+pre .token.selector,
+pre .token.attr-name,
+pre .token.string,
+pre .token.char,
+pre .token.builtin,
+pre .token.inserted {
+  color: #4d7300;
+}
+
+pre .token.regex,
+pre .token.important,
+pre .token.variable {
+  color: #8f5900;
+}
