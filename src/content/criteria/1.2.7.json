@@ -1,0 +1,25 @@
+{
+  "id": "1.2.7",
+  "name": "Extended Audio Description (Prerecorded)",
+  "level": "AAA",
+  "principle": "Perceivable",
+  "explanation": "This criterion is a stricter, rarer version of SC 1.2.5 (Audio Description). Regular audio description squeezes narration into the existing pauses between lines of dialogue — but some videos are so dense with dialogue or fast-moving visuals that there simply isn't enough silence to fit a description in. This criterion applies to exactly that situation: when the natural pauses are too short for all the necessary description, you must pause the video itself — stretching out its running time — to make room for the narration, then resume playback once the description finishes. In other words, SC 1.2.5 fits description into the video's existing timeline; SC 1.2.7 lengthens the timeline when that isn't enough. This only applies where standard audio description (1.2.5) has already been provided but is still not sufficient to convey all the important visual information.",
+  "whoItAffects": "Blind users and people with low vision who rely on audio description to follow visual content depend on extended audio description specifically for content where regular description falls short — a fast-paced tutorial with rapid on-screen steps, a densely narrated documentary with little natural silence, or a scene with a lot of simultaneous visual action (a whiteboard being filled in, multiple on-screen elements changing at once). Without the video pausing to make room, a standard audio description track would either talk over the dialogue or have to skip important visual detail. This matters most for technical, instructional, or information-dense video where missing a visual detail because there wasn't time to describe it means missing something the content depends on.",
+  "codeExample": {
+    "lang": "html",
+    "bad": "<!-- Fast-paced software tutorial: constant narration over screen actions leaves no pauses\n     long enough to describe rapid UI changes. Only a standard (non-extended) description\n     track is offered, so on-screen detail during busy sections is simply dropped. -->\n<video controls width=\"640\" height=\"360\">\n  <source src=\"advanced-editing-tutorial.mp4\" type=\"video/mp4\">\n  <track kind=\"captions\" src=\"tutorial-en.vtt\" srclang=\"en\" label=\"English\">\n  <track kind=\"descriptions\" src=\"tutorial-ad-en.vtt\" srclang=\"en\" label=\"English audio description\">\n  Your browser does not support the video tag.\n</video>",
+    "good": "<!-- Same tutorial, offered as a separate extended-description version: the video's\n     timeline is edited to insert brief pauses at points where standard description\n     couldn't fit, giving the narration room to describe rapid on-screen changes in full. -->\n<video controls width=\"640\" height=\"360\">\n  <source src=\"advanced-editing-tutorial-extended-ad.mp4\" type=\"video/mp4\">\n  <track kind=\"captions\" src=\"tutorial-en.vtt\" srclang=\"en\" label=\"English\">\n  <track kind=\"descriptions\" src=\"tutorial-extended-ad-en.vtt\" srclang=\"en\" label=\"English extended audio description\">\n  Your browser does not support the video tag.\n</video>\n<p><a href=\"advanced-editing-tutorial.mp4\">Watch the standard-length version</a> without extended description.</p>"
+  },
+  "howToTest": "Watch the video with its standard audio description track turned on. Note any moments where the narrator's description feels rushed, cut off, or talks over the dialogue, or where you can tell something visual is happening on screen but there wasn't time to describe it before the next line starts. If the content is dense enough that this happens (common in fast tutorials, densely-narrated documentaries, or scenes with a lot of simultaneous visual activity), check whether the site offers a separate extended audio description version — one where the video visibly pauses at those points to let the narration finish, then resumes. If the only option is the standard-length track and important visual information is still being dropped because there wasn't time to say it, this criterion is not met.",
+  "check": {
+    "question": "A densely-narrated documentary already has a standard audio description track (SC 1.2.5), but the narrator often has to skip visual details because dialogue leaves no pauses long enough to describe them. What does SC 1.2.7 (Extended Audio Description) require in this case?",
+    "choices": [
+      "The video's timeline itself must be paused at those points, extending its total running time, so there is room to describe everything important",
+      "Nothing more — providing a standard audio description track already satisfies every audio description requirement",
+      "A full text transcript must be linked below the video instead of adding any more audio",
+      "The dialogue must be re-recorded to include shorter, faster sentences so descriptions fit in the existing pauses"
+    ],
+    "answer": 0
+  },
+  "references": []
+}
