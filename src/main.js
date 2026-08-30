@@ -54,8 +54,10 @@ app.innerHTML = `
     <section aria-labelledby="check-heading">
       <h2 id="check-heading">Check your understanding</h2>
       <form id="check-form">
-        <p id="check-question"></p>
-        <div id="check-choices"></div>
+        <fieldset>
+          <legend id="check-question"></legend>
+          <div id="check-choices"></div>
+        </fieldset>
         <button type="submit">Submit answer</button>
       </form>
       <p id="check-result" role="status"></p>
