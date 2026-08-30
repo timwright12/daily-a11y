@@ -283,6 +283,22 @@ pre .token.variable {
   color: #8f5900;
 }
 
+pre .token.atrule,
+pre .token.attr-value,
+pre .token.keyword {
+  color: #005580;
+}
+
+pre .token.tag,
+pre .token.property,
+pre .token.boolean,
+pre .token.number,
+pre .token.constant,
+pre .token.symbol,
+pre .token.deleted {
+  color: #990055;
+}
+
 /* ---------- Comprehension check ---------- */
 
 fieldset {
@@ -379,6 +395,25 @@ button:hover {
   font-family: var(--font-mono);
   font-size: 0.85rem;
   color: var(--ink-quiet);
+}
+
+.reroll-link {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--ink);
+  background: transparent;
+  border: 1px solid var(--ink);
+  border-radius: 0.3em;
+  padding: 0.7em 1.4em;
+  text-decoration: none;
+}
+
+.reroll-link:hover {
+  background: var(--ink);
+  color: var(--paper);
 }
 
 @media (prefers-reduced-motion: no-preference) {

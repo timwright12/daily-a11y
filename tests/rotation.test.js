@@ -3,6 +3,7 @@ import {
   daysSinceEpoch,
   getTodayIndex,
   puzzleDayNumber,
+  randomIndex,
 } from "../src/rotation.js";
 
 describe("daysSinceEpoch", () => {
@@ -82,5 +83,28 @@ describe("puzzleDayNumber", () => {
     expect(puzzleDayNumber(new Date("2026-09-29T00:00:00Z"), launchDate)).toBe(
       31,
     );
+  });
+});
+
+describe("randomIndex", () => {
+  it("returns 0 when the random source returns 0", () => {
+    expect(randomIndex(29, () => 0)).toBe(0);
+  });
+
+  it("returns the last index when the random source returns just under 1", () => {
+    expect(randomIndex(29, () => 0.9999999)).toBe(28);
+  });
+
+  it("returns the middle index for a mid-range random value", () => {
+    expect(randomIndex(29, () => 0.5)).toBe(14);
+  });
+
+  it("never returns an index outside the available range across many draws", () => {
+    for (let i = 0; i < 1000; i++) {
+      const index = randomIndex(29, Math.random);
+      expect(index).toBeGreaterThanOrEqual(0);
+      expect(index).toBeLessThan(29);
+      expect(Number.isInteger(index)).toBe(true);
+    }
   });
 });

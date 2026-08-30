@@ -16,3 +16,7 @@ export function getTodayIndex(date, availableCount) {
 export function puzzleDayNumber(date, launchDate) {
   return daysSinceEpoch(date) - daysSinceEpoch(launchDate) + 1;
 }
+
+export function randomIndex(availableCount, randomFn = Math.random) {
+  return Math.floor(randomFn() * availableCount);
+}
