@@ -1,0 +1,25 @@
+{
+  "id": "2.5.4",
+  "name": "Motion Actuation",
+  "level": "A",
+  "principle": "Operable",
+  "explanation": "If a feature can be triggered by physically moving the device, like shaking a phone to undo an action, or by moving the user's body in front of a camera, it must also be operable through a regular interface control, like a button, and there must be a way to turn off the motion-based trigger to prevent it firing accidentally. Exceptions apply when the motion is processed through an accessibility-supported API designed for this purpose, or when responding to motion is essential to the activity and disabling it would defeat the feature's purpose, like a step-counter or a bubble-level app.",
+  "whoItAffects": "People who can't physically shake, tilt, or move a device, due to a motor disability, or because the device is mounted in a fixed position like a wheelchair-mounted tablet, cannot trigger motion-based actions at all and need an equivalent button or control instead. People with hand tremors or involuntary movements can trigger a motion-activated feature accidentally through normal handling of the device, so a way to disable that trigger prevents unwanted actions from firing unexpectedly during ordinary use.",
+  "codeExample": {
+    "lang": "javascript",
+    "bad": "// Shake-to-undo is the only way to trigger undo, with no button\n// alternative and no setting to disable the motion trigger\nwindow.addEventListener('devicemotion', (event) => {\n  if (isShakeGesture(event)) {\n    undoLastAction();\n  }\n});",
+    "good": "// Shake-to-undo remains available, but a visible undo button offers\n// the same function, and motion detection can be turned off\nconst motionUndoEnabled = getUserSetting('shakeToUndo');\nwindow.addEventListener('devicemotion', (event) => {\n  if (motionUndoEnabled && isShakeGesture(event)) {\n    undoLastAction();\n  }\n});\nundoButton.addEventListener('click', () => {\n  undoLastAction();\n});"
+  },
+  "howToTest": "Identify any feature that responds to physically moving or shaking the device, or to the user's own body movement captured by a camera. For each one, check whether the same function can also be triggered through a standard on-screen control like a button, and whether there's a setting to turn off the motion-based trigger entirely. If motion is the only way to trigger the feature, with no button alternative and no way to disable it, and the feature isn't inherently motion-dependent, like a pedometer, this fails.",
+  "check": {
+    "question": "A note-taking app lets users shake their phone to undo their last edit, with no on-screen undo button available and no setting to disable the shake gesture. Does this pass SC 2.5.4 Motion Actuation?",
+    "choices": [
+      "Yes, because shake-to-undo is a well-known and intuitive gesture",
+      "No, because there is no button-based alternative and no way to disable the motion trigger",
+      "Yes, because undo is a secondary, non-essential feature",
+      "It depends only on how sensitive the shake detection is calibrated"
+    ],
+    "answer": 1
+  },
+  "references": []
+}

@@ -1,0 +1,25 @@
+{
+  "id": "2.5.3",
+  "name": "Label in Name",
+  "level": "A",
+  "principle": "Operable",
+  "explanation": "When a button, link, or other control has visible text on it, that same text must be included in the accessible name exposed to assistive technology, ideally at the start of it. If a button visually reads \"Submit\" but its `aria-label` says something entirely different, like \"Send form now,\" a voice-control user who says \"click Submit\" — matching what they see on screen — won't find a match, because the underlying accessible name doesn't contain that visible text at all.",
+  "whoItAffects": "Voice-control software users speak the visible label of a control to activate it, such as saying \"click Search\" to activate a button labeled Search on screen; if the accessible name doesn't contain that visible text, the voice command fails to find a match even though the user did exactly what the screen told them to do. Screen reader users who work alongside a sighted colleague or use a screen reader in low-vision mode with speech and visuals together can also become confused if what's announced doesn't match what's shown, breaking the connection between the two.",
+  "codeExample": {
+    "lang": "html",
+    "bad": "<!-- Visible text says \"Search,\" but the accessible name is totally\n     different, so voice control commands referencing the visible\n     label won't match -->\n<button aria-label=\"Find items in catalog\">Search</button>",
+    "good": "<!-- The accessible name includes the visible text, so voice control\n     commands referencing \"Search\" work correctly -->\n<button aria-label=\"Search products\">Search</button>"
+  },
+  "howToTest": "Find controls that have both visible text and a separate accessible name set via `aria-label` or `aria-labelledby`, since those are the only places a mismatch can occur. For each one, check whether the visible text is fully contained within the accessible name, ideally at the beginning. Browser accessibility inspectors show the computed accessible name directly, making this easy to compare against what's shown on screen. If the accessible name doesn't include the visible label text at all, this fails.",
+  "check": {
+    "question": "A button visually displays the text \"Add to Cart,\" but has `aria-label=\"Purchase this item now\"` applied to it, so its accessible name doesn't include the visible text at all. Does this pass SC 2.5.3 Label in Name?",
+    "choices": [
+      "Yes, because both labels convey a similar general meaning",
+      "No, because the accessible name doesn't contain the visible label text \"Add to Cart\"",
+      "Yes, because aria-label always overrides visible text correctly",
+      "It depends only on whether the button also has a title attribute"
+    ],
+    "answer": 1
+  },
+  "references": []
+}

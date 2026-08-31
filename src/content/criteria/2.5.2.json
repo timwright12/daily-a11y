@@ -1,0 +1,25 @@
+{
+  "id": "2.5.2",
+  "name": "Pointer Cancellation",
+  "level": "A",
+  "principle": "Operable",
+  "explanation": "For actions triggered by a single pointer, like a tap or click, the action generally shouldn't fire the instant the pointer goes down; it should wait until the pointer is released (the \"up\" event), and there should be a way to cancel the action by moving the pointer away before releasing, or a way to undo it afterward. This gives users a chance to back out of an accidental press before it takes effect. The main exception is when completing the action on press-down is essential to the function, which is rare, or when the interaction is emulating a standard keyboard action.",
+  "whoItAffects": "People with motor disabilities or hand tremors can trigger a touch or click accidentally, and without a way to cancel before release or undo afterward, that accidental press becomes an irreversible action. This is especially important for anything with real consequences, like submitting a form, deleting an item, or making a purchase, where an accidental down-press followed by no chance to cancel could cause a mistake that's hard or impossible to undo.",
+  "codeExample": {
+    "lang": "javascript",
+    "bad": "// Fires the delete action the instant the pointer goes down,\n// with no way to cancel by dragging away before release\ndeleteButton.addEventListener('pointerdown', () => {\n  deleteItem();\n});",
+    "good": "// Waits for the pointer to be released while still over the button\n// before triggering the action, so moving away first cancels it\nlet pressedOverButton = false;\ndeleteButton.addEventListener('pointerdown', () => {\n  pressedOverButton = true;\n});\ndeleteButton.addEventListener('pointerup', (event) => {\n  if (pressedOverButton && event.target === deleteButton) {\n    deleteItem();\n  }\n  pressedOverButton = false;\n});"
+  },
+  "howToTest": "Press down on a button or control and, before releasing, drag your finger or mouse away from it while still holding the press. Then release. Did the action still fire even though you moved off the control before releasing? If so, and there's no way to abort or undo the action, this fails. Also check whether any actions with real consequences, deleting, submitting, purchasing, fire immediately on press-down rather than waiting for release.",
+  "check": {
+    "question": "A mobile app's \"Delete\" button triggers the delete action the moment a user's finger touches it, before they lift their finger, with no way to cancel by sliding away first and no undo afterward. Does this pass SC 2.5.2 Pointer Cancellation?",
+    "choices": [
+      "Yes, because the button correctly performs its labeled action",
+      "No, because the action completes on the down-event with no way to cancel or undo it",
+      "Yes, because delete actions are expected to be immediate",
+      "It depends only on whether a confirmation dialog appears afterward"
+    ],
+    "answer": 1
+  },
+  "references": []
+}
