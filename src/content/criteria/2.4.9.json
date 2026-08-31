@@ -1,0 +1,25 @@
+{
+  "id": "2.4.9",
+  "name": "Link Purpose (Link Only)",
+  "level": "AAA",
+  "principle": "Operable",
+  "explanation": "This is a stricter version of SC 2.4.4. A link's purpose must be clear from its link text alone. It can't rely on a nearby sentence, paragraph, or heading for meaning. The Level A criterion allows that surrounding context to help. This AAA criterion doesn't. The link text itself must make sense on its own, even in a bare list with nothing else around it.",
+  "whoItAffects": "Screen reader users often pull up a list of all links on a page to navigate quickly. That list shows only the link text, with no surrounding context. If many links just say \"read more\" with no other detail, the list becomes useless for telling them apart. This same problem affects anyone scanning links out of context, such as someone skimming a printed link reference or a browser tool that lists links separately from the page.",
+  "codeExample": {
+    "lang": "html",
+    "bad": "<h3>New accessibility guidelines released</h3>\n<p>The W3C has published updated guidance...</p>\n<a href=\"/article/123\">Read more</a>\n<!-- Relies on the heading for context; fails if read as link text alone -->",
+    "good": "<h3>New accessibility guidelines released</h3>\n<p>The W3C has published updated guidance...</p>\n<a href=\"/article/123\">Read the full article on the new accessibility guidelines</a>\n<!-- Self-sufficient: makes sense even with no surrounding context -->"
+  },
+  "howToTest": "Pull the visible text of every link on the page into a bare list, as if the surrounding sentences and headings weren't there. For each link, ask whether its purpose is clear from that text alone. A bare \"Read more\" usually depends on a nearby heading to make sense. That kind of link fails this stricter AAA criterion, even if it passes the Level A version.",
+  "check": {
+    "question": "A page has a link reading \"Learn more about our return policy\" that appears directly below a paragraph about shipping. Does this link satisfy SC 2.4.9 Link Purpose (Link Only)?",
+    "choices": [
+      "Yes, because the link text itself names its destination clearly without needing surrounding context",
+      "No, because the link relies on the shipping paragraph above it for meaning",
+      "Yes, because it's part of the same page as the shipping information",
+      "It depends only on whether the link is underlined"
+    ],
+    "answer": 0
+  },
+  "references": []
+}

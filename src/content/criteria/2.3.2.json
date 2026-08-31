@@ -1,0 +1,25 @@
+{
+  "id": "2.3.2",
+  "name": "Three Flashes",
+  "level": "AAA",
+  "principle": "Operable",
+  "explanation": "This is the strict version of SC 2.3.1, with the below-threshold exception removed entirely. At Level A, a flash is still allowed if it's small or low-contrast enough to fall below the general and red flash thresholds. At this AAA level, nothing may flash more than three times in any one-second period, no matter how small or subtle the flash is. This removes the judgment call of measuring flash size and contrast against a threshold. If it flashes more than three times a second, it fails, regardless of scale.",
+  "whoItAffects": "SC 2.3.1's threshold-based rule already protects people with photosensitive epilepsy in most cases. But the below-threshold exception exists for a reason. Very small or low-contrast flashing still carries some risk of triggering a seizure, just a much lower one. This stricter AAA criterion removes that remaining risk for the most sensitive people. It bans rapid flashing outright, instead of allowing it below a calculated threshold.",
+  "codeExample": {
+    "lang": "css",
+    "bad": "/* A small loading spinner flashes 4 times per second; even though it's\n   a small element, this fails the stricter no-exception AAA rule */\n.loading-spinner {\n  animation: blink 0.25s infinite;\n}\n@keyframes blink {\n  0%, 100% { opacity: 1; }\n  50% { opacity: 0.3; }\n}",
+    "good": "/* The spinner rotates continuously instead of flashing in and out,\n   avoiding a flash pattern altogether regardless of size */\n.loading-spinner {\n  animation: spin 1s linear infinite;\n}\n@keyframes spin {\n  from { transform: rotate(0deg); }\n  to { transform: rotate(360deg); }\n}"
+  },
+  "howToTest": "Watch every animated or flashing element on the page, no matter how small, for a full second at a time. Count how many times it flashes. Unlike SC 2.3.1, don't stop to measure whether it's below a size or contrast threshold. At this AAA level, any element flashing more than three times per second fails outright, no matter how minor it looks.",
+  "check": {
+    "question": "A small notification icon in the corner of the page pulses 5 times per second, but it's tiny and low-contrast enough that it falls below the general flash threshold used in SC 2.3.1. Does this pass the stricter SC 2.3.2 Three Flashes?",
+    "choices": [
+      "Yes, because falling below the general flash threshold satisfies both criteria",
+      "No, because SC 2.3.2 has no below-threshold exception, so any flash rate over three per second fails regardless of size",
+      "Yes, because notification icons are exempt from flash criteria",
+      "It depends only on whether the icon is decorative"
+    ],
+    "answer": 1
+  },
+  "references": []
+}

@@ -1,0 +1,25 @@
+{
+  "id": "2.4.11",
+  "name": "Focus Not Obscured (Minimum)",
+  "level": "AA",
+  "principle": "Operable",
+  "explanation": "When an element receives keyboard focus, it can't be entirely hidden behind other content the page itself put there. A sticky header, a cookie banner, or a chat widget covering it completely would all break this rule. Partial overlap is allowed, as long as at least some part of the focused element stays visible. What's not allowed is a focused element being fully covered, so a keyboard user can't see it at all. If a user opens something that then covers a focused element, that's fine, as long as they can reveal the hidden focus without moving focus further first.",
+  "whoItAffects": "Keyboard-only users need to see the element that currently has focus, so they know what they're about to interact with. This matters most when they intend to press Enter or another key to act on it. Sticky headers, footers, cookie consent banners, and chat widgets are common culprits for this failure. They're deliberately positioned to stay on screen, and can end up sitting directly over a focused element as a user tabs down the page. This hides the focused element completely, without the user realizing.",
+  "codeExample": {
+    "lang": "css",
+    "bad": "/* A sticky header sits at a fixed height that fully covers form\n   fields as the user tabs down the page, hiding focused elements */\n.sticky-header {\n  position: fixed;\n  top: 0;\n  height: 120px;\n  z-index: 100;\n}\n/* No scroll-margin accounts for the header's height, so focused\n   elements can end up scrolled completely underneath it */",
+    "good": "/* Focusable elements get scroll-margin-top matching the sticky\n   header's height, so focusing them scrolls them fully into view\n   below the header instead of underneath it */\n.sticky-header {\n  position: fixed;\n  top: 0;\n  height: 120px;\n  z-index: 100;\n}\ninput, button, a, select, textarea {\n  scroll-margin-top: 130px;\n}"
+  },
+  "howToTest": "Tab through the page. Pay close attention to areas near sticky headers, sticky footers, cookie banners, or floating widgets like chat bubbles. At each focus stop, check whether the focused element is at least partly visible, not fully hidden underneath one of these overlapping elements. If tabbing ever makes a focused element disappear completely behind fixed content, this fails.",
+  "check": {
+    "question": "A page has a sticky header 100 pixels tall. As a keyboard user tabs down the page, a form field scrolls to a position where it's completely covered by that sticky header, with no part of the field visible. Does this pass SC 2.4.11 Focus Not Obscured (Minimum)?",
+    "choices": [
+      "Yes, because sticky headers are a common and expected UI pattern",
+      "No, because the focused element is entirely hidden by author-created content",
+      "Yes, because the field can still be interacted with even though it's not visible",
+      "It depends only on the color contrast of the sticky header"
+    ],
+    "answer": 1
+  },
+  "references": []
+}

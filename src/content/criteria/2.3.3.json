@@ -1,0 +1,25 @@
+{
+  "id": "2.3.3",
+  "name": "Animation from Interactions",
+  "level": "AAA",
+  "principle": "Operable",
+  "explanation": "Some user interactions, like scrolling, hovering, or clicking, trigger a motion animation. This could be a parallax effect or an element sliding, zooming, or spinning into view. When that happens, there needs to be a way to turn the animation off. The exception is when the motion itself is essential to what's being communicated, or to the function of the feature. A video editing timeline is one example, where the animation is the actual content, not a decorative effect layered on top of it.",
+  "whoItAffects": "People with vestibular disorders can feel dizziness, nausea, or headaches from motion effects. Parallax scrolling and large zoom or slide transitions are common triggers, even without a rapid flash. People with attention-related disabilities can find animated transitions distracting too. This gets worse when the transitions show up often, as a side effect of ordinary scrolling. A setting to disable interaction-triggered animation lets these users browse in comfort, with full access to the content and the feature itself.",
+  "codeExample": {
+    "lang": "css",
+    "bad": "/* Parallax scroll effect with no way to disable it */\n.parallax-section {\n  background-attachment: fixed;\n  transition: transform 0.3s ease-out;\n}\n.parallax-section.scrolled {\n  transform: translateY(-50px) scale(1.1);\n}",
+    "good": "/* The same effect, disabled automatically when the user has requested\n   reduced motion at the OS or browser level */\n@media (prefers-reduced-motion: no-preference) {\n  .parallax-section {\n    background-attachment: fixed;\n    transition: transform 0.3s ease-out;\n  }\n  .parallax-section.scrolled {\n    transform: translateY(-50px) scale(1.1);\n  }\n}\n/* With reduced motion requested, the section keeps its static\n   background position and no transform is applied */"
+  },
+  "howToTest": "Interact with the page the way a typical user would. Scroll through it, hover over elements, click buttons and links. Note any motion effects that trigger as a result, such as parallax backgrounds, sliding panels, zooming images, or animated transitions. Then turn on your operating system's reduce-motion setting and repeat the same interactions. The animations should be much reduced or removed, unless that motion is essential to the content or the task.",
+  "check": {
+    "question": "A marketing site uses a parallax scrolling effect where background images move at a different speed than foreground text as the user scrolls, purely for visual style. The site does not respect the operating system's reduced-motion setting and offers no other way to disable it. Does this pass SC 2.3.3 Animation from Interactions?",
+    "choices": [
+      "Yes, because parallax scrolling is a common design trend",
+      "No, because the interaction-triggered animation isn't essential to the content and there's no way to disable it",
+      "Yes, because the effect only involves background images, not interactive controls",
+      "It depends only on how fast the user scrolls"
+    ],
+    "answer": 1
+  },
+  "references": []
+}

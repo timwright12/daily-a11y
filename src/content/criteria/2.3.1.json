@@ -1,0 +1,25 @@
+{
+  "id": "2.3.1",
+  "name": "Three Flashes or Below Threshold",
+  "level": "A",
+  "principle": "Operable",
+  "explanation": "Nothing on a page should flash more than three times in any one-second period. The exception is a flash small enough or low-contrast enough to fall below the general flash and red flash thresholds defined in the spec. In practice, avoid rapid flashing animations, strobe effects, or video content with fast brightness changes covering a large part of the screen. This is one of the few criteria that applies to the entire page without exception. A seizure-inducing flash anywhere on a page can make the whole page unusable, or even dangerous, no matter how well everything else is built.",
+  "whoItAffects": "People with photosensitive epilepsy can have a seizure triggered by flashing or strobing visual content. This can happen even from a small area of the screen, if it's bright or high-contrast enough. This is a serious physical health risk, not just an inconvenience. Unlike most accessibility barriers, a failure here can cause direct physical harm. Because of that severity, this criterion has no exceptions based on how minor or incidental the flashing content is.",
+  "codeExample": {
+    "lang": "css",
+    "bad": "/* A promotional banner strobes between two bright colors 5 times\n   per second, covering a large area of the viewport */\n.flash-banner {\n  animation: strobe 0.2s infinite;\n}\n@keyframes strobe {\n  0%, 100% { background-color: #ffffff; }\n  50% { background-color: #ff0000; }\n}",
+    "good": "/* The same promotional message uses a slow, low-contrast fade\n   instead of a rapid high-contrast strobe */\n.flash-banner {\n  animation: fade 3s infinite;\n}\n@keyframes fade {\n  0%, 100% { background-color: #f5f5f5; }\n  50% { background-color: #e0e0e0; }\n}"
+  },
+  "howToTest": "Watch every animation, video, and dynamically flashing element on the page for a full second at a time. Count how many times it flashes or rapidly changes brightness. If anything flashes more than three times per second, measure how much of the screen it covers and how stark the contrast is. If it's a large area with strong brightness or red-color changes, this fails. Tools exist to analyze video and animation frames automatically for flash thresholds. These are more reliable than eyeballing fast content, especially for anything you're unsure about.",
+  "check": {
+    "question": "An autoplaying promotional video contains a sequence that flashes bright white and black across most of the screen 6 times per second for two seconds. Does this pass SC 2.3.1 Three Flashes or Below Threshold?",
+    "choices": [
+      "Yes, because the flashing only lasts two seconds total",
+      "No, because it exceeds three flashes per second at a scale large enough to exceed the general flash threshold",
+      "Yes, because video content is exempt from this criterion",
+      "It depends only on whether the video has captions"
+    ],
+    "answer": 1
+  },
+  "references": []
+}

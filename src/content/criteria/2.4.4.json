@@ -1,0 +1,25 @@
+{
+  "id": "2.4.4",
+  "name": "Link Purpose (In Context)",
+  "level": "A",
+  "principle": "Operable",
+  "explanation": "Someone should be able to tell what a link does or where it goes from the link text itself, or from that text plus the surrounding context. That context could be the sentence the link is in, the list it's part of, or a nearby heading. Generic link text like \"click here\" or \"read more\" fails this when it has no distinguishing context around it. \"Read more\" repeated ten times on a page gives no way to tell which article each one leads to. The one exception is a link whose purpose would genuinely be unclear to any user no matter how it's worded, which is rare in practice.",
+  "whoItAffects": "Screen reader users often pull up a list of all links on a page as a fast way to navigate. That list strips away surrounding sentence or paragraph context. A page full of identical \"click here\" links becomes a meaningless list with no way to tell them apart. Voice-control users need to speak a link's visible label to activate it, so ambiguous, duplicate labels make targeting a specific link hard or impossible. People with cognitive disabilities benefit from links that clearly describe their destination, instead of forcing a speculative click to find out.",
+  "codeExample": {
+    "lang": "html",
+    "bad": "<h3>New accessibility guidelines released</h3>\n<p>The W3C has published updated guidance...</p>\n<a href=\"/article/123\">Read more</a>\n\n<h3>Company announces Q3 earnings</h3>\n<p>Revenue grew 12% year over year...</p>\n<a href=\"/article/456\">Read more</a>",
+    "good": "<h3>New accessibility guidelines released</h3>\n<p>The W3C has published updated guidance...</p>\n<a href=\"/article/123\">Read more about the new accessibility guidelines</a>\n\n<h3>Company announces Q3 earnings</h3>\n<p>Revenue grew 12% year over year...</p>\n<a href=\"/article/456\">Read more about Q3 earnings</a>"
+  },
+  "howToTest": "Find every link on the page. Check whether its purpose is clear from its visible text alone, or from that text plus the nearby sentence, list item, or heading. Pay close attention to repeated generic phrases like \"click here,\" \"more,\" or \"read more.\" Some pages have several of these with different destinations. For those, check whether the link text plus its context actually tells them apart, or whether they'd all read the same out of context, such as in a screen reader's links list.",
+  "check": {
+    "question": "A news homepage lists ten article summaries, each ending with a link that just says \"Read more,\" with no article title or distinguishing text in the link itself, though each link sits directly below its own summary. Does this pass SC 2.4.4 Link Purpose (In Context)?",
+    "choices": [
+      "Yes, because the link text plus its surrounding article summary makes the destination clear in context",
+      "No, because \"Read more\" alone is never acceptable link text under any circumstances",
+      "Yes, because all links on a page are assumed to lead to different destinations",
+      "It depends only on whether the links are underlined"
+    ],
+    "answer": 0
+  },
+  "references": []
+}

@@ -1,0 +1,25 @@
+{
+  "id": "2.5.5",
+  "name": "Target Size (Enhanced)",
+  "level": "AAA",
+  "principle": "Operable",
+  "explanation": "Clickable or tappable targets, like buttons, links, and form controls, should be at least 44 by 44 CSS pixels. That's much larger than the 24 by 24 pixel minimum required at Level AA under SC 2.5.8. A few exceptions apply. One is a link inside a running sentence of text. Another is a control whose size the browser sets, like a checkbox, not the page's own styling. A third is when an equally usable larger target, or a different way to do the same thing, exists elsewhere.",
+  "whoItAffects": "People with motor disabilities, including limited fine motor control or hand tremors, benefit a lot from larger touch and click targets. A bigger target needs less precision to hit. It also lowers the chance of missing it, or hitting a neighboring one by mistake. People using a stylus, a mouth stick, or another pointing tool that's less precise than a finger or mouse benefit even more from this larger AAA size, compared to the smaller Level AA minimum.",
+  "codeExample": {
+    "lang": "css",
+    "bad": "/* A close button styled at only 20x20 pixels, well under the\n   44x44 AAA target size, with no larger alternative offered */\n.close-button {\n  width: 20px;\n  height: 20px;\n  padding: 0;\n}",
+    "good": "/* The visible icon can stay small, but the clickable area is\n   expanded to meet the 44x44 pixel minimum using padding */\n.close-button {\n  width: 44px;\n  height: 44px;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n}\n.close-button svg {\n  width: 16px;\n  height: 16px;\n}"
+  },
+  "howToTest": "Measure the clickable or tappable area of each control on the page, not just its visible icon or text. Use the browser's inspector to check the full hit area's width and height. Confirm each one is at least 44 by 44 pixels. Exceptions apply for links inside a sentence of text, for browser controls whose size the page doesn't control, and for cases where an equally usable larger target exists elsewhere for the same action.",
+  "check": {
+    "question": "A mobile app has a row of icon-only toolbar buttons, each with a clickable area of 32 by 32 CSS pixels, none of which are inline text links or browser-native controls, and no larger alternative version of these controls exists elsewhere. Does this meet SC 2.5.5 Target Size (Enhanced)?",
+    "choices": [
+      "Yes, because 32x32 pixels comfortably exceeds the Level AA minimum of 24x24",
+      "No, because this AAA criterion requires at least 44x44 CSS pixels, and 32x32 falls short",
+      "Yes, because toolbar buttons are generally exempt from target size rules",
+      "It depends only on the spacing between the buttons, not their individual size"
+    ],
+    "answer": 1
+  },
+  "references": []
+}

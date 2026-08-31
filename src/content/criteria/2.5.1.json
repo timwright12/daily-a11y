@@ -1,0 +1,25 @@
+{
+  "id": "2.5.1",
+  "name": "Pointer Gestures",
+  "level": "A",
+  "principle": "Operable",
+  "explanation": "Some features rely on a multi-finger gesture, like pinch-to-zoom, or a path-based gesture, like swiping in a specific direction. Those features must also work with a single-pointer action that doesn't require following a path, such as a plain tap or click on a button. The path itself is what's off-limits as the only option, not multi-touch or dragging in general. A photo viewer that only zooms via pinch needs to also offer zoom-in and zoom-out buttons, for instance. An exception applies when the gesture itself is essential to the specific function, such as a signature pad or a freehand drawing tool.",
+  "whoItAffects": "Some people can't reliably perform a precise pinch or a smooth swipe. This can happen with motor disabilities that affect fine motor control, even if the person can tap a button just fine. People using a single-switch device or a mouth stick can't perform multi-touch gestures at all. Those gestures need more than one point of contact at once. A single-tap alternative keeps the feature usable no matter how precise the input method is.",
+  "codeExample": {
+    "lang": "html",
+    "bad": "<!-- Image viewer that can only zoom via pinch gesture, with no\n     alternative single-tap controls -->\n<div class=\"image-viewer\" data-gesture=\"pinch-zoom\">\n  <img src=\"photo.jpg\" alt=\"Product photo\">\n</div>",
+    "good": "<!-- Pinch-to-zoom remains available, but zoom buttons provide a\n     single-pointer alternative that achieves the same result -->\n<div class=\"image-viewer\" data-gesture=\"pinch-zoom\">\n  <img src=\"photo.jpg\" alt=\"Product photo\">\n  <button type=\"button\" aria-label=\"Zoom in\">+</button>\n  <button type=\"button\" aria-label=\"Zoom out\">−</button>\n</div>"
+  },
+  "howToTest": "On a touchscreen device, find any feature that responds to a pinch or a swipe. Pinch-to-zoom and swiping to dismiss a card are two examples. For each one, check whether the same result can also come from a simple tap or click, like a visible zoom button or a next/previous arrow. Suppose the gesture is the only way to trigger that function, and it isn't essential to the activity. This fails.",
+  "check": {
+    "question": "A mobile photo gallery app lets users swipe left or right to move between photos, and this is the only way to navigate; there are no visible next/previous buttons as an alternative. Does this pass SC 2.5.1 Pointer Gestures?",
+    "choices": [
+      "Yes, because swiping is a standard, widely understood gesture on touchscreens",
+      "No, because the path-based swipe gesture has no single-pointer alternative like a tap-based button",
+      "Yes, because photo galleries are exempt from this criterion",
+      "It depends only on how many photos are in the gallery"
+    ],
+    "answer": 1
+  },
+  "references": []
+}

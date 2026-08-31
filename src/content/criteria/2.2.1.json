@@ -1,0 +1,25 @@
+{
+  "id": "2.2.1",
+  "name": "Timing Adjustable",
+  "level": "A",
+  "principle": "Operable",
+  "explanation": "Say a page sets a time limit on completing something, like an inactivity logout or a countdown on a form. The user must be able to control that limit in at least one way. They should be able to turn it off entirely, extend it well beyond the default, or get a warning near the end with a chance to extend it before time runs out. That extension should be repeatable as many times as needed. There are a few narrow exceptions: genuinely real-time events like a live auction, essential limits that can't be extended without invalidating the activity, and time limits longer than 20 hours.",
+  "whoItAffects": "People with cognitive or learning disabilities may need more time to read instructions, understand a form, or decide on an answer. People with motor disabilities may take longer to physically complete input, especially using a switch device or on-screen keyboard. Screen reader users often take longer to process a page than sighted users, since content is announced one piece at a time instead of scanned at a glance. Without a way to extend or disable a time limit, any of these users can be logged out. They can also lose their work, simply for processing information at a different pace.",
+  "codeExample": {
+    "lang": "javascript",
+    "bad": "// Auto-logs the user out after 60 seconds with no warning and no way to extend\nsetTimeout(() => {\n  logUserOut();\n}, 60000);",
+    "good": "// Warns the user 20 seconds before the limit and lets them extend it,\n// repeatably, before logging out\nlet warningTimer = setTimeout(showExtendWarning, 40000);\nlet logoutTimer = setTimeout(logUserOut, 60000);\n\nfunction showExtendWarning() {\n  const extend = confirmDialog('Your session is about to expire. Extend it?');\n  if (extend) {\n    clearTimeout(logoutTimer);\n    warningTimer = setTimeout(showExtendWarning, 40000);\n    logoutTimer = setTimeout(logUserOut, 60000);\n  }\n}"
+  },
+  "howToTest": "Find every time limit on the site: session timeouts, timed quizzes, countdown-based offers, auto-advancing carousels tied to a task. For each one, wait until it's close to expiring. Check whether you get a warning with enough time to respond, and whether accepting that warning actually extends the limit rather than just delaying an inevitable cutoff. If there's no warning and no way to turn off or extend the limit, check whether the activity is genuinely real-time or essential. If it isn't, this fails.",
+  "check": {
+    "question": "An online exam auto-submits after exactly 30 minutes with no warning beforehand and no option to request more time, and the exam is not a live/real-time event. Does this pass SC 2.2.1 Timing Adjustable?",
+    "choices": [
+      "Yes, because exams are inherently timed activities",
+      "No, because there is no way to turn off, extend, or get a warning before the time limit expires",
+      "Yes, because 30 minutes is a reasonable amount of time for most users",
+      "It depends only on whether the exam is taken on a mobile device"
+    ],
+    "answer": 1
+  },
+  "references": []
+}

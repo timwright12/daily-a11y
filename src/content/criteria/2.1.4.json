@@ -1,0 +1,25 @@
+{
+  "id": "2.1.4",
+  "name": "Character Key Shortcuts",
+  "level": "A",
+  "principle": "Operable",
+  "explanation": "Say a site defines a keyboard shortcut using only letters, numbers, punctuation, or symbols, with no modifier key like Ctrl or Alt. At least one of three things must then be true: the user can turn the shortcut off, the user can remap it to include a modifier key, or the shortcut only takes effect while a specific control has focus. A single-letter shortcut, like pressing \"s\" to open search, is convenient for some people. But without one of these safeguards, it can fire by accident. It might trigger while a speech-input user simply speaks a word containing that letter, or when a user with a hand tremor brushes the key.",
+  "whoItAffects": "Speech-input users dictate text by speaking, and their software converts spoken letters into keystrokes. A single-letter shortcut can trigger unexpectedly while they're just trying to type a word containing that letter. This can disrupt or derail what they're doing. People with fine-motor impairments or hand tremors can trigger a shortcut by accidentally brushing a key. Keyboard users who don't expect single-key shortcuts may trigger unintended actions too, such as while typing in a nearby field that isn't properly focused.",
+  "codeExample": {
+    "lang": "javascript",
+    "bad": "// Single-letter shortcut active everywhere on the page, all the time,\n// with no way to turn it off or remap it\ndocument.addEventListener('keydown', (event) => {\n  if (event.key === 's') {\n    openSearchPanel();\n  }\n});",
+    "good": "// Option 1: only active while a specific region has focus\nsearchRegion.addEventListener('keydown', (event) => {\n  if (event.key === 's') {\n    openSearchPanel();\n  }\n});\n\n// Option 2: require a modifier key, and let the letter-only version\n// be turned off in settings\nconst singleKeyShortcutsEnabled = getUserSetting('singleKeyShortcuts');\ndocument.addEventListener('keydown', (event) => {\n  const isShortcut = event.ctrlKey ? event.key === 's' :\n    singleKeyShortcutsEnabled && event.key === 's';\n  if (isShortcut) {\n    event.preventDefault();\n    openSearchPanel();\n  }\n});"
+  },
+  "howToTest": "Check the site's documentation or help menu for single-key shortcuts made of letters, numbers, or punctuation, with no modifier key like Ctrl, Alt, or Cmd. For each one, confirm at least one thing is true: a settings page lets you turn it off, a settings page lets you remap it to include a modifier key, or it only activates while a specific element has keyboard focus. If none of those is true, try typing that letter into an unrelated text field elsewhere on the page. If the shortcut fires anyway, that's the failure this criterion is meant to catch.",
+  "check": {
+    "question": "A web app lets users press \"/\" anywhere on the page to jump straight to the search box, with no setting to disable or remap it, and the shortcut fires even while typing inside other text fields. Does this pass SC 2.1.4 Character Key Shortcuts?",
+    "choices": [
+      "Yes, because \"/\" is a punctuation character, not a letter",
+      "No, because the shortcut has no off switch, no remapping option, and isn't limited to a focused control",
+      "Yes, because keyboard shortcuts always improve accessibility",
+      "It depends on whether the search box is visible on screen"
+    ],
+    "answer": 1
+  },
+  "references": []
+}

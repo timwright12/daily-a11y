@@ -1,0 +1,25 @@
+{
+  "id": "2.1.1",
+  "name": "Keyboard",
+  "level": "A",
+  "principle": "Operable",
+  "explanation": "Every action a user can take with a mouse must also work with a keyboard alone. This covers clicking buttons and links, opening menus, filling in forms, dragging sliders, and dismissing dialogs. The interaction doesn't have to feel identical to a mouse. A drag-and-drop reorder tool could use arrow keys to move an item up and down the list instead of dragging. There is one narrow exception: functions that depend on the path of a gesture, like freehand drawing. For those, the start and end points alone don't capture what the user did.",
+  "whoItAffects": "Some people can't use a mouse at all. A motor disability, a temporary injury, or a broken trackpad can all cause this. These users rely entirely on a keyboard, a switch device, or voice-control software that emulates key presses. Screen reader users also tend to navigate by keyboard, even when they can see the screen, since a screen reader tracks a virtual cursor rather than a mouse pointer. If a control only responds to a click, hover, or drag, these users hit a hard wall. It isn't just harder for them. They cannot complete that task at all.",
+  "codeExample": {
+    "lang": "javascript",
+    "bad": "// A custom dropdown that only opens on click, with no keyboard handling\nconst menuButton = document.querySelector('.menu-button');\nmenuButton.addEventListener('click', () => {\n  menu.classList.toggle('open');\n});\n// Pressing Enter or Space on the focused button does nothing",
+    "good": "// Native <button> elements fire click on Enter/Space automatically.\n// A custom control must add that behavior explicitly:\nconst menuButton = document.querySelector('.menu-button');\nfunction toggleMenu() {\n  menu.classList.toggle('open');\n}\nmenuButton.addEventListener('click', toggleMenu);\nmenuButton.addEventListener('keydown', (event) => {\n  if (event.key === 'Enter' || event.key === ' ') {\n    event.preventDefault();\n    toggleMenu();\n  }\n});"
+  },
+  "howToTest": "Unplug your mouse, or just don't touch it. Try to complete every task on the page using only Tab, Shift+Tab, Enter, Space, and arrow keys. Can you reach every button, link, form field, and custom widget? Can you open menus, select options, and submit forms? Pay close attention to custom-built controls like dropdowns, sliders, date pickers, and drag-and-drop interfaces. These are the most likely to be wired up for mouse events only, with keyboard support skipped entirely.",
+  "check": {
+    "question": "A custom-built star rating widget lets users click a star to set a 1-5 rating, but pressing Tab to it and then Enter or arrow keys does nothing. Does this pass SC 2.1.1 Keyboard?",
+    "choices": [
+      "Yes, because the widget is still visible and usable with a mouse",
+      "No, because the rating functionality has no keyboard-operable equivalent",
+      "Yes, because star ratings are decorative and not required functionality",
+      "It depends on whether the widget uses a path-dependent gesture"
+    ],
+    "answer": 1
+  },
+  "references": []
+}

@@ -1,0 +1,25 @@
+{
+  "id": "2.5.8",
+  "name": "Target Size (Minimum)",
+  "level": "AA",
+  "principle": "Operable",
+  "explanation": "Clickable or tappable targets, like buttons, links styled as buttons, and form controls, need a hit area of at least 24 by 24 CSS pixels. This is the easier Level AA version of the stricter 44 by 44 pixel AAA rule in SC 2.5.5. A few exceptions apply. One is a link inside a running sentence of text. Another is a control whose size the browser sets, like a checkbox, not the page's own styling. A third is when a comparably usable larger target exists elsewhere on the page.",
+  "whoItAffects": "People with motor disabilities, hand tremors, or reduced fine motor precision are much more likely to miss a small target, or hit an adjacent one by accident. A larger minimum hit area meaningfully cuts the chance of a mis-tap or mis-click. This matters most on touchscreens, where a fingertip covers a larger, less precise area than a mouse cursor. That makes undersized icon buttons and close-together controls a common source of accidental taps.",
+  "codeExample": {
+    "lang": "css",
+    "bad": "/* A close icon rendered at only 16x16 pixels total clickable area,\n   well under the 24x24 minimum, with nothing expanding the hit area */\n.close-icon {\n  width: 16px;\n  height: 16px;\n}",
+    "good": "/* The icon graphic stays visually small, but padding expands the\n   actual clickable area to meet the 24x24 pixel minimum */\n.close-icon {\n  width: 24px;\n  height: 24px;\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n}\n.close-icon svg {\n  width: 12px;\n  height: 12px;\n}"
+  },
+  "howToTest": "Use the browser's element inspector to measure the full clickable area of each control, not just the visible icon or text inside it. Padding can extend the hit area beyond what's drawn, so check the real hit area. Confirm each target is at least 24 by 24 pixels. This doesn't apply to links within a sentence of text, to controls whose size the browser itself sets, or where an equally usable larger version of the control exists elsewhere.",
+  "check": {
+    "question": "A form has a small \"x\" icon button to clear a search field, with a clickable area measuring 18 by 18 CSS pixels, and no larger version of this control exists anywhere else on the page. Does this pass SC 2.5.8 Target Size (Minimum)?",
+    "choices": [
+      "Yes, because 18x18 pixels is close enough to be functionally usable",
+      "No, because this falls short of the 24x24 CSS pixel minimum required at Level AA",
+      "Yes, because clear/reset buttons are exempt from target size requirements",
+      "It depends only on whether the icon has sufficient color contrast"
+    ],
+    "answer": 1
+  },
+  "references": []
+}

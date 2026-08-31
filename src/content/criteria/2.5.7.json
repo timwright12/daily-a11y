@@ -1,0 +1,25 @@
+{
+  "id": "2.5.7",
+  "name": "Dragging Movements",
+  "level": "AA",
+  "principle": "Operable",
+  "explanation": "Some features require a dragging motion, like reordering a list by dragging items, or moving a slider handle. Those features must also work through some other single-pointer method that doesn't require dragging. A long press followed by tapping a destination, or up and down arrow buttons next to a reorderable item, are two examples. Dragging demands sustained, precise motor control that not everyone can perform reliably, so an alternative path needs to exist. The exception is when dragging itself is essential to the function, which is uncommon.",
+  "whoItAffects": "People with motor disabilities, tremors, or limited fine motor control often struggle with a sustained drag gesture. It requires holding a press, moving accurately, and keeping contact for the whole motion. Releasing early or drifting off-target can fail the action partway through. Alternatives like tapping a target destination, or dedicated move-up and move-down buttons, break the same task into smaller, more forgiving steps. Those steps don't demand continuous precise motion.",
+  "codeExample": {
+    "lang": "html",
+    "bad": "<!-- A reorderable list that can only be reordered by dragging items,\n     with no alternative controls -->\n<ul class=\"sortable-list\" data-drag-only=\"true\">\n  <li draggable=\"true\">Task 1</li>\n  <li draggable=\"true\">Task 2</li>\n  <li draggable=\"true\">Task 3</li>\n</ul>",
+    "good": "<!-- Dragging remains available, but move-up/move-down buttons offer\n     a non-drag way to reorder items -->\n<ul class=\"sortable-list\">\n  <li draggable=\"true\">\n    Task 1\n    <button type=\"button\" aria-label=\"Move Task 1 down\">↓</button>\n  </li>\n  <li draggable=\"true\">\n    Task 2\n    <button type=\"button\" aria-label=\"Move Task 2 up\">↑</button>\n    <button type=\"button\" aria-label=\"Move Task 2 down\">↓</button>\n  </li>\n</ul>"
+  },
+  "howToTest": "Find any feature on the page that requires a drag gesture: reordering list items, moving a slider, dragging a file onto a drop zone, adjusting a value with a draggable handle. For each one, check whether the same result can come another way, using a single pointer action that doesn't need sustained dragging. Tapping arrow buttons to reorder, clicking a slider track to jump to a value, or a file-picker button instead of drag-and-drop upload, are all examples. If dragging is the only way, and it isn't essential to the function, this fails.",
+  "check": {
+    "question": "A task management app lets users reorder their to-do list only by dragging items with the mouse or a touch gesture; there are no move-up/move-down buttons or any other alternative way to change the order. Does this pass SC 2.5.7 Dragging Movements?",
+    "choices": [
+      "Yes, because drag-and-drop reordering is an intuitive, widely used pattern",
+      "No, because there's no alternative single-pointer method to reorder items without dragging",
+      "Yes, because reordering isn't essential functionality",
+      "It depends only on whether the drag handles are large enough to grab"
+    ],
+    "answer": 1
+  },
+  "references": []
+}

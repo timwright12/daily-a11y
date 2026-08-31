@@ -1,0 +1,25 @@
+{
+  "id": "2.4.5",
+  "name": "Multiple Ways",
+  "level": "AA",
+  "principle": "Operable",
+  "explanation": "There should be more than one way to find any given page within a site. A search function, a sitemap, a navigation menu, or a table of contents can all serve this purpose, rather than relying on just one single path. If a visitor can't find their way to a page using the site's navigation, a second way to reach it, like a search box, gives them a fallback. The exception is a page that's a step in a defined process, like a checkout flow. There, forcing a specific order is intentional, and multiple entry points wouldn't make sense.",
+  "whoItAffects": "Some people find a particular type of navigation hard to use. A mega-menu that's hard to operate with a screen reader or on a small screen is one example. These people benefit from an alternative path, like a search box or sitemap, being available. People with cognitive disabilities may find one style of finding content harder to follow than another. Hierarchical menus can be harder than a straightforward search, for instance. Offering both accommodates different ways of thinking about how to locate something.",
+  "codeExample": {
+    "lang": "html",
+    "bad": "<!-- The only way to reach any page is through a single nested\n     navigation menu; no search, sitemap, or alternate path exists -->\n<nav>\n  <ul>\n    <li><a href=\"/products\">Products</a>\n      <ul>\n        <li><a href=\"/products/widgets\">Widgets</a></li>\n      </ul>\n    </li>\n  </ul>\n</nav>",
+    "good": "<!-- The navigation menu remains, but a search function offers a\n     second way to reach any page -->\n<nav>\n  <ul>\n    <li><a href=\"/products\">Products</a>\n      <ul>\n        <li><a href=\"/products/widgets\">Widgets</a></li>\n      </ul>\n    </li>\n  </ul>\n</nav>\n<form role=\"search\" action=\"/search\">\n  <label for=\"site-search\">Search the site</label>\n  <input type=\"search\" id=\"site-search\" name=\"q\">\n</form>"
+  },
+  "howToTest": "Pick a page buried a few levels deep in the site and try to reach it using the main navigation menu. Then try reaching the same page a different way: a site search, a sitemap page, a set of related links, or breadcrumbs. Suppose the main navigation is truly the only way to get there, with no search, sitemap, or alternate path available anywhere. This fails, unless that page is a step in a sequential process like a multi-page checkout, which is exempt.",
+  "check": {
+    "question": "A documentation site organizes all its pages under a single nested sidebar menu, with no search function, no sitemap, and no other way to locate a specific page. Does this pass SC 2.4.5 Multiple Ways?",
+    "choices": [
+      "Yes, because a well-organized navigation menu is sufficient on its own",
+      "No, because there is only one way to locate pages within the site, and this isn't a step-in-a-process exception",
+      "Yes, because documentation sites are exempt from this criterion",
+      "It depends only on how many levels deep the menu nesting goes"
+    ],
+    "answer": 1
+  },
+  "references": []
+}

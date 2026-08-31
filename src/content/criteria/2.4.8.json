@@ -1,0 +1,25 @@
+{
+  "id": "2.4.8",
+  "name": "Location",
+  "level": "AAA",
+  "principle": "Operable",
+  "explanation": "Users should be able to tell where the current page sits in the broader structure of the site, not just what the page itself contains. A breadcrumb trail is one common way to show this: it displays the path from the homepage down to the current page. A highlighted item in the main navigation, or a sitemap marking the current spot, works too. The goal is orientation: understanding how the current page relates to the rest of the site, not just what's on the page itself.",
+  "whoItAffects": "People with cognitive disabilities can find it hard to build and hold a mental model of a large site's structure from memory alone. An explicit location indicator, like a breadcrumb trail, helps them understand context and navigate back to a related or parent page with confidence. Screen reader users benefit from this too. They can check their location within a site's hierarchy, which matters most on large sites where a page's relationship to other pages isn't obvious from its own content.",
+  "codeExample": {
+    "lang": "html",
+    "bad": "<!-- No indication of where this page sits in the site hierarchy -->\n<main>\n  <h1>Wireless Mouse — Model X200</h1>\n  <p>Product details...</p>\n</main>",
+    "good": "<!-- A breadcrumb trail shows the page's location in the site structure -->\n<nav aria-label=\"Breadcrumb\">\n  <ol>\n    <li><a href=\"/\">Home</a></li>\n    <li><a href=\"/electronics\">Electronics</a></li>\n    <li><a href=\"/electronics/accessories\">Accessories</a></li>\n    <li aria-current=\"page\">Wireless Mouse — Model X200</li>\n  </ol>\n</nav>\n<main>\n  <h1>Wireless Mouse — Model X200</h1>\n  <p>Product details...</p>\n</main>"
+  },
+  "howToTest": "Navigate a few levels into the site, to a product page, an article, or a subsection. Check whether anything on the page tells you where you are relative to the rest of the site: a breadcrumb trail, a highlighted section in the main navigation, or an equivalent indicator. If the page gives no clue about its place in the site's overall structure beyond its own content, this fails.",
+  "check": {
+    "question": "An online store's product pages show the product name, price, and description, but have no breadcrumb trail, no highlighted category in the navigation menu, and nothing else indicating which category or section of the site the product belongs to. Does this pass SC 2.4.8 Location?",
+    "choices": [
+      "Yes, because the product page contains all the information a shopper needs",
+      "No, because there is no indication of the page's location within the site's overall structure",
+      "Yes, because the site's URL likely contains the category name",
+      "It depends only on whether the product has a category filter available elsewhere"
+    ],
+    "answer": 1
+  },
+  "references": []
+}
