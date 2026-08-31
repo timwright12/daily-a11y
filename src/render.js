@@ -140,9 +140,7 @@ export function renderMasthead(container, label = null) {
   container.innerHTML = `
     <header>
       <div class="masthead">
-        <span class="masthead-mark">
-          <a href="https://timwright12.github.io/daily-a11y/">Daily Accessibility</a>
-        </span>
+        <a href="https://timwright12.github.io/daily-a11y/" class="masthead-mark">Daily Accessibility</a>
         ${secondary}
       </div>
     </header>
