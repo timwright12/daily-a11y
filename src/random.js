@@ -1,4 +1,4 @@
-import { loadCriteria } from "./content/loadCriteria.js";
+import { loadCriteria, sortCriteria } from "./content/loadCriteria.js";
 import { randomIndex } from "./rotation.js";
 import { renderCriterionContent, wireCheckFeedback } from "./render.js";
 import "prismjs/themes/prism.css";
@@ -10,9 +10,7 @@ const rawModules = import.meta.glob("./content/criteria/*.json", {
   import: "default",
 });
 const rawEntries = Object.values(rawModules);
-const criteria = loadCriteria(rawEntries).sort((a, b) =>
-  a.id.localeCompare(b.id, undefined, { numeric: true }),
-);
+const criteria = sortCriteria(loadCriteria(rawEntries));
 
 const criterion = criteria[randomIndex(criteria.length)];
 

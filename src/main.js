@@ -1,4 +1,4 @@
-import { loadCriteria } from "./content/loadCriteria.js";
+import { loadCriteria, sortCriteria } from "./content/loadCriteria.js";
 import { daysSinceEpoch, getTodayIndex, puzzleDayNumber } from "./rotation.js";
 import { readState, writeState } from "./storage.js";
 import { recordAnswer } from "./gamification/streak.js";
@@ -14,9 +14,7 @@ const rawModules = import.meta.glob("./content/criteria/*.json", {
   import: "default",
 });
 const rawEntries = Object.values(rawModules);
-const criteria = loadCriteria(rawEntries).sort((a, b) =>
-  a.id.localeCompare(b.id, undefined, { numeric: true }),
-);
+const criteria = sortCriteria(loadCriteria(rawEntries));
 
 const LAUNCH_DATE = new Date("2026-08-30T00:00:00Z");
 

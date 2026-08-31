@@ -16,3 +16,9 @@ export function loadCriteria(rawEntries) {
     return result.data;
   });
 }
+
+export function sortCriteria(criteria) {
+  return [...criteria].sort((a, b) =>
+    a.id.localeCompare(b.id, undefined, { numeric: true }),
+  );
+}

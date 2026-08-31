@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { loadCriteria } from "../../src/content/loadCriteria.js";
+import { loadCriteria, sortCriteria } from "../../src/content/loadCriteria.js";
 
 function validCriterion(overrides = {}) {
   return {
@@ -43,5 +43,24 @@ describe("loadCriteria", () => {
 
   it("throws when given an empty array", () => {
     expect(() => loadCriteria([])).toThrow(/no criteria/i);
+  });
+});
+
+describe("sortCriteria", () => {
+  it("sorts criteria by id using numeric comparison", () => {
+    const unsorted = [
+      { id: "1.10.1", name: "Ten" },
+      { id: "1.2.1", name: "Two" },
+      { id: "1.1.1", name: "One" },
+    ];
+    const sorted = sortCriteria(unsorted);
+    expect(sorted.map((c) => c.id)).toEqual(["1.1.1", "1.2.1", "1.10.1"]);
+  });
+
+  it("does not mutate the input array", () => {
+    const unsorted = [{ id: "1.2.1" }, { id: "1.1.1" }];
+    const original = [...unsorted];
+    sortCriteria(unsorted);
+    expect(unsorted).toEqual(original);
   });
 });
