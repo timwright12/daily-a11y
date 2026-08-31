@@ -35,7 +35,7 @@ main.insertAdjacentHTML(
   "beforeend",
   `
   <div class="share">
-    <a class="reroll-link" href="/random/">Show me another</a>
+    <a class="reroll-link" href="random/">Show me another</a>
   </div>
 `,
 );
