@@ -321,7 +321,8 @@ legend {
   display: flex;
   flex-direction: column;
   gap: 0.6rem;
-  margin-bottom: calc(var(--space) * 2.5);
+  margin: 0 0 calc(var(--space) * 2.5);
+  padding: 0;
 }
 
 #check-choices > li {
