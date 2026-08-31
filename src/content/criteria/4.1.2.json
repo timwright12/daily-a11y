@@ -1,0 +1,25 @@
+{
+  "id": "4.1.2",
+  "name": "Name, Role, Value",
+  "level": "A",
+  "principle": "Robust",
+  "explanation": "Every interface component needs three things exposed to assistive technology: a name, a role, and its current state or value. The name says what the control is, like \"Submit\" or \"Email address.\" The role says what kind of control it is, like a button or a checkbox. The state or value says its current condition, like checked, expanded, or a typed-in value. When any of these changes, that update must also be exposed, so assistive technology knows about it right away. Standard HTML elements like `<button>` and `<input>` provide all of this automatically. Custom-built widgets, made from generic `<div>` or `<span>` elements, don't, and need ARIA attributes added by hand.",
+  "whoItAffects": "Screen reader users depend entirely on this exposed information to understand a page. Without a role, a screen reader can't tell a user that something is a button versus a plain block of text. Without a name, a control gets announced as just \"button,\" with no clue what it does. Without exposed state changes, a screen reader user has no way to know a checkbox got checked, or a menu opened, unless they happen to notice a visual change they can't actually see. This is one of the most common accessibility failures, since it's easy to build a custom widget that looks and works fine visually while exposing none of this to assistive technology.",
+  "codeExample": {
+    "lang": "html",
+    "bad": "<!-- A div styled to look like a checkbox, with no role, name,\n     or state exposed to assistive technology -->\n<div class=\"fake-checkbox\" onclick=\"toggle(this)\"></div>\n<span>Subscribe to newsletter</span>",
+    "good": "<!-- A real checkbox with a linked label: role, name, and state\n     are all exposed automatically -->\n<input type=\"checkbox\" id=\"subscribe\">\n<label for=\"subscribe\">Subscribe to newsletter</label>\n\n<!-- Or, if a custom widget is unavoidable, ARIA fills the same gaps -->\n<div role=\"checkbox\" aria-checked=\"false\" aria-label=\"Subscribe to newsletter\" tabindex=\"0\" onclick=\"toggle(this)\"></div>"
+  },
+  "howToTest": "Turn on a screen reader and tab to each interactive control on the page. For each one, listen for three things: what it's called, what kind of control it is, and its current state. If a control announces only \"button\" with no name, or gives no indication of a checked, expanded, or selected state, this fails. A browser's accessibility inspector panel is a faster way to check the same thing. It shows the computed name, role, and state for any element, without needing a full screen reader session.",
+  "check": {
+    "question": "A custom dropdown menu is built entirely from styled `<div>` elements. It has no `role`, `aria-expanded`, or accessible name set anywhere, but it works fine with a mouse. Does this pass SC 4.1.2 Name, Role, Value?",
+    "choices": [
+      "Yes, because it works correctly for mouse users",
+      "No, because assistive technology has no way to determine its role, name, or open/closed state",
+      "Yes, because div elements are valid HTML",
+      "It depends only on whether the dropdown has a visible label nearby"
+    ],
+    "answer": 1
+  },
+  "references": []
+}

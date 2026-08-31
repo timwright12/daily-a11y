@@ -1,0 +1,25 @@
+{
+  "id": "4.1.3",
+  "name": "Status Messages",
+  "level": "AA",
+  "principle": "Robust",
+  "explanation": "Status messages are updates that appear without moving keyboard focus. A confirmation after saving a form, a search result count, or an \"item added to cart\" notice are all examples. These messages need markup so assistive technology announces them on its own, without the user hunting for them manually. ARIA live regions do this. The most common ones are `role=\"status\"` for calm updates and `role=\"alert\"` for urgent ones. The key distinction from other content: a status message appears without focus moving to it. If focus does move to the new content, this criterion doesn't apply, since the user will already land on it directly.",
+  "whoItAffects": "Screen reader users only hear what's currently read aloud or what has focus. A status message that appears elsewhere on the page, with no live region marking it, is completely invisible to them unless they happen to re-scan the whole page afterward. A sighted user glances over and sees \"3 items added to cart\" instantly. Without a live region, a screen reader user gets no equivalent signal at all, and might submit a form again, add an item twice, or assume an action silently failed.",
+  "codeExample": {
+    "lang": "html",
+    "bad": "<!-- A confirmation message appears in the DOM, but nothing marks\n     it as a live region, so screen readers never announce it -->\n<div id=\"form-status\"></div>\n<script>\n  document.getElementById('form-status').textContent = 'Your changes were saved.';\n</script>",
+    "good": "<!-- role=\"status\" marks this as a live region; screen readers\n     announce new text inserted here without needing focus -->\n<div id=\"form-status\" role=\"status\"></div>\n<script>\n  document.getElementById('form-status').textContent = 'Your changes were saved.';\n</script>"
+  },
+  "howToTest": "Trigger an action that produces a status update without moving focus: submit a form, add an item to a cart, run a search. Turn on a screen reader and repeat the action without touching any keys afterward. If the screen reader announces the update on its own, this passes. If it says nothing, and you have to manually navigate to find the message, this fails. Check the underlying markup too: the message container should have `role=\"status\"`, `role=\"alert\"`, or an equivalent `aria-live` attribute.",
+  "check": {
+    "question": "After a user submits a search form, the results count updates to \"24 results found\" in a `<div>` with no role or aria-live attribute, and focus stays on the search field. Does this pass SC 4.1.3 Status Messages?",
+    "choices": [
+      "Yes, because the results count is visible on the screen",
+      "No, because the update has no live region marking, so screen readers won't announce it without the user manually finding it",
+      "Yes, because the search field still has focus, which is what matters",
+      "It depends only on how quickly the results load"
+    ],
+    "answer": 1
+  },
+  "references": []
+}
