@@ -53,10 +53,13 @@ function showCriterion(criterion) {
   wireCheckFeedback(content, criterion);
 
   list.querySelectorAll(".admin-list-item").forEach((button) => {
-    button.classList.toggle(
-      "is-active",
-      button.dataset.criterionId === criterion.id,
-    );
+    const isActive = button.dataset.criterionId === criterion.id;
+    button.classList.toggle("is-active", isActive);
+    if (isActive) {
+      button.setAttribute("aria-current", "true");
+    } else {
+      button.removeAttribute("aria-current");
+    }
   });
 }
 
