@@ -2,6 +2,10 @@ import { z } from "zod";
 
 const STORAGE_KEY = "daily-a11y-state";
 
+// Single source of truth for persisted state shape. A field must be added
+// here before writeState() persists it — otherwise a readState() call on
+// an older schema silently strips it (Zod's default behavior for unknown
+// object keys) on the next round-trip.
 const stateSchema = z.object({
   streak: z.object({
     count: z.number().int().min(0),

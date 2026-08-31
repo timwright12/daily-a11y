@@ -27,4 +27,24 @@ describe("admin.js active nav item", () => {
     expect(buttons[0].getAttribute("aria-current")).toBeNull();
     expect(buttons[1].getAttribute("aria-current")).toBe("true");
   });
+
+  it("keeps the is-active class in sync with aria-current on the same element", async () => {
+    vi.resetModules();
+    await import("../src/admin.js");
+
+    const buttons = document.querySelectorAll(".admin-list-item");
+    expect(buttons.length).toBeGreaterThan(1);
+
+    buttons[0].click();
+    expect(buttons[0].classList.contains("is-active")).toBe(true);
+    expect(buttons[0].getAttribute("aria-current")).toBe("true");
+    expect(buttons[1].classList.contains("is-active")).toBe(false);
+    expect(buttons[1].getAttribute("aria-current")).toBeNull();
+
+    buttons[1].click();
+    expect(buttons[0].classList.contains("is-active")).toBe(false);
+    expect(buttons[0].getAttribute("aria-current")).toBeNull();
+    expect(buttons[1].classList.contains("is-active")).toBe(true);
+    expect(buttons[1].getAttribute("aria-current")).toBe("true");
+  });
 });

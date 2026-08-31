@@ -87,4 +87,21 @@ describe("readState with invalid stored data", () => {
     localStorage.setItem("daily-a11y-state", JSON.stringify(valid));
     expect(readState()).toEqual(valid);
   });
+
+  it("drops fields not in stateSchema instead of failing (forward compatibility)", () => {
+    localStorage.setItem(
+      "daily-a11y-state",
+      JSON.stringify({
+        streak: { count: 3, lastAnsweredDay: 10 },
+        coverage: ["1.1.1"],
+        futureField: "written by a newer version of the app",
+      }),
+    );
+    const state = readState();
+    expect(state).toEqual({
+      streak: { count: 3, lastAnsweredDay: 10 },
+      coverage: ["1.1.1"],
+    });
+    expect(state).not.toHaveProperty("futureField");
+  });
 });
