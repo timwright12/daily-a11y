@@ -1,5 +1,21 @@
-import { describe, it, expect, beforeEach, vi } from "vitest";
+import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
 import { renderCriterionContent, wireCheckFeedback } from "../src/render.js";
+
+function makeMemoryLocalStorage() {
+  let store = {};
+  return {
+    getItem: (key) => (key in store ? store[key] : null),
+    setItem: (key, value) => {
+      store[key] = String(value);
+    },
+    removeItem: (key) => {
+      delete store[key];
+    },
+    clear: () => {
+      store = {};
+    },
+  };
+}
 
 // This test exercises the same integration pattern main.js uses: render,
 // wire feedback with an onAnswered callback, and confirm the callback fires
@@ -41,6 +57,79 @@ describe("main.js check-answer integration (via wireCheckFeedback)", () => {
     expect(recordAnswerSpy).toHaveBeenCalledOnce();
     expect(container.querySelector("#check-result").textContent).toBe(
       "Correct!",
+    );
+  });
+});
+
+// main.js runs its setup at module load time (reads #app from the DOM,
+// reads/writes localStorage), so each test sets up a fresh #app element and
+// dynamically imports the module fresh via vi.resetModules() to re-run its
+// top-level bootstrap — same pattern as tests/admin.test.js.
+describe("main.js bootstrap (real module)", () => {
+  beforeEach(() => {
+    document.body.innerHTML = '<div id="app"></div>';
+    vi.stubGlobal("localStorage", makeMemoryLocalStorage());
+    vi.stubGlobal("navigator", {
+      clipboard: { writeText: vi.fn().mockResolvedValue(undefined) },
+    });
+  });
+
+  afterEach(() => {
+    document.body.innerHTML = "";
+    vi.unstubAllGlobals();
+  });
+
+  it("renders today's criterion and an initial gamification status line", async () => {
+    vi.resetModules();
+    await import("../src/main.js");
+
+    expect(document.querySelector("#criterion-id").textContent).not.toBe("");
+    expect(document.querySelector("#gamification-status").textContent).toMatch(
+      /^Streak: 0 days — 1 of \d+ criteria seen$/,
+    );
+  });
+
+  it("persists coverage for today's criterion to localStorage on load", async () => {
+    vi.resetModules();
+    await import("../src/main.js");
+
+    const stored = JSON.parse(localStorage.getItem("daily-a11y-state"));
+    const shownId = document.querySelector("#criterion-id").textContent;
+    expect(stored.coverage).toContain(shownId);
+  });
+
+  it("records a streak and updates the status line when a correct answer is submitted", async () => {
+    vi.resetModules();
+    await import("../src/main.js");
+
+    // recordAnswer (and the status re-render) fires on any submitted
+    // choice, correct or not — main.js's onAnswered runs unconditionally.
+    // So submitting choice 0 exercises the wiring without needing to know
+    // today's actual correct answer.
+    const radios = document.querySelectorAll('input[type="radio"]');
+    radios[0].checked = true;
+    document
+      .getElementById("check-form")
+      .dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
+
+    expect(document.querySelector("#gamification-status").textContent).toMatch(
+      /^Streak: 1 day —/,
+    );
+
+    const stored = JSON.parse(localStorage.getItem("daily-a11y-state"));
+    expect(stored.streak.count).toBe(1);
+  });
+
+  it("copies today's result to the clipboard when the share button is clicked", async () => {
+    vi.resetModules();
+    await import("../src/main.js");
+
+    document.getElementById("share-button").click();
+    await Promise.resolve();
+
+    expect(navigator.clipboard.writeText).toHaveBeenCalledOnce();
+    expect(document.querySelector("#share-status").textContent).toBe(
+      "Copied to clipboard!",
     );
   });
 });
