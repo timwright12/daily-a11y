@@ -131,7 +131,7 @@ describe("wireCheckFeedback", () => {
     expect(container.querySelector("#check-result").textContent).toBe("");
   });
 
-  it.skip("calls the optional onAnswered callback with the correctness result", () => {
+  it("calls the optional onAnswered callback with the correctness result", () => {
     const onAnswered = [];
     wireCheckFeedback(container, sampleCriterion, {
       onAnswered: (isCorrect) => onAnswered.push(isCorrect),
@@ -141,7 +141,7 @@ describe("wireCheckFeedback", () => {
     expect(onAnswered).toEqual([true]);
   });
 
-  it.skip("does not call onAnswered when no choice is selected", () => {
+  it("does not call onAnswered when no choice is selected", () => {
     const onAnswered = [];
     wireCheckFeedback(container, sampleCriterion, {
       onAnswered: (isCorrect) => onAnswered.push(isCorrect),

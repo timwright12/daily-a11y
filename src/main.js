@@ -4,7 +4,7 @@ import { readState, writeState } from "./storage.js";
 import { recordAnswer } from "./gamification/streak.js";
 import { markSeen, coverageSummary } from "./gamification/coverage.js";
 import { buildShareText } from "./gamification/shareCard.js";
-import { renderCriterionContent } from "./render.js";
+import { renderCriterionContent, wireCheckFeedback } from "./render.js";
 import "prismjs/themes/prism.css";
 import "prismjs/components/prism-css.js";
 import "prismjs/components/prism-javascript.js";
@@ -55,21 +55,13 @@ main.insertAdjacentHTML(
 
 let lastCheckResult = null;
 
-document.getElementById("check-form").addEventListener("submit", (event) => {
-  event.preventDefault();
-  const selected = event.target.elements["check-choice"].value;
-  if (selected === "") return;
-
-  const isCorrect = Number(selected) === criterion.check.answer;
-  const resultEl = document.getElementById("check-result");
-  resultEl.textContent = isCorrect
-    ? "Correct!"
-    : "Not quite — review the explanation above.";
-
-  state = { ...state, streak: recordAnswer(state.streak, todayDayNumber) };
-  writeState(state);
-  lastCheckResult = isCorrect;
-  renderGamificationStatus();
+wireCheckFeedback(main, criterion, {
+  onAnswered: (isCorrect) => {
+    state = { ...state, streak: recordAnswer(state.streak, todayDayNumber) };
+    writeState(state);
+    lastCheckResult = isCorrect;
+    renderGamificationStatus();
+  },
 });
 
 function renderGamificationStatus() {

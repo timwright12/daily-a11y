@@ -94,10 +94,13 @@ export function renderCriterionContent(container, criterion) {
 /**
  * Wires the comprehension check form rendered inside `container` (by
  * renderCriterionContent) to show correct/incorrect feedback on submit.
- * Purely local feedback — no gamification side effects (streak, coverage,
- * share text) are triggered here.
+ * `options.onAnswered`, if provided, is called with the boolean correctness
+ * result after the feedback text is set — callers use it to layer in
+ * page-specific side effects (e.g. streak tracking) without duplicating the
+ * correctness check.
  */
-export function wireCheckFeedback(container, criterion) {
+export function wireCheckFeedback(container, criterion, options = {}) {
+  const { onAnswered } = options;
   container.querySelector("#check-form").addEventListener("submit", (event) => {
     event.preventDefault();
     const selected = event.target.elements["check-choice"].value;
@@ -107,5 +110,7 @@ export function wireCheckFeedback(container, criterion) {
     container.querySelector("#check-result").textContent = isCorrect
       ? "Correct!"
       : "Not quite — review the explanation above.";
+
+    if (onAnswered) onAnswered(isCorrect);
   });
 }
