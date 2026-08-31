@@ -1,0 +1,25 @@
+{
+  "id": "2.4.3",
+  "name": "Focus Order",
+  "level": "A",
+  "principle": "Operable",
+  "explanation": "When a page can be navigated by moving focus sequentially, such as pressing Tab, that order needs to make sense: it should follow the logical reading order and preserve the meaning and functionality of the page, not jump around unpredictably. This usually happens naturally when elements appear in the HTML in the same order they're visually laid out, but CSS positioning or manually set tab order (via tabindex values greater than zero) can create a focus order that doesn't match what a user sees or expects, causing confusion about what control is next.",
+  "whoItAffects": "Keyboard-only users and screen reader users navigate primarily by moving through focusable elements in sequence, so if that sequence jumps from the top of the page to the bottom and back, or skips past visually adjacent content in a way that breaks the logical flow, they lose track of where they are and what comes next. This is especially disruptive in forms, where a scrambled focus order might ask for a zip code before an address, or submit a form before its final field has been reached.",
+  "codeExample": {
+    "lang": "html",
+    "bad": "<!-- tabindex values force an order that doesn't match visual layout,\n     jumping the user around unpredictably -->\n<input type=\"text\" tabindex=\"3\" placeholder=\"Last name\">\n<input type=\"text\" tabindex=\"1\" placeholder=\"First name\">\n<input type=\"text\" tabindex=\"2\" placeholder=\"Email\">",
+    "good": "<!-- Source order matches the visual and logical order, so no manual\n     tabindex is needed; the natural DOM order gives correct focus order -->\n<input type=\"text\" placeholder=\"First name\">\n<input type=\"text\" placeholder=\"Email\">\n<input type=\"text\" placeholder=\"Last name\">"
+  },
+  "howToTest": "Tab through the entire page from the top and watch where focus moves at each step. Does the order match the visual layout and logical reading order of the page? In forms especially, confirm focus moves through fields in the order someone would naturally fill them out, and that a submit button doesn't receive focus before all the relevant fields. If focus jumps unexpectedly, skips around, or moves somewhere unrelated to the visual flow, this fails.",
+  "check": {
+    "question": "A registration form is laid out visually as First Name, then Email, then Password, but pressing Tab moves focus in the order Password, First Name, Email due to manually set tabindex values. Does this pass SC 2.4.3 Focus Order?",
+    "choices": [
+      "Yes, because all three fields still receive focus eventually",
+      "No, because the focus order doesn't preserve the meaning and logical sequence of the visual layout",
+      "Yes, because tabindex is a standard HTML attribute",
+      "It depends only on whether the form has a submit button"
+    ],
+    "answer": 1
+  },
+  "references": []
+}
