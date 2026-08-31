@@ -1,5 +1,9 @@
-import { loadCriteria } from "./content/loadCriteria.js";
-import { renderCriterionContent, wireCheckFeedback } from "./render.js";
+import { loadCriteria, sortCriteria } from "./content/loadCriteria.js";
+import {
+  renderCriterionContent,
+  wireCheckFeedback,
+  renderMasthead,
+} from "./render.js";
 import "prismjs/themes/prism.css";
 import "prismjs/components/prism-css.js";
 import "prismjs/components/prism-javascript.js";
@@ -9,18 +13,13 @@ const rawModules = import.meta.glob("./content/criteria/*.json", {
   import: "default",
 });
 const rawEntries = Object.values(rawModules);
-const criteria = loadCriteria(rawEntries).sort((a, b) =>
-  a.id.localeCompare(b.id, undefined, { numeric: true }),
-);
+const criteria = sortCriteria(loadCriteria(rawEntries));
 
 const app = document.getElementById("app");
-app.innerHTML = `
-  <header>
-    <div class="masthead">
-      <span class="masthead-mark">Daily Accessibility</span>
-      <span class="admin-label">Browse criteria</span>
-    </div>
-  </header>
+renderMasthead(app, "Browse criteria");
+app.insertAdjacentHTML(
+  "beforeend",
+  `
   <div class="admin-layout">
     <nav class="admin-list" aria-label="WCAG success criteria">
       <ul id="criteria-list"></ul>
@@ -30,7 +29,8 @@ app.innerHTML = `
       <p class="admin-placeholder">Select a criterion from the list to preview it.</p>
     </main>
   </div>
-`;
+`,
+);
 
 const list = document.getElementById("criteria-list");
 criteria.forEach((criterion) => {
@@ -53,10 +53,13 @@ function showCriterion(criterion) {
   wireCheckFeedback(content, criterion);
 
   list.querySelectorAll(".admin-list-item").forEach((button) => {
-    button.classList.toggle(
-      "is-active",
-      button.dataset.criterionId === criterion.id,
-    );
+    const isActive = button.dataset.criterionId === criterion.id;
+    button.classList.toggle("is-active", isActive);
+    if (isActive) {
+      button.setAttribute("aria-current", "true");
+    } else {
+      button.removeAttribute("aria-current");
+    }
   });
 }
 

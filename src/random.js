@@ -1,6 +1,10 @@
-import { loadCriteria } from "./content/loadCriteria.js";
+import { loadCriteria, sortCriteria } from "./content/loadCriteria.js";
 import { randomIndex } from "./rotation.js";
-import { renderCriterionContent, wireCheckFeedback } from "./render.js";
+import {
+  renderCriterionContent,
+  wireCheckFeedback,
+  renderMasthead,
+} from "./render.js";
 import "prismjs/themes/prism.css";
 import "prismjs/components/prism-css.js";
 import "prismjs/components/prism-javascript.js";
@@ -10,22 +14,13 @@ const rawModules = import.meta.glob("./content/criteria/*.json", {
   import: "default",
 });
 const rawEntries = Object.values(rawModules);
-const criteria = loadCriteria(rawEntries).sort((a, b) =>
-  a.id.localeCompare(b.id, undefined, { numeric: true }),
-);
+const criteria = sortCriteria(loadCriteria(rawEntries));
 
 const criterion = criteria[randomIndex(criteria.length)];
 
 const app = document.getElementById("app");
-app.innerHTML = `
-  <header>
-    <div class="masthead">
-      <span class="masthead-mark">Daily Accessibility</span>
-      <span class="admin-label">Random criterion</span>
-    </div>
-  </header>
-  <main></main>
-`;
+renderMasthead(app, "Random criterion");
+app.insertAdjacentHTML("beforeend", "<main></main>");
 
 const main = document.querySelector("main");
 renderCriterionContent(main, criterion);

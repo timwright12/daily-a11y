@@ -1,10 +1,14 @@
-import { loadCriteria } from "./content/loadCriteria.js";
+import { loadCriteria, sortCriteria } from "./content/loadCriteria.js";
 import { daysSinceEpoch, getTodayIndex, puzzleDayNumber } from "./rotation.js";
 import { readState, writeState } from "./storage.js";
 import { recordAnswer } from "./gamification/streak.js";
 import { markSeen, coverageSummary } from "./gamification/coverage.js";
 import { buildShareText } from "./gamification/shareCard.js";
-import { renderCriterionContent } from "./render.js";
+import {
+  renderCriterionContent,
+  wireCheckFeedback,
+  renderMasthead,
+} from "./render.js";
 import "prismjs/themes/prism.css";
 import "prismjs/components/prism-css.js";
 import "prismjs/components/prism-javascript.js";
@@ -14,9 +18,7 @@ const rawModules = import.meta.glob("./content/criteria/*.json", {
   import: "default",
 });
 const rawEntries = Object.values(rawModules);
-const criteria = loadCriteria(rawEntries).sort((a, b) =>
-  a.id.localeCompare(b.id, undefined, { numeric: true }),
-);
+const criteria = sortCriteria(loadCriteria(rawEntries));
 
 const LAUNCH_DATE = new Date("2026-08-30T00:00:00Z");
 
@@ -31,15 +33,8 @@ state = { ...state, coverage: markSeen(state.coverage, criterion.id) };
 writeState(state);
 
 const app = document.getElementById("app");
-app.innerHTML = `
-  <header>
-    <div class="masthead">
-      <span class="masthead-mark">Daily Accessibility</span>
-      <p id="gamification-status"></p>
-    </div>
-  </header>
-  <main></main>
-`;
+renderMasthead(app);
+app.insertAdjacentHTML("beforeend", "<main></main>");
 
 const main = document.querySelector("main");
 renderCriterionContent(main, criterion);
@@ -55,21 +50,13 @@ main.insertAdjacentHTML(
 
 let lastCheckResult = null;
 
-document.getElementById("check-form").addEventListener("submit", (event) => {
-  event.preventDefault();
-  const selected = event.target.elements["check-choice"].value;
-  if (selected === "") return;
-
-  const isCorrect = Number(selected) === criterion.check.answer;
-  const resultEl = document.getElementById("check-result");
-  resultEl.textContent = isCorrect
-    ? "Correct!"
-    : "Not quite — review the explanation above.";
-
-  state = { ...state, streak: recordAnswer(state.streak, todayDayNumber) };
-  writeState(state);
-  lastCheckResult = isCorrect;
-  renderGamificationStatus();
+wireCheckFeedback(main, criterion, {
+  onAnswered: (isCorrect) => {
+    state = { ...state, streak: recordAnswer(state.streak, todayDayNumber) };
+    writeState(state);
+    lastCheckResult = isCorrect;
+    renderGamificationStatus();
+  },
 });
 
 function renderGamificationStatus() {

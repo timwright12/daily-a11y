@@ -1,3 +1,15 @@
+/**
+ * Component convention for this codebase: a "component" here is a plain
+ * function that owns one template string and mutates a caller-supplied
+ * container via innerHTML + querySelector, with no internal state and no
+ * framework. Each entry point (main.js, admin.js, random.js) composes these
+ * functions rather than each owning its own markup. If a future page needs
+ * a component with internal state or lifecycle (e.g. something that updates
+ * itself without a full re-render), that's the signal this convention has
+ * been outgrown — revisit introducing a minimal framework at that point
+ * rather than bolting state onto this pattern.
+ */
+
 import Prism from "prismjs";
 
 const CONTENT_TEMPLATE = `
@@ -94,10 +106,13 @@ export function renderCriterionContent(container, criterion) {
 /**
  * Wires the comprehension check form rendered inside `container` (by
  * renderCriterionContent) to show correct/incorrect feedback on submit.
- * Purely local feedback — no gamification side effects (streak, coverage,
- * share text) are triggered here.
+ * `options.onAnswered`, if provided, is called with the boolean correctness
+ * result after the feedback text is set — callers use it to layer in
+ * page-specific side effects (e.g. streak tracking) without duplicating the
+ * correctness check.
  */
-export function wireCheckFeedback(container, criterion) {
+export function wireCheckFeedback(container, criterion, options = {}) {
+  const { onAnswered } = options;
   container.querySelector("#check-form").addEventListener("submit", (event) => {
     event.preventDefault();
     const selected = event.target.elements["check-choice"].value;
@@ -107,5 +122,27 @@ export function wireCheckFeedback(container, criterion) {
     container.querySelector("#check-result").textContent = isCorrect
       ? "Correct!"
       : "Not quite — review the explanation above.";
+
+    if (onAnswered) onAnswered(isCorrect);
   });
+}
+
+/**
+ * Renders the shared site header into `container`. Pass a `label` string
+ * for pages with a static subtitle (admin, random); omit it for the daily
+ * page, which instead shows a live gamification-status placeholder that the
+ * caller populates itself.
+ */
+export function renderMasthead(container, label = null) {
+  const secondary = label
+    ? `<span class="admin-label">${label}</span>`
+    : `<p id="gamification-status"></p>`;
+  container.innerHTML = `
+    <header>
+      <div class="masthead">
+        <span class="masthead-mark">Daily Accessibility</span>
+        ${secondary}
+      </div>
+    </header>
+  `;
 }
