@@ -1,3 +1,15 @@
+/**
+ * Component convention for this codebase: a "component" here is a plain
+ * function that owns one template string and mutates a caller-supplied
+ * container via innerHTML + querySelector, with no internal state and no
+ * framework. Each entry point (main.js, admin.js, random.js) composes these
+ * functions rather than each owning its own markup. If a future page needs
+ * a component with internal state or lifecycle (e.g. something that updates
+ * itself without a full re-render), that's the signal this convention has
+ * been outgrown — revisit introducing a minimal framework at that point
+ * rather than bolting state onto this pattern.
+ */
+
 import Prism from "prismjs";
 
 const CONTENT_TEMPLATE = `
