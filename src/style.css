@@ -324,7 +324,7 @@ legend {
   margin-bottom: calc(var(--space) * 2.5);
 }
 
-#check-choices > div {
+#check-choices > li {
   display: flex;
   align-items: flex-start;
   gap: 0.7rem;

@@ -51,7 +51,7 @@ const CONTENT_TEMPLATE = `
     <form id="check-form">
       <fieldset>
         <legend id="check-question"></legend>
-        <div id="check-choices"></div>
+        <ul id="check-choices"></ul>
       </fieldset>
       <button type="submit">Submit answer</button>
     </form>
@@ -91,9 +91,9 @@ export function renderCriterionContent(container, criterion) {
     criterion.check.question;
   criterion.check.choices.forEach((choice, index) => {
     const id = `check-choice-${index}`;
-    const wrapper = document.createElement("div");
+    const wrapper = document.createElement("li");
     wrapper.innerHTML = `
-      <input type="radio" name="check-choice" id="${id}" value="${index}">
+      <input type="radio" name="check-choice" id="${id}" value="${index}" required>
       <label for="${id}"></label>
     `;
     wrapper.querySelector("label").textContent = choice;
