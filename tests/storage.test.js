@@ -46,3 +46,45 @@ describe("storage", () => {
     expect(readState()).toEqual(state);
   });
 });
+
+describe("readState with invalid stored data", () => {
+  beforeEach(() => {
+    vi.stubGlobal("localStorage", makeMemoryLocalStorage());
+  });
+
+  it("falls back to default state when stored JSON has the wrong shape", () => {
+    localStorage.setItem(
+      "daily-a11y-state",
+      JSON.stringify({ streak: "not-an-object" }),
+    );
+    const state = readState();
+    expect(state).toEqual({
+      streak: { count: 0, lastAnsweredDay: null },
+      coverage: [],
+    });
+  });
+
+  it("falls back to default state when coverage is not an array", () => {
+    localStorage.setItem(
+      "daily-a11y-state",
+      JSON.stringify({
+        streak: { count: 1, lastAnsweredDay: 5 },
+        coverage: "nope",
+      }),
+    );
+    const state = readState();
+    expect(state).toEqual({
+      streak: { count: 0, lastAnsweredDay: null },
+      coverage: [],
+    });
+  });
+
+  it("still returns valid stored state unchanged", () => {
+    const valid = {
+      streak: { count: 3, lastAnsweredDay: 10 },
+      coverage: ["1.1.1"],
+    };
+    localStorage.setItem("daily-a11y-state", JSON.stringify(valid));
+    expect(readState()).toEqual(valid);
+  });
+});
