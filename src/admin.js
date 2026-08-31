@@ -1,5 +1,9 @@
 import { loadCriteria, sortCriteria } from "./content/loadCriteria.js";
-import { renderCriterionContent, wireCheckFeedback } from "./render.js";
+import {
+  renderCriterionContent,
+  wireCheckFeedback,
+  renderMasthead,
+} from "./render.js";
 import "prismjs/themes/prism.css";
 import "prismjs/components/prism-css.js";
 import "prismjs/components/prism-javascript.js";
@@ -12,13 +16,10 @@ const rawEntries = Object.values(rawModules);
 const criteria = sortCriteria(loadCriteria(rawEntries));
 
 const app = document.getElementById("app");
-app.innerHTML = `
-  <header>
-    <div class="masthead">
-      <span class="masthead-mark">Daily Accessibility</span>
-      <span class="admin-label">Browse criteria</span>
-    </div>
-  </header>
+renderMasthead(app, "Browse criteria");
+app.insertAdjacentHTML(
+  "beforeend",
+  `
   <div class="admin-layout">
     <nav class="admin-list" aria-label="WCAG success criteria">
       <ul id="criteria-list"></ul>
@@ -28,7 +29,8 @@ app.innerHTML = `
       <p class="admin-placeholder">Select a criterion from the list to preview it.</p>
     </main>
   </div>
-`;
+`,
+);
 
 const list = document.getElementById("criteria-list");
 criteria.forEach((criterion) => {

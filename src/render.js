@@ -114,3 +114,23 @@ export function wireCheckFeedback(container, criterion, options = {}) {
     if (onAnswered) onAnswered(isCorrect);
   });
 }
+
+/**
+ * Renders the shared site header into `container`. Pass a `label` string
+ * for pages with a static subtitle (admin, random); omit it for the daily
+ * page, which instead shows a live gamification-status placeholder that the
+ * caller populates itself.
+ */
+export function renderMasthead(container, label = null) {
+  const secondary = label
+    ? `<span class="admin-label">${label}</span>`
+    : `<p id="gamification-status"></p>`;
+  container.innerHTML = `
+    <header>
+      <div class="masthead">
+        <span class="masthead-mark">Daily Accessibility</span>
+        ${secondary}
+      </div>
+    </header>
+  `;
+}

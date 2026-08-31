@@ -1,5 +1,9 @@
 import { describe, it, expect, beforeEach } from "vitest";
-import { renderCriterionContent, wireCheckFeedback } from "../src/render.js";
+import {
+  renderCriterionContent,
+  wireCheckFeedback,
+  renderMasthead,
+} from "../src/render.js";
 
 const sampleCriterion = {
   id: "1.1.1",
@@ -148,5 +152,30 @@ describe("wireCheckFeedback", () => {
     });
     submitForm(container);
     expect(onAnswered).toEqual([]);
+  });
+});
+
+describe("renderMasthead", () => {
+  let container;
+
+  beforeEach(() => {
+    container = document.createElement("div");
+  });
+
+  it("renders the masthead mark and a gamification-status placeholder when no label is given", () => {
+    renderMasthead(container);
+    expect(container.querySelector(".masthead-mark").textContent).toBe(
+      "Daily Accessibility",
+    );
+    expect(container.querySelector("#gamification-status")).not.toBeNull();
+    expect(container.querySelector(".admin-label")).toBeNull();
+  });
+
+  it("renders a static admin-label span when a label string is given", () => {
+    renderMasthead(container, "Browse criteria");
+    expect(container.querySelector(".admin-label").textContent).toBe(
+      "Browse criteria",
+    );
+    expect(container.querySelector("#gamification-status")).toBeNull();
   });
 });

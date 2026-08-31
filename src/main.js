@@ -4,7 +4,11 @@ import { readState, writeState } from "./storage.js";
 import { recordAnswer } from "./gamification/streak.js";
 import { markSeen, coverageSummary } from "./gamification/coverage.js";
 import { buildShareText } from "./gamification/shareCard.js";
-import { renderCriterionContent, wireCheckFeedback } from "./render.js";
+import {
+  renderCriterionContent,
+  wireCheckFeedback,
+  renderMasthead,
+} from "./render.js";
 import "prismjs/themes/prism.css";
 import "prismjs/components/prism-css.js";
 import "prismjs/components/prism-javascript.js";
@@ -29,15 +33,8 @@ state = { ...state, coverage: markSeen(state.coverage, criterion.id) };
 writeState(state);
 
 const app = document.getElementById("app");
-app.innerHTML = `
-  <header>
-    <div class="masthead">
-      <span class="masthead-mark">Daily Accessibility</span>
-      <p id="gamification-status"></p>
-    </div>
-  </header>
-  <main></main>
-`;
+renderMasthead(app);
+app.insertAdjacentHTML("beforeend", "<main></main>");
 
 const main = document.querySelector("main");
 renderCriterionContent(main, criterion);
