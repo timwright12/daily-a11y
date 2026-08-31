@@ -25,7 +25,10 @@ export default [
     languageOptions: {
       ecmaVersion: "latest",
       sourceType: "module",
-      globals: browserGlobals,
+      globals: {
+        ...browserGlobals,
+        Event: "readonly",
+      },
     },
   },
   {
