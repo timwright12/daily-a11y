@@ -3,14 +3,14 @@
   "name": "Page Titled",
   "level": "A",
   "principle": "Operable",
-  "explanation": "Every page needs a title, set via the HTML <title> element, that describes what the page is about or what it's for. A good title lets someone know what page they're on without having to read through the content, and it's what shows up in browser tabs, bookmarks, browser history, and search results. A vague title like \"Untitled\" or a title that's identical across every page on the site fails this, since it gives no useful information about that specific page.",
-  "whoItAffects": "Screen reader users typically hear the page title announced first when a page loads, before anything else, so it's often their very first orientation point for what page they've landed on. People who keep many browser tabs open rely on distinct, descriptive titles to tell tabs apart at a glance. People with cognitive disabilities benefit from a clear, specific title that helps confirm they're in the right place, especially after following a link or completing a multi-step process.",
+  "explanation": "Every page needs a title, set via the HTML <title> element, that describes what the page is about or what it's for. A good title lets someone know what page they're on without reading through the content. It's also what shows up in browser tabs, bookmarks, browser history, and search results. A vague title like \"Untitled,\" or a title that's identical across every page on the site, fails this. Neither gives any useful information about that specific page.",
+  "whoItAffects": "Screen reader users typically hear the page title announced first when a page loads, before anything else. It's often their very first sign of what page they've landed on. People who keep many browser tabs open rely on distinct, descriptive titles to tell tabs apart at a glance. People with cognitive disabilities benefit from a clear, specific title too. It helps confirm they're in the right place, especially after following a link or finishing a multi-step process.",
   "codeExample": {
     "lang": "html",
     "bad": "<!-- Every page on the site uses the same generic title -->\n<head>\n  <title>My Website</title>\n</head>",
     "good": "<!-- Each page has a distinct, descriptive title -->\n<head>\n  <title>Contact Us — My Website</title>\n</head>\n<!-- On a different page: -->\n<head>\n  <title>Shopping Cart (3 items) — My Website</title>\n</head>"
   },
-  "howToTest": "Look at the browser tab or window title for the current page. Does it describe the specific page's topic or purpose, rather than being generic, blank, or identical to every other page on the site? Navigate to several different pages on the site and compare their titles; each should be distinct and meaningfully describe that page, not just repeat the same site name with no page-specific detail.",
+  "howToTest": "Look at the browser tab or window title for the current page. Does it describe the specific page's topic or purpose, rather than being generic, blank, or identical to every other page on the site? Navigate to several different pages on the site and compare their titles. Each should be distinct and meaningfully describe that page, not just repeat the same site name with no page-specific detail.",
   "check": {
     "question": "Every page on an e-commerce site, including the homepage, product pages, and checkout, uses the exact same browser tab title: \"Store.\" Does this pass SC 2.4.2 Page Titled?",
     "choices": [

@@ -3,14 +3,14 @@
   "name": "Link Purpose (Link Only)",
   "level": "AAA",
   "principle": "Operable",
-  "explanation": "This is a stricter version of SC 2.4.4: a link's purpose must be clear from its link text alone, without needing any surrounding sentence, paragraph, or list context to understand it. Where the Level A criterion allows context like a nearby heading or sentence to fill in the meaning, this AAA criterion requires the link text itself to be self-sufficient, so it would make sense even when read completely out of context, such as in a screen reader's standalone list of all links on a page.",
-  "whoItAffects": "Screen reader users who pull up a page's link list to navigate quickly see only the link text stripped of its surrounding context, so this criterion ensures that list is meaningful on its own rather than a page full of identical or vague entries like \"read more.\" This benefits any user scanning a page's links out of context, including sighted users skimming a printed link reference or a browser extension that lists links separately from the page content.",
+  "explanation": "This is a stricter version of SC 2.4.4. A link's purpose must be clear from its link text alone. It can't rely on a nearby sentence, paragraph, or heading for meaning. The Level A criterion allows that surrounding context to help. This AAA criterion doesn't. The link text itself must make sense on its own, even in a bare list with nothing else around it.",
+  "whoItAffects": "Screen reader users often pull up a list of all links on a page to navigate quickly. That list shows only the link text, with no surrounding context. If many links just say \"read more\" with no other detail, the list becomes useless for telling them apart. This same problem affects anyone scanning links out of context, such as someone skimming a printed link reference or a browser tool that lists links separately from the page.",
   "codeExample": {
     "lang": "html",
     "bad": "<h3>New accessibility guidelines released</h3>\n<p>The W3C has published updated guidance...</p>\n<a href=\"/article/123\">Read more</a>\n<!-- Relies on the heading for context; fails if read as link text alone -->",
     "good": "<h3>New accessibility guidelines released</h3>\n<p>The W3C has published updated guidance...</p>\n<a href=\"/article/123\">Read the full article on the new accessibility guidelines</a>\n<!-- Self-sufficient: makes sense even with no surrounding context -->"
   },
-  "howToTest": "Extract just the visible text of every link on the page, as if you were reading them from a bare list with no surrounding sentences, headings, or paragraphs. For each one, ask whether its purpose is clear from that text alone. If a link only makes sense because of a nearby heading or sentence, such as a bare \"Read more\" that depends on the article title above it, this stricter AAA criterion fails even though the Level A version might pass.",
+  "howToTest": "Pull the visible text of every link on the page into a bare list, as if the surrounding sentences and headings weren't there. For each link, ask whether its purpose is clear from that text alone. A bare \"Read more\" usually depends on a nearby heading to make sense. That kind of link fails this stricter AAA criterion, even if it passes the Level A version.",
   "check": {
     "question": "A page has a link reading \"Learn more about our return policy\" that appears directly below a paragraph about shipping. Does this link satisfy SC 2.4.9 Link Purpose (Link Only)?",
     "choices": [

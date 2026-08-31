@@ -3,14 +3,14 @@
   "name": "Bypass Blocks",
   "level": "A",
   "principle": "Operable",
-  "explanation": "When the same block of content, like a navigation menu or a header, repeats at the top of every page on a site, there needs to be a way to skip straight past it to the main content without having to move through every link in it first. The most common solution is a \"skip to main content\" link at the very top of the page, visible when focused, that jumps focus directly to the main content area when activated.",
-  "whoItAffects": "Keyboard-only users and screen reader users would otherwise have to tab or arrow through an entire navigation menu, header, and any other repeated content on every single page before reaching what they actually came to read or use. On a site with a large navigation menu, that can mean dozens of extra keystrokes on every page load just to get to the content, which becomes exhausting and time-consuming across a whole browsing session.",
+  "explanation": "Some blocks of content, like a navigation menu or a header, repeat at the top of every page on a site. When that happens, there needs to be a way to skip straight past the block to the main content, without moving through every link in it first. The most common solution is a \"skip to main content\" link at the very top of the page. It's visible when focused, and it jumps focus directly to the main content area when activated.",
+  "whoItAffects": "Without a skip link, keyboard-only users and screen reader users have to tab or arrow through an entire navigation menu, header, and any other repeated content. They have to do this on every single page, before reaching what they actually came to read or use. On a site with a large navigation menu, that can mean dozens of extra keystrokes on every page load just to reach the content. Across a whole browsing session, this becomes exhausting and time-consuming.",
   "codeExample": {
     "lang": "html",
     "bad": "<body>\n  <nav>\n    <!-- 20 navigation links with no way to skip past them -->\n  </nav>\n  <main>\n    <h1>Page content starts here</h1>\n  </main>\n</body>",
     "good": "<body>\n  <a href=\"#main-content\" class=\"skip-link\">Skip to main content</a>\n  <nav>\n    <!-- 20 navigation links -->\n  </nav>\n  <main id=\"main-content\">\n    <h1>Page content starts here</h1>\n  </main>\n</body>"
   },
-  "howToTest": "Load the page and press Tab once, before clicking or interacting with anything else. A \"skip to main content\" link, or similar, should be the first or one of the first things to receive focus, and it should become visible on screen when focused even if it's hidden otherwise. Activate it and confirm focus actually moves to the main content area, not just visually scrolls there. If no skip mechanism exists and the page has repeated navigation blocks, this fails.",
+  "howToTest": "Load the page and press Tab once, before clicking or interacting with anything else. A \"skip to main content\" link, or similar, should be one of the first things to receive focus. It should become visible on screen when focused, even if it's hidden otherwise. Activate it and confirm focus actually moves to the main content area, not just visually scrolls there. If no skip mechanism exists and the page has repeated navigation blocks, this fails.",
   "check": {
     "question": "A website repeats the same 15-link navigation menu at the top of every page, with no skip link and no landmark-based way to jump past it. Does this pass SC 2.4.1 Bypass Blocks?",
     "choices": [
