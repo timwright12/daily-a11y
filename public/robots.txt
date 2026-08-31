@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://timwright12.github.io/daily-a11y/sitemap.xml
