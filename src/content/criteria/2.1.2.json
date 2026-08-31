@@ -1,0 +1,25 @@
+{
+  "id": "2.1.2",
+  "name": "No Keyboard Trap",
+  "level": "A",
+  "principle": "Operable",
+  "explanation": "If a keyboard user can move focus into some part of the page — a menu, a modal dialog, an embedded widget — they must also be able to move focus back out using only the keyboard. Standard keys like Tab, Shift+Tab, or Escape should work for this. If a component genuinely needs a different exit method, for example a rich text editor that captures Tab to insert a tab character, the user must be told how to leave it, such as an on-screen instruction saying 'Press Escape to exit the editor.'",
+  "whoItAffects": "Keyboard-only users and screen reader users can become completely stuck if focus enters a widget with no way out — they can't click elsewhere with a mouse to escape, so the only way forward is closing the browser tab and starting over. This is one of the most severe failures in accessibility because it doesn't just make a task harder, it can strand a user with no path to the rest of the page at all.",
+  "codeExample": {
+    "lang": "javascript",
+    "bad": "// A custom modal that captures Tab but never lets it leave\nmodal.addEventListener('keydown', (event) => {\n  if (event.key === 'Tab') {\n    event.preventDefault();\n    focusNextElementInside(modal);\n  }\n  // No handling for Escape, and focus is never released\n});",
+    "good": "// The modal cycles Tab focus within itself (a valid pattern) but\n// provides a documented, working way out via Escape\nmodal.addEventListener('keydown', (event) => {\n  if (event.key === 'Tab') {\n    event.preventDefault();\n    focusNextElementInside(modal);\n  }\n  if (event.key === 'Escape') {\n    closeModal();\n    triggerButton.focus();\n  }\n});"
+  },
+  "howToTest": "Tab into every interactive region of the page one at a time, including embedded widgets, modals, menus, and third-party embeds like maps or video players. At each one, try to Tab or Shift+Tab back out. If that doesn't work, try Escape. If none of the standard keys move focus out, and there's no visible instruction telling you another way to exit, that's a keyboard trap and a serious failure that needs fixing immediately.",
+  "check": {
+    "question": "A date-picker widget opens when a text field is focused, and pressing Tab inside it cycles only through the calendar's own days — it never returns focus to the rest of the page, and there's no instruction about how to exit. Does this pass SC 2.1.2 No Keyboard Trap?",
+    "choices": [
+      "Yes, cycling Tab within a widget is always acceptable",
+      "No, because there is no way to move focus out of the widget and no instruction for an alternative method",
+      "Yes, as long as the widget can be closed with a mouse click",
+      "It depends on whether the calendar is marked as decorative"
+    ],
+    "answer": 1
+  },
+  "references": []
+}
