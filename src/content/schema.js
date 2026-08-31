@@ -1,5 +1,19 @@
 import { z } from "zod";
 
+/**
+ * Content style convention for this codebase: `explanation`, `whoItAffects`,
+ * and `howToTest` should be understandable by engineers and designers who
+ * know general web development but aren't WCAG specialists — not by the
+ * general public, and not only by accessibility experts. Aim for roughly a
+ * grade 9-12 reading level (Flesch-Kincaid), favoring short sentences with
+ * one idea each over em-dash/parenthetical clause-stacking. Keep standard
+ * technical vocabulary as-is (DOM, ARIA, viewport, contrast ratio, etc.) —
+ * the target is sentence structure, not vocabulary simplification, so don't
+ * expect to hit grade 9 on fields that legitimately need that vocabulary.
+ * These three fields render into a single <p> via `textContent` (see
+ * render.js), so `\n\n` paragraph breaks are invisible — write each as one
+ * flowing block, not multiple paragraphs.
+ */
 const codeExampleSchema = z.object({
   lang: z.string().min(1),
   bad: z.string().min(1),
