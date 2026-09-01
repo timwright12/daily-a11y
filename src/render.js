@@ -150,7 +150,7 @@ export function renderAnsweredState(container, criterion, { choice, correct }) {
     radio.checked = index === choice;
   });
 
-  document.querySelector('#criterion-name').classList.add('answered');
+  document.querySelector("#criterion-name").classList.add("answered");
 
   container.querySelector("#check-result").textContent = correct
     ? "Correct!"
