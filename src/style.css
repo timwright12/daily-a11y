@@ -555,3 +555,15 @@ body.admin .masthead {
   font-size: 1.0625rem;
   margin: 0;
 }
+
+.success {
+  background: var(--moss-bg);
+  color: var(--moss);
+  border: 1px solid var(--moss);
+  border-radius: 0.3em;
+  font-size: 0.95rem;
+  font-weight: 600;
+  padding: 0.7em 1.4em;
+  margin-bottom: calc(var(--space) * 2.5);
+  text-align: center;
+}
