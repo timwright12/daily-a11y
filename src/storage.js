@@ -12,10 +12,23 @@ const stateSchema = z.object({
     lastAnsweredDay: z.number().int().nullable(),
   }),
   coverage: z.array(z.string()),
+  lastAnswer: z
+    .object({
+      day: z.number().int(),
+      criterionId: z.string(),
+      choice: z.number().int().min(0),
+      correct: z.boolean(),
+    })
+    .nullable()
+    .default(null),
 });
 
 function defaultState() {
-  return { streak: { count: 0, lastAnsweredDay: null }, coverage: [] };
+  return {
+    streak: { count: 0, lastAnsweredDay: null },
+    coverage: [],
+    lastAnswer: null,
+  };
 }
 
 export function readState() {

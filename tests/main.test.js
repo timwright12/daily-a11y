@@ -132,4 +132,48 @@ describe("main.js bootstrap (real module)", () => {
       "Copied to clipboard!",
     );
   });
+
+  it("persists the selected choice and criterion id as lastAnswer on submit", async () => {
+    vi.resetModules();
+    await import("../src/main.js");
+
+    const todayId = document.querySelector("#criterion-id").textContent;
+    const radios = document.querySelectorAll('input[type="radio"]');
+    radios[0].checked = true;
+    document
+      .getElementById("check-form")
+      .dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
+
+    const stored = JSON.parse(localStorage.getItem("daily-a11y-state"));
+    expect(stored.lastAnswer).toMatchObject({
+      criterionId: todayId,
+      choice: 0,
+    });
+    expect(typeof stored.lastAnswer.day).toBe("number");
+    expect(typeof stored.lastAnswer.correct).toBe("boolean");
+  });
+
+  it("restores the already-answered state on reload for today's criterion", async () => {
+    // First load: submit an answer, which persists lastAnswer with the
+    // real today-day-number and today's actual criterion id.
+    vi.resetModules();
+    await import("../src/main.js");
+    const radios = document.querySelectorAll('input[type="radio"]');
+    radios[0].checked = true;
+    document
+      .getElementById("check-form")
+      .dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
+
+    // Simulate a page reload with the same localStorage state.
+    document.body.innerHTML = '<div id="app"></div>';
+    vi.resetModules();
+    await import("../src/main.js");
+
+    expect(document.querySelector("#check-already-answered").hidden).toBe(
+      false,
+    );
+    const reloadedRadios = document.querySelectorAll('input[type="radio"]');
+    expect(reloadedRadios[0].checked).toBe(true);
+    reloadedRadios.forEach((radio) => expect(radio.disabled).toBe(true));
+  });
 });
