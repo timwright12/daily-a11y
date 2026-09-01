@@ -76,12 +76,68 @@ header {
   text-decoration: none;
 }
 
-#gamification-status {
+/* ---------- Reusable components ---------- */
+
+/* Small mono, quiet-ink label text: masthead secondary text, admin list ids. */
+.label-mono {
   margin: 0;
   font-family: var(--font-mono);
   font-size: 0.8rem;
   color: var(--ink-quiet);
   letter-spacing: 0.01em;
+}
+
+/* Outlined button look shared by the daily share action and the random-page
+   reroll link (a real <a>, not a <button>) — invert to solid ink on hover. */
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--ink);
+  background: transparent;
+  border: 1px solid var(--ink);
+  border-radius: 0.3em;
+  padding: 0.7em 1.4em;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.btn-outline:hover {
+  background: var(--ink);
+  color: var(--paper);
+  border-color: var(--ink);
+}
+
+/* Fraunces display heading family/weight, shared by the criterion h1 and the
+   admin placeholder heading. Size, line-height, and margin stay local to
+   each since they diverge between the two contexts. */
+.heading-display {
+  font-family: var(--font-display);
+  font-weight: 500;
+}
+
+/* Status banner, shared by success and error states. */
+.banner {
+  border-radius: 0.3em;
+  font-size: 0.95rem;
+  font-weight: 600;
+  padding: 0.7em 1.4em;
+  margin-bottom: calc(var(--space) * 2.5);
+  text-align: center;
+}
+
+.banner-success {
+  background: var(--moss-bg);
+  color: var(--moss);
+  border: 1px solid var(--moss);
+}
+
+.banner-error {
+  background: var(--signal-bg);
+  color: var(--signal);
+  border: 1px solid var(--signal);
 }
 
 /* ---------- Page frame ---------- */
@@ -110,8 +166,6 @@ main {
 }
 
 h1 {
-  font-family: var(--font-display);
-  font-weight: 500;
   font-size: clamp(2.25rem, 5vw + 1rem, 3.5rem);
   line-height: 1.08;
   letter-spacing: -0.01em;
@@ -317,7 +371,7 @@ legend {
   margin-bottom: calc(var(--space) * 2.5);
 }
 
-#check-choices {
+.check-choices {
   display: flex;
   flex-direction: column;
   gap: 0.6rem;
@@ -325,7 +379,7 @@ legend {
   padding: 0;
 }
 
-#check-choices > li {
+.check-choices > li {
   display: flex;
   align-items: flex-start;
   gap: 0.7rem;
@@ -334,13 +388,13 @@ legend {
   border-radius: 0.4em;
 }
 
-#check-choices input[type="radio"] {
+.check-choices input[type="radio"] {
   margin-top: 0.2em;
   accent-color: var(--signal);
   flex-shrink: 0;
 }
 
-#check-choices label {
+.check-choices label {
   font-size: 1rem;
   line-height: 1.5;
 }
@@ -362,7 +416,7 @@ button:hover {
   border-color: var(--signal);
 }
 
-#check-result {
+.check-result {
   font-family: var(--font-mono);
   font-size: 0.9rem;
   margin: calc(var(--space) * 1.5) 0 0;
@@ -380,41 +434,11 @@ button:hover {
   flex-wrap: wrap;
 }
 
-#share-button {
-  background: transparent;
-  color: var(--ink);
-}
-
-#share-button:hover {
-  background: var(--ink);
-  color: var(--paper);
-  border-color: var(--ink);
-}
-
-#share-status {
+.share-status {
   margin: 0;
   font-family: var(--font-mono);
   font-size: 0.85rem;
   color: var(--ink-quiet);
-}
-
-.reroll-link {
-  display: inline-flex;
-  align-items: center;
-  font-family: var(--font-body);
-  font-weight: 600;
-  font-size: 0.95rem;
-  color: var(--ink);
-  background: transparent;
-  border: 1px solid var(--ink);
-  border-radius: 0.3em;
-  padding: 0.7em 1.4em;
-  text-decoration: none;
-}
-
-.reroll-link:hover {
-  background: var(--ink);
-  color: var(--paper);
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -452,13 +476,6 @@ button:hover {
 
 body.admin .masthead {
   max-width: none;
-}
-
-.admin-label {
-  font-family: var(--font-mono);
-  font-size: 0.8rem;
-  color: var(--ink-quiet);
-  letter-spacing: 0.01em;
 }
 
 .admin-layout {
@@ -524,9 +541,6 @@ body.admin .masthead {
 }
 
 .admin-list-id {
-  font-family: var(--font-mono);
-  font-size: 0.8rem;
-  color: var(--ink-quiet);
   flex-shrink: 0;
 }
 
@@ -536,15 +550,13 @@ body.admin .masthead {
   white-space: nowrap;
 }
 
-#admin-content {
+.admin-content {
   max-width: 42rem;
   margin: 0;
   padding: calc(var(--space) * 5) 2rem calc(var(--space) * 10);
 }
 
 .admin-placeholder-heading {
-  font-family: var(--font-display);
-  font-weight: 500;
   font-size: 1.75rem;
   line-height: 1.2;
   margin: 0 0 calc(var(--space) * 1.5);
@@ -554,28 +566,4 @@ body.admin .masthead {
   color: var(--ink-quiet);
   font-size: 1.0625rem;
   margin: 0;
-}
-
-.success {
-  background: var(--moss-bg);
-  color: var(--moss);
-  border: 1px solid var(--moss);
-  border-radius: 0.3em;
-  font-size: 0.95rem;
-  font-weight: 600;
-  padding: 0.7em 1.4em;
-  margin-bottom: calc(var(--space) * 2.5);
-  text-align: center;
-}
-
-.error {
-  background: var(--signal-bg);
-  color: var(--signal);
-  border: 1px solid var(--signal);
-  border-radius: 0.3em;
-  font-size: 0.95rem;
-  font-weight: 600;
-  padding: 0.7em 1.4em;
-  margin-bottom: calc(var(--space) * 2.5);
-  text-align: center;
 }

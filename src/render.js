@@ -15,7 +15,7 @@ import Prism from "prismjs";
 const CONTENT_TEMPLATE = `
   <div class="hero">
     <span class="eyebrow">§<span id="criterion-id"></span> · WCAG 2.2</span>
-    <h1 id="criterion-name"></h1>
+    <h1 id="criterion-name" class="heading-display"></h1>
     <div class="badges">
       <span id="level-badge" class="badge"></span>
       <span id="principle-badge" class="badge"></span>
@@ -48,17 +48,17 @@ const CONTENT_TEMPLATE = `
   </section>
   <section aria-labelledby="check-heading">
     <h2 id="check-heading">Check your understanding</h2>
-    <p id="check-already-answered" hidden class="success">
+    <p id="check-already-answered" hidden class="banner banner-success">
       You already answered today's knowledge check.
     </p>
     <form id="check-form">
       <fieldset>
         <legend id="check-question"></legend>
-        <ul id="check-choices"></ul>
+        <ul id="check-choices" class="check-choices"></ul>
       </fieldset>
       <button type="submit">Submit answer</button>
     </form>
-    <p id="check-result" role="status"></p>
+    <p id="check-result" class="check-result" role="status"></p>
   </section>
 `;
 
@@ -165,8 +165,8 @@ export function renderAnsweredState(container, criterion, { choice, correct }) {
  */
 export function renderMasthead(container, label = null) {
   const secondary = label
-    ? `<span class="admin-label">${label}</span>`
-    : `<p id="gamification-status"></p>`;
+    ? `<span class="admin-label label-mono">${label}</span>`
+    : `<p id="gamification-status" class="label-mono"></p>`;
   container.innerHTML = `
     <header>
       <div class="masthead">

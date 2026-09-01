@@ -24,8 +24,8 @@ app.insertAdjacentHTML(
     <nav class="admin-list" aria-label="WCAG success criteria">
       <ul id="criteria-list"></ul>
     </nav>
-    <main id="admin-content">
-      <h1 class="admin-placeholder-heading">Browse WCAG success criteria</h1>
+    <main id="admin-content" class="admin-content">
+      <h1 class="admin-placeholder-heading heading-display">Browse WCAG success criteria</h1>
       <p class="admin-placeholder">Select a criterion from the list to preview it.</p>
     </main>
   </div>
@@ -39,7 +39,7 @@ criteria.forEach((criterion) => {
   button.type = "button";
   button.className = "admin-list-item";
   button.dataset.criterionId = criterion.id;
-  button.innerHTML = `<span class="admin-list-id"></span><span class="admin-list-name"></span>`;
+  button.innerHTML = `<span class="admin-list-id label-mono"></span><span class="admin-list-name"></span>`;
   button.querySelector(".admin-list-id").textContent = criterion.id;
   button.querySelector(".admin-list-name").textContent = criterion.name;
   item.appendChild(button);
