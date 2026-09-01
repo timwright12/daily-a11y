@@ -48,7 +48,7 @@ const CONTENT_TEMPLATE = `
   </section>
   <section aria-labelledby="check-heading">
     <h2 id="check-heading">Check your understanding</h2>
-    <p id="check-already-answered" hidden>
+    <p id="check-already-answered" hidden class="success">
       You already answered today's knowledge check.
     </p>
     <form id="check-form">
