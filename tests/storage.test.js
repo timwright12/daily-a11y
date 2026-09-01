@@ -26,6 +26,7 @@ describe("storage", () => {
     expect(readState()).toEqual({
       streak: { count: 0, lastAnsweredDay: null },
       coverage: [],
+      lastAnswer: null,
     });
   });
 
@@ -34,6 +35,7 @@ describe("storage", () => {
     expect(readState()).toEqual({
       streak: { count: 0, lastAnsweredDay: null },
       coverage: [],
+      lastAnswer: null,
     });
   });
 
@@ -41,6 +43,22 @@ describe("storage", () => {
     const state = {
       streak: { count: 3, lastAnsweredDay: 20666 },
       coverage: ["1.4.3", "1.1.1"],
+      lastAnswer: {
+        day: 20666,
+        criterionId: "1.4.3",
+        choice: 1,
+        correct: true,
+      },
+    };
+    writeState(state);
+    expect(readState()).toEqual(state);
+  });
+
+  it("round-trips a written state with lastAnswer set to null", () => {
+    const state = {
+      streak: { count: 0, lastAnsweredDay: null },
+      coverage: [],
+      lastAnswer: null,
     };
     writeState(state);
     expect(readState()).toEqual(state);
@@ -61,6 +79,7 @@ describe("readState with invalid stored data", () => {
     expect(state).toEqual({
       streak: { count: 0, lastAnsweredDay: null },
       coverage: [],
+      lastAnswer: null,
     });
   });
 
@@ -76,6 +95,24 @@ describe("readState with invalid stored data", () => {
     expect(state).toEqual({
       streak: { count: 0, lastAnsweredDay: null },
       coverage: [],
+      lastAnswer: null,
+    });
+  });
+
+  it("falls back to default state when lastAnswer has the wrong shape", () => {
+    localStorage.setItem(
+      "daily-a11y-state",
+      JSON.stringify({
+        streak: { count: 1, lastAnsweredDay: 5 },
+        coverage: [],
+        lastAnswer: { day: "not-a-number" },
+      }),
+    );
+    const state = readState();
+    expect(state).toEqual({
+      streak: { count: 0, lastAnsweredDay: null },
+      coverage: [],
+      lastAnswer: null,
     });
   });
 
@@ -83,9 +120,26 @@ describe("readState with invalid stored data", () => {
     const valid = {
       streak: { count: 3, lastAnsweredDay: 10 },
       coverage: ["1.1.1"],
+      lastAnswer: { day: 10, criterionId: "1.1.1", choice: 0, correct: false },
     };
     localStorage.setItem("daily-a11y-state", JSON.stringify(valid));
     expect(readState()).toEqual(valid);
+  });
+
+  it("treats missing lastAnswer as null (forward compatibility with pre-existing stored state)", () => {
+    localStorage.setItem(
+      "daily-a11y-state",
+      JSON.stringify({
+        streak: { count: 3, lastAnsweredDay: 10 },
+        coverage: ["1.1.1"],
+      }),
+    );
+    const state = readState();
+    expect(state).toEqual({
+      streak: { count: 3, lastAnsweredDay: 10 },
+      coverage: ["1.1.1"],
+      lastAnswer: null,
+    });
   });
 
   it("drops fields not in stateSchema instead of failing (forward compatibility)", () => {
@@ -101,6 +155,7 @@ describe("readState with invalid stored data", () => {
     expect(state).toEqual({
       streak: { count: 3, lastAnsweredDay: 10 },
       coverage: ["1.1.1"],
+      lastAnswer: null,
     });
     expect(state).not.toHaveProperty("futureField");
   });

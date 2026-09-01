@@ -7,6 +7,7 @@ import { buildShareText } from "./gamification/shareCard.js";
 import {
   renderCriterionContent,
   wireCheckFeedback,
+  renderAnsweredState,
   renderMasthead,
 } from "./render.js";
 import "prismjs/themes/prism.css";
@@ -48,11 +49,32 @@ main.insertAdjacentHTML(
 `,
 );
 
-let lastCheckResult = null;
+const alreadyAnsweredToday =
+  state.lastAnswer !== null &&
+  state.lastAnswer.day === todayDayNumber &&
+  state.lastAnswer.criterionId === criterion.id;
+
+let lastCheckResult = alreadyAnsweredToday ? state.lastAnswer.correct : null;
+
+if (alreadyAnsweredToday) {
+  renderAnsweredState(main, criterion, {
+    choice: state.lastAnswer.choice,
+    correct: state.lastAnswer.correct,
+  });
+}
 
 wireCheckFeedback(main, criterion, {
-  onAnswered: (isCorrect) => {
-    state = { ...state, streak: recordAnswer(state.streak, todayDayNumber) };
+  onAnswered: (isCorrect, choice) => {
+    state = {
+      ...state,
+      streak: recordAnswer(state.streak, todayDayNumber),
+      lastAnswer: {
+        day: todayDayNumber,
+        criterionId: criterion.id,
+        choice,
+        correct: isCorrect,
+      },
+    };
     writeState(state);
     lastCheckResult = isCorrect;
     renderGamificationStatus();

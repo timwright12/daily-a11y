@@ -2,6 +2,7 @@ import { describe, it, expect, beforeEach } from "vitest";
 import {
   renderCriterionContent,
   wireCheckFeedback,
+  renderAnsweredState,
   renderMasthead,
 } from "../src/render.js";
 
@@ -77,6 +78,13 @@ describe("renderCriterionContent", () => {
     );
   });
 
+  it("does not show the already-answered message by default", () => {
+    renderCriterionContent(container, sampleCriterion);
+    expect(container.querySelector("#check-already-answered").hidden).toBe(
+      true,
+    );
+  });
+
   it("replaces prior content when called again with a different criterion", () => {
     renderCriterionContent(container, sampleCriterion);
     const otherCriterion = {
@@ -145,6 +153,16 @@ describe("wireCheckFeedback", () => {
     expect(onAnswered).toEqual([true]);
   });
 
+  it("calls onAnswered with the selected choice index as the second argument", () => {
+    const calls = [];
+    wireCheckFeedback(container, sampleCriterion, {
+      onAnswered: (isCorrect, choice) => calls.push([isCorrect, choice]),
+    });
+    selectChoice(container, 2);
+    submitForm(container);
+    expect(calls).toEqual([[false, 2]]);
+  });
+
   it("does not call onAnswered when no choice is selected", () => {
     const onAnswered = [];
     wireCheckFeedback(container, sampleCriterion, {
@@ -152,6 +170,69 @@ describe("wireCheckFeedback", () => {
     });
     submitForm(container);
     expect(onAnswered).toEqual([]);
+  });
+});
+
+describe("renderAnsweredState", () => {
+  let container;
+
+  beforeEach(() => {
+    container = document.createElement("div");
+    renderCriterionContent(container, sampleCriterion);
+  });
+
+  it("shows a message above the form indicating today's check was already answered", () => {
+    renderAnsweredState(container, sampleCriterion, {
+      choice: 1,
+      correct: true,
+    });
+    expect(container.querySelector("#check-already-answered")).not.toBeNull();
+    expect(
+      container.querySelector("#check-already-answered").textContent,
+    ).toMatch(/already answered/i);
+  });
+
+  it("pre-checks the radio matching the persisted choice", () => {
+    renderAnsweredState(container, sampleCriterion, {
+      choice: 2,
+      correct: false,
+    });
+    const radios = container.querySelectorAll('input[type="radio"]');
+    expect(radios[2].checked).toBe(true);
+    expect(radios[0].checked).toBe(false);
+    expect(radios[1].checked).toBe(false);
+  });
+
+  it("disables all radio inputs and the submit button", () => {
+    renderAnsweredState(container, sampleCriterion, {
+      choice: 0,
+      correct: false,
+    });
+    const radios = container.querySelectorAll('input[type="radio"]');
+    radios.forEach((radio) => expect(radio.disabled).toBe(true));
+    expect(container.querySelector('button[type="submit"]').disabled).toBe(
+      true,
+    );
+  });
+
+  it("shows the correct/incorrect result text matching the persisted outcome", () => {
+    renderAnsweredState(container, sampleCriterion, {
+      choice: 1,
+      correct: true,
+    });
+    expect(container.querySelector("#check-result").textContent).toBe(
+      "Correct!",
+    );
+  });
+
+  it("shows the review message when the persisted outcome was incorrect", () => {
+    renderAnsweredState(container, sampleCriterion, {
+      choice: 0,
+      correct: false,
+    });
+    expect(container.querySelector("#check-result").textContent).toBe(
+      "Not quite — review the explanation above.",
+    );
   });
 });
 

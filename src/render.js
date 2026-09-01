@@ -48,6 +48,9 @@ const CONTENT_TEMPLATE = `
   </section>
   <section aria-labelledby="check-heading">
     <h2 id="check-heading">Check your understanding</h2>
+    <p id="check-already-answered" hidden>
+      You already answered today's knowledge check.
+    </p>
     <form id="check-form">
       <fieldset>
         <legend id="check-question"></legend>
@@ -107,9 +110,10 @@ export function renderCriterionContent(container, criterion) {
  * Wires the comprehension check form rendered inside `container` (by
  * renderCriterionContent) to show correct/incorrect feedback on submit.
  * `options.onAnswered`, if provided, is called with the boolean correctness
- * result after the feedback text is set — callers use it to layer in
- * page-specific side effects (e.g. streak tracking) without duplicating the
- * correctness check.
+ * result and the selected choice index after the feedback text is set —
+ * callers use it to layer in page-specific side effects (e.g. streak
+ * tracking, persisting the answer) without duplicating the correctness
+ * check.
  */
 export function wireCheckFeedback(container, criterion, options = {}) {
   const { onAnswered } = options;
@@ -118,13 +122,37 @@ export function wireCheckFeedback(container, criterion, options = {}) {
     const selected = event.target.elements["check-choice"].value;
     if (selected === "") return;
 
-    const isCorrect = Number(selected) === criterion.check.answer;
+    const choice = Number(selected);
+    const isCorrect = choice === criterion.check.answer;
     container.querySelector("#check-result").textContent = isCorrect
       ? "Correct!"
       : "Not quite — review the explanation above.";
 
-    if (onAnswered) onAnswered(isCorrect);
+    if (onAnswered) onAnswered(isCorrect, choice);
   });
+}
+
+/**
+ * Restores the comprehension check form rendered inside `container` (by
+ * renderCriterionContent) to reflect an answer already given today: shows
+ * the "already answered" message, pre-checks and disables the persisted
+ * choice, disables the remaining inputs and submit button, and shows the
+ * matching result text. Callers decide whether today was already answered
+ * (see storage.js's lastAnswer) — this function only renders that state.
+ */
+export function renderAnsweredState(container, criterion, { choice, correct }) {
+  container.querySelector("#check-already-answered").hidden = false;
+
+  const radios = container.querySelectorAll('input[type="radio"]');
+  radios.forEach((radio, index) => {
+    radio.checked = index === choice;
+    radio.disabled = true;
+  });
+  container.querySelector('button[type="submit"]').disabled = true;
+
+  container.querySelector("#check-result").textContent = correct
+    ? "Correct!"
+    : "Not quite — review the explanation above.";
 }
 
 /**
