@@ -1,8 +1,8 @@
 export function buildShareText(criterion, dayNumber, checkResult) {
-  const header = `Daily Accessibility — Day ${dayNumber}: ${criterion.id} ${criterion.name}`;
+  const header = `${dayNumber} days in a row! Just got my daily dose of accessibility, learning about ${criterion.id} ${criterion.name}`;
 
   if (checkResult === true) {
-    return `${header}\nI got it right! 🎯`;
+    return `${header}\nNailed it!`;
   }
   if (checkResult === false) {
     return `${header}\nI missed it this time — back tomorrow!`;
