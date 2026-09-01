@@ -174,6 +174,6 @@ describe("main.js bootstrap (real module)", () => {
     );
     const reloadedRadios = document.querySelectorAll('input[type="radio"]');
     expect(reloadedRadios[0].checked).toBe(true);
-    reloadedRadios.forEach((radio) => expect(radio.disabled).toBe(true));
+    reloadedRadios.forEach((radio) => expect(radio.disabled).toBe(false));
   });
 });
