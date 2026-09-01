@@ -203,15 +203,15 @@ describe("renderAnsweredState", () => {
     expect(radios[1].checked).toBe(false);
   });
 
-  it("disables all radio inputs and the submit button", () => {
+  it("leaves radio inputs and the submit button enabled, so the user can re-answer", () => {
     renderAnsweredState(container, sampleCriterion, {
       choice: 0,
       correct: false,
     });
     const radios = container.querySelectorAll('input[type="radio"]');
-    radios.forEach((radio) => expect(radio.disabled).toBe(true));
+    radios.forEach((radio) => expect(radio.disabled).toBe(false));
     expect(container.querySelector('button[type="submit"]').disabled).toBe(
-      true,
+      false,
     );
   });
 

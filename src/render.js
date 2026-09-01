@@ -135,10 +135,12 @@ export function wireCheckFeedback(container, criterion, options = {}) {
 /**
  * Restores the comprehension check form rendered inside `container` (by
  * renderCriterionContent) to reflect an answer already given today: shows
- * the "already answered" message, pre-checks and disables the persisted
- * choice, disables the remaining inputs and submit button, and shows the
- * matching result text. Callers decide whether today was already answered
- * (see storage.js's lastAnswer) — this function only renders that state.
+ * the "already answered" message, pre-checks the persisted choice, and
+ * shows the matching result text. The form stays fully interactive — the
+ * message is informational only, so the user can still change their
+ * answer and resubmit if they want. Callers decide whether today was
+ * already answered (see storage.js's lastAnswer) — this function only
+ * renders that state.
  */
 export function renderAnsweredState(container, criterion, { choice, correct }) {
   container.querySelector("#check-already-answered").hidden = false;
@@ -146,9 +148,7 @@ export function renderAnsweredState(container, criterion, { choice, correct }) {
   const radios = container.querySelectorAll('input[type="radio"]');
   radios.forEach((radio, index) => {
     radio.checked = index === choice;
-    radio.disabled = true;
   });
-  container.querySelector('button[type="submit"]').disabled = true;
 
   container.querySelector("#check-result").textContent = correct
     ? "Correct!"
