@@ -1,0 +1,25 @@
+{
+  "id": "3.2.5",
+  "name": "Change on Request",
+  "level": "AAA",
+  "principle": "Understandable",
+  "explanation": "Any major change of context must happen only when the user directly asks for it, or the user must have a way to turn that behavior off entirely. This includes a new window opening, focus moving unexpectedly, or a jump to a different page. This builds on the ideas in SC 3.2.1 and 3.2.2. But it applies more broadly, covering any change of context regardless of what triggers it, not just focus or input events specifically.",
+  "whoItAffects": "People with motor disabilities can struggle to close unexpected new windows or navigate back after an unplanned context change. Each of those actions takes additional effort. People with low vision or blindness may not immediately notice a new window has opened at all. They keep trying to interact with content that's no longer in view. People with cognitive disabilities benefit from predictable behavior, since unexpected changes break their concentration and require extra effort to reorient.",
+  "codeExample": {
+    "lang": "html",
+    "bad": "<!-- A new window opens automatically after 10 seconds on the page,\n     with no way to disable this and no user action requested -->\n<script>\n  setTimeout(() => window.open('/promo'), 10000);\n</script>",
+    "good": "<!-- The promotional window only opens when the user clicks a link,\n     a direct request -->\n<a href=\"/promo\" target=\"_blank\">View our current promotion (opens in a new window)</a>"
+  },
+  "howToTest": "Use the page as a typical visitor would, and watch for any context change, like a new window, a page jump, or a shift in what's on screen, that happens without you clicking, tapping, or otherwise directly requesting it. If such a change occurs on its own, check whether there's a setting to turn it off. If no user action triggered the change and no way exists to disable it, this fails.",
+  "check": {
+    "question": "A page opens a new browser tab with an advertisement 15 seconds after loading, without any click or input from the user, and offers no setting to disable this. Does this pass SC 3.2.5 Change on Request?",
+    "choices": [
+      "Yes, because advertisements are a normal part of many websites",
+      "No, because the context change wasn't requested by the user and no mechanism exists to turn it off",
+      "Yes, because the user can simply close the new tab",
+      "It depends only on how relevant the advertisement is"
+    ],
+    "answer": 1
+  },
+  "references": []
+}

@@ -1,0 +1,25 @@
+{
+  "id": "3.3.7",
+  "name": "Redundant Entry",
+  "level": "A",
+  "principle": "Understandable",
+  "explanation": "Information a user already entered earlier in the same process shouldn't need to be typed in again. It should either be automatically filled in for them, or made available for them to select instead of retyping. This applies to multi-step forms, like a checkout flow that asks for a shipping address and then asks for it again as a billing address. Exceptions exist for cases where re-entry is essential, required for security, or where the earlier information is no longer valid.",
+  "whoItAffects": "People with cognitive disabilities, including memory-related conditions, often struggle to recall information entered just a few steps earlier. This makes them more likely to slip up when forced to retype it. People with motor disabilities face extra physical effort retyping the same information. Each repeated field means more time, and more chances for a mistake. Removing unnecessary re-entry cuts both the mental and physical load of a multi-step process.",
+  "codeExample": {
+    "lang": "html",
+    "bad": "<!-- Billing address fields are completely blank, forcing the user\n     to retype an address they already entered as their shipping address -->\n<h2>Billing Address</h2>\n<label for=\"bill-street\">Street</label>\n<input type=\"text\" id=\"bill-street\">",
+    "good": "<!-- A checkbox lets the user reuse their already-entered shipping\n     address instead of retyping it -->\n<h2>Billing Address</h2>\n<label>\n  <input type=\"checkbox\" id=\"same-as-shipping\">\n  Same as shipping address\n</label>"
+  },
+  "howToTest": "Work through a multi-step form or process, such as a checkout flow, and note anything you're asked to enter more than once, like an address or a name. Check whether that information is auto-filled or offered as a selectable option the second time it's needed. If you have to retype the same information manually, and no exception like a security requirement applies, this fails.",
+  "check": {
+    "question": "A checkout process asks for a shipping address on one step, then presents a completely blank billing address form on the next step, with no option to reuse the shipping address already entered. Does this pass SC 3.3.7 Redundant Entry?",
+    "choices": [
+      "Yes, because billing and shipping addresses are different fields",
+      "No, because previously entered information should be auto-filled or selectable instead of retyped",
+      "Yes, because most users have different billing and shipping addresses anyway",
+      "It depends only on how many fields are in the address form"
+    ],
+    "answer": 1
+  },
+  "references": []
+}

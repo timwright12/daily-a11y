@@ -1,0 +1,25 @@
+{
+  "id": "3.2.1",
+  "name": "On Focus",
+  "level": "A",
+  "principle": "Understandable",
+  "explanation": "Moving keyboard focus to an element must never trigger a change of context on its own. A change of context means something like a new window opening, focus jumping elsewhere, or a form submitting. Simply tabbing to a link or a form field should never set any of that off. This is different from clicking or activating an element, where a context change might be expected. It's specifically about the act of receiving focus alone.",
+  "whoItAffects": "Keyboard users are affected most. They move through a page by tabbing from one focusable element to the next. If landing on a field unexpectedly submits a form or opens a new window, that keyboard user loses their place. They have to figure out what happened before they can continue. Screen reader users face the same problem, since they also navigate by moving focus between elements. An unexpected context change disrupts their sense of where they are on the page.",
+  "codeExample": {
+    "lang": "html",
+    "bad": "<!-- Focusing this select immediately navigates away, before the user\n     has chosen an option -->\n<select onfocus=\"window.location.href = this.value\">\n  <option value=\"/home\">Home</option>\n  <option value=\"/about\">About</option>\n</select>",
+    "good": "<!-- Navigation only happens when the user explicitly changes the value\n     or activates a separate button -->\n<select onchange=\"window.location.href = this.value\">\n  <option value=\"/home\">Home</option>\n  <option value=\"/about\">About</option>\n</select>"
+  },
+  "howToTest": "Tab through every focusable element on the page using only the keyboard. Watch for anything unexpected happening the moment an element receives focus. That includes a new window opening, the page navigating away, or focus jumping somewhere else without you pressing anything further. If simply landing on an element triggers any of that, this fails.",
+  "check": {
+    "question": "A dropdown menu automatically submits a search form the instant it receives keyboard focus, before the user selects an option. Does this pass SC 3.2.1 On Focus?",
+    "choices": [
+      "Yes, because dropdowns are expected to behave this way",
+      "No, because receiving focus alone should never trigger a change of context like a form submission",
+      "Yes, because the user can still tab past the dropdown quickly",
+      "It depends only on how the dropdown is visually styled"
+    ],
+    "answer": 1
+  },
+  "references": []
+}

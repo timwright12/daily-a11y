@@ -1,0 +1,25 @@
+{
+  "id": "3.1.4",
+  "name": "Abbreviations",
+  "level": "AAA",
+  "principle": "Understandable",
+  "explanation": "When a page uses an abbreviation, acronym, or initialism, a way to find its expanded meaning needs to be available. This can be a glossary, a link to a definition, or markup like the HTML `<abbr>` element with a `title` attribute. Abbreviations that have become everyday words, such as \"laser,\" or well-known names like \"IBM,\" don't need this treatment, since most readers already recognize them.",
+  "whoItAffects": "People with cognitive disabilities benefit most from having abbreviations spelled out. So do people with limited working memory, or trouble decoding unfamiliar text. An acronym that's obvious to someone in a specific field can be meaningless to a general reader. Without a way to check its meaning, that reader is stuck guessing, or has to go search elsewhere for the answer. This also helps anyone unfamiliar with a given industry's shorthand, since jargon-heavy abbreviations rarely explain themselves.",
+  "codeExample": {
+    "lang": "html",
+    "bad": "<!-- No way to find out what WCAG stands for -->\n<p>This site follows WCAG guidelines for accessibility.</p>",
+    "good": "<!-- The abbr element's title attribute provides the expanded form -->\n<p>This site follows\n  <abbr title=\"Web Content Accessibility Guidelines\">WCAG</abbr>\n  guidelines for accessibility.</p>"
+  },
+  "howToTest": "Scan the page for abbreviations, acronyms, and initialisms that aren't already common household terms. For each one, check whether its expanded meaning is available somewhere, through an `<abbr>` element, a glossary, or a nearby explanation. If an abbreviation appears with no way to determine its meaning, this fails.",
+  "check": {
+    "question": "A technical article repeatedly uses the term \"API\" with no expansion, glossary entry, or `<abbr>` element anywhere on the page. Does this pass SC 3.1.4 Abbreviations?",
+    "choices": [
+      "Yes, because API is a common term among developers",
+      "No, because no mechanism exists for a reader unfamiliar with the term to find its expanded meaning",
+      "Yes, because abbreviations don't need expansion if used more than once",
+      "It depends only on how technical the rest of the article is"
+    ],
+    "answer": 1
+  },
+  "references": []
+}

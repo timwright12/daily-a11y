@@ -1,0 +1,25 @@
+{
+  "id": "3.3.2",
+  "name": "Labels or Instructions",
+  "level": "A",
+  "principle": "Understandable",
+  "explanation": "Any form control that asks for user input needs a label or instruction explaining what's expected. This includes text fields, checkboxes, radio buttons, and dropdown menus. A label identifies what the control is for. Instructions can add detail, like a required date format or a password's minimum length. Neither needs to be excessive. A short, clear label is often all that's needed.",
+  "whoItAffects": "People with cognitive, language, and learning disabilities depend on clear labels to understand what a form field is asking for. Guessing based on layout or placement alone is unreliable and error-prone. Screen reader users need a programmatically linked label to know what each field does. Visual placement near a field means nothing if it isn't connected in code. Anyone unfamiliar with a required format, like a date or phone number style, benefits from instructions that spell it out upfront instead of leaving it to trial and error.",
+  "codeExample": {
+    "lang": "html",
+    "bad": "<!-- No label connects to the input; the text nearby isn't programmatically associated -->\n<p>Phone number</p>\n<input type=\"tel\">",
+    "good": "<!-- A label element is properly associated with the input via the for/id attributes -->\n<label for=\"phone\">Phone number (format: 555-555-5555)</label>\n<input type=\"tel\" id=\"phone\">"
+  },
+  "howToTest": "Check every form field on the page for a visible label or instruction describing what input is expected. Use a browser's accessibility inspector or a screen reader to confirm the label is programmatically linked to its field, not just placed nearby visually. If a field has no label, or the label exists but isn't connected in code, this fails.",
+  "check": {
+    "question": "A signup form has the word \"Username\" placed visually above a text input, but there's no `<label>` element or `aria-label` connecting the text to the input in code. Does this pass SC 3.3.2 Labels or Instructions?",
+    "choices": [
+      "Yes, because a sighted user can see the label is meant for that field",
+      "No, because the label isn't programmatically associated with the input, so assistive technology can't determine it",
+      "Yes, because the word \"Username\" is self-explanatory",
+      "It depends only on the font size of the label text"
+    ],
+    "answer": 1
+  },
+  "references": []
+}

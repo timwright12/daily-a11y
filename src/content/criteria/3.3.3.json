@@ -1,0 +1,25 @@
+{
+  "id": "3.3.3",
+  "name": "Error Suggestion",
+  "level": "AA",
+  "principle": "Understandable",
+  "explanation": "When an automatic check catches an input error and a fix is known, that suggestion needs to be given to the user, unless offering it would create a security risk. For example, if a password field requires a specific format and the entry doesn't match, the message should say what format is needed, not just that the entry is invalid. This doesn't apply to every possible error. Login failures are a common exception, since suggesting which part was wrong could help an attacker.",
+  "whoItAffects": "People with cognitive disabilities often struggle to work out a fix on their own once an error is flagged. A specific suggestion turns a confusing dead end into something they can act on. People with visual disabilities benefit the same way. A generic \"invalid entry\" message gives them nothing concrete to check or correct. Without a suggested fix, many users end up abandoning the form entirely instead of guessing repeatedly at what might be wrong.",
+  "codeExample": {
+    "lang": "html",
+    "bad": "<!-- The error message doesn't say what's actually wrong -->\n<label for=\"zip\">ZIP code</label>\n<input type=\"text\" id=\"zip\" aria-describedby=\"zip-error\">\n<span id=\"zip-error\">Invalid entry.</span>",
+    "good": "<!-- The error message explains the expected format -->\n<label for=\"zip\">ZIP code</label>\n<input type=\"text\" id=\"zip\" aria-describedby=\"zip-error\">\n<span id=\"zip-error\">Enter a 5-digit ZIP code, like 90210.</span>"
+  },
+  "howToTest": "Trigger a validation error on a form field, such as entering text in a numbers-only field or leaving a required field blank. Read the resulting error message and check whether it suggests a specific fix, not just that something is wrong. If a fix is knowable, like an expected format, and the message doesn't mention it, this fails, unless providing the suggestion would create a security risk.",
+  "check": {
+    "question": "A credit card field rejects an entry and shows the message \"Invalid card number,\" without mentioning that the field requires exactly 16 digits with no spaces. Does this pass SC 3.3.3 Error Suggestion?",
+    "choices": [
+      "Yes, because the message correctly identifies that there's an error",
+      "No, because a known, specific correction (the required format) wasn't suggested to the user",
+      "Yes, because credit card fields are always exempt from this criterion",
+      "It depends only on how the field is visually styled"
+    ],
+    "answer": 1
+  },
+  "references": []
+}

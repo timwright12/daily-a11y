@@ -1,0 +1,25 @@
+{
+  "id": "3.2.6",
+  "name": "Consistent Help",
+  "level": "A",
+  "principle": "Understandable",
+  "explanation": "Some sites offer a help mechanism, such as a contact phone number, a live chat link, a self-help FAQ, or an automated contact form. When that mechanism repeats across multiple pages, it needs to appear in the same relative position on each page. This doesn't require every page to have a help option. It only requires that when a help mechanism does repeat across pages, its position relative to other page content stays consistent, unless the user changes it themselves.",
+  "whoItAffects": "People with cognitive disabilities benefit from being able to find help in the same spot every time. Searching a differently arranged page each time adds friction right when they need assistance most. People with motor disabilities benefit from predictable positioning too. It lets them navigate straight to a familiar location instead of scanning the whole page again. This consistency matters most at the exact moment someone is already struggling with something else on the page and needs help quickly.",
+  "codeExample": {
+    "lang": "html",
+    "bad": "<!-- Page A: help link in the header -->\n<header><a href=\"/help\">Help</a></header>\n\n<!-- Page B: help link moved to the footer, with no user request -->\n<footer><a href=\"/help\">Help</a></footer>",
+    "good": "<!-- Both pages keep the help link in the same relative position -->\n<header><a href=\"/help\">Help</a></header>"
+  },
+  "howToTest": "Visit multiple pages within the same site that each offer a help mechanism, like a contact link, chat widget, or FAQ link. Compare where that mechanism appears relative to the rest of the page content on each one. If its position shifts from page to page without the user having changed it, this fails.",
+  "check": {
+    "question": "A site's live chat button sits in the bottom-right corner on every page except one, where it unexpectedly appears at the top of the page instead, with no setting that caused the change. Does this pass SC 3.2.6 Consistent Help?",
+    "choices": [
+      "Yes, because the chat button is still present on every page",
+      "No, because the help mechanism's relative position isn't consistent across pages",
+      "Yes, because chat buttons commonly move around on different page layouts",
+      "It depends only on how many pages the site has"
+    ],
+    "answer": 1
+  },
+  "references": []
+}

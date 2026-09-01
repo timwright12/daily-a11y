@@ -1,0 +1,25 @@
+{
+  "id": "3.1.5",
+  "name": "Reading Level",
+  "level": "AAA",
+  "principle": "Understandable",
+  "explanation": "Some text needs reading ability beyond lower secondary education, roughly a US 9th-grade level. When that happens, a simpler supplemental version needs to be available. Proper names and titles aren't counted when judging reading level. The supplement can be a summary, an illustrated version, or any alternate content that gets the same information across in plainer language. This criterion doesn't require rewriting the original text. It only requires making a simpler option available alongside it.",
+  "whoItAffects": "People with reading disabilities, including dyslexia, are the main audience here. People whose cognitive disabilities affect language skills are affected too. Dense sentences with advanced vocabulary can make content completely inaccessible to these readers. This holds true even when every other accessibility feature on the page works fine. This also helps readers who aren't fluent in the page's language, such as English learners. Anyone facing unfamiliar technical or legal material benefits too.",
+  "codeExample": {
+    "lang": "html",
+    "bad": "<!-- Dense legal language with no simpler alternative offered -->\n<p>The aforementioned indemnification obligations shall survive termination\n   of this agreement notwithstanding any provision to the contrary herein.</p>",
+    "good": "<!-- A plain-language summary is linked alongside the original text -->\n<p>The aforementioned indemnification obligations shall survive termination\n   of this agreement notwithstanding any provision to the contrary herein.</p>\n<a href=\"/plain-language-summary\">Read a plain-language summary of this section</a>"
+  },
+  "howToTest": "Run the page's main text through a readability formula, such as Flesch-Kincaid Grade Level, after removing proper names and titles. If the score comes out above roughly a 9th-grade level, check whether a simpler alternative version is available and easy to find. If the text is too advanced and no supplement exists, this fails.",
+  "check": {
+    "question": "A government policy page is written at a college reading level, with no summary, glossary, or simplified version offered anywhere. Does this pass SC 3.1.5 Reading Level?",
+    "choices": [
+      "Yes, because government policy documents are expected to use formal language",
+      "No, because the text exceeds the target reading level and no simpler alternative is provided",
+      "Yes, because the page includes a search feature",
+      "It depends only on the length of the document"
+    ],
+    "answer": 1
+  },
+  "references": []
+}

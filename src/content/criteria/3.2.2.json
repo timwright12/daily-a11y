@@ -1,0 +1,25 @@
+{
+  "id": "3.2.2",
+  "name": "On Input",
+  "level": "A",
+  "principle": "Understandable",
+  "explanation": "Changing a form control's value must not automatically trigger a change of context, unless the user was warned about that behavior beforehand. This covers typing into a field, checking a box, or picking a dropdown option. A change of context includes things like automatic form submission, a new window opening, or a jump to a different page. If a control needs to trigger one of these on change, the interface has to tell the user that in advance.",
+  "whoItAffects": "People with visual disabilities are directly affected by unannounced context changes. They may not see a new window pop up, or notice a jump to a different part of the page. People with cognitive disabilities are also affected. An unexpected shift after simply picking an option can be disorienting and hard to recover from. Keyboard users lose their place in a similar way. They have to reorient themselves after an unplanned change they didn't ask for.",
+  "codeExample": {
+    "lang": "html",
+    "bad": "<!-- Selecting an option immediately navigates away, with no warning\n     that this dropdown behaves this way -->\n<label for=\"country\">Country</label>\n<select id=\"country\" onchange=\"window.location.href = this.value\">\n  <option value=\"/us\">United States</option>\n  <option value=\"/ca\">Canada</option>\n</select>",
+    "good": "<!-- The label warns the user upfront that changing this selection\n     will navigate the page -->\n<label for=\"country\">Country (selecting this will take you to that country's page)</label>\n<select id=\"country\" onchange=\"window.location.href = this.value\">\n  <option value=\"/us\">United States</option>\n  <option value=\"/ca\">Canada</option>\n</select>"
+  },
+  "howToTest": "Interact with every form control on the page: type into fields, check boxes, and select dropdown options. Watch for any unannounced change of context, like automatic navigation, form submission, or a new window opening, right after a value changes. If this happens without clear warning given beforehand, this fails.",
+  "check": {
+    "question": "A settings page automatically saves and reloads the entire page the moment a user toggles a checkbox, with no warning that this will happen. Does this pass SC 3.2.2 On Input?",
+    "choices": [
+      "Yes, because auto-saving settings is convenient for users",
+      "No, because changing the checkbox triggers a context change without the user being warned about it beforehand",
+      "Yes, because checkboxes always behave this way",
+      "It depends only on how fast the page reloads"
+    ],
+    "answer": 1
+  },
+  "references": []
+}

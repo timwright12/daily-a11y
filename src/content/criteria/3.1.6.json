@@ -1,0 +1,25 @@
+{
+  "id": "3.1.6",
+  "name": "Pronunciation",
+  "level": "AAA",
+  "principle": "Understandable",
+  "explanation": "When a word's meaning depends on how it's pronounced, and context alone doesn't make the correct pronunciation clear, a way to find that pronunciation needs to be available. English has heteronyms like \"lead\" (the metal) versus \"lead\" (to guide). These words are spelled the same but pronounced differently, with different meanings. A pronunciation guide, an audio clip, or phonetic markup all satisfy this when the ambiguity would otherwise confuse a reader.",
+  "whoItAffects": "This affects people who are blind or have low vision and rely on screen readers. A screen reader has to guess which pronunciation to use for an ambiguous word, and it often guesses wrong. It also affects people with reading disabilities, who may not recognize which pronunciation applies just from seeing the word on the page. Some written languages face this problem even more than English does. In Japanese, for example, a single kanji character can have multiple pronunciations depending on its meaning.",
+  "codeExample": {
+    "lang": "html",
+    "bad": "<!-- \"desert\" is ambiguous here: to abandon, or the arid landscape? -->\n<p>Soldiers who desert their post face serious consequences.</p>",
+    "good": "<!-- ruby annotation gives the intended pronunciation -->\n<p>Soldiers who\n  <ruby>desert<rt>dih-ZURT</rt></ruby>\n  their post face serious consequences.</p>"
+  },
+  "howToTest": "Look for heteronyms or words whose pronunciation changes their meaning. Check whether the surrounding sentence makes the intended pronunciation obvious. If it doesn't, check whether a pronunciation guide, audio clip, or phonetic markup like ruby annotations is available for that word. If the word is genuinely ambiguous and no such mechanism exists, this fails.",
+  "check": {
+    "question": "A sentence reads \"She will read the report tomorrow,\" where \"read\" could be pronounced as present or past tense depending on context that isn't otherwise clear. No pronunciation guide is provided. Does this fail SC 3.1.6 Pronunciation?",
+    "choices": [
+      "Yes, always, because \"read\" is a heteronym",
+      "It depends on whether the surrounding context already makes the intended pronunciation and meaning clear",
+      "No, because pronunciation guides are never required for common English words",
+      "Yes, but only if the page uses a screen reader plugin"
+    ],
+    "answer": 1
+  },
+  "references": []
+}

@@ -1,0 +1,25 @@
+{
+  "id": "3.1.1",
+  "name": "Language of Page",
+  "level": "A",
+  "principle": "Understandable",
+  "explanation": "Every page needs its main human language set in code, using the `lang` attribute on the `<html>` element. This tells browsers and assistive technology what language the page is written in. A screen reader uses this to pick the correct pronunciation rules. Without it, the screen reader guesses, often using its default language, and reads the text with the wrong accent or pronunciation. If a page uses more than one language equally, the language used first counts as the default.",
+  "whoItAffects": "Screen reader users are affected most directly. A screen reader set to read English will mispronounce French or German text if the page doesn't declare its language. Words come out garbled or unrecognizable, since the pronunciation rules for one language often don't apply to another. This also affects users of translation tools and browser features that rely on a declared language, like auto-translate prompts, which can't detect the right language to offer without this code in place.",
+  "codeExample": {
+    "lang": "html",
+    "bad": "<!-- No lang attribute: screen readers must guess the language -->\n<html>\n  <head><title>Bienvenue</title></head>\n  <body><p>Bienvenue sur notre site.</p></body>\n</html>",
+    "good": "<!-- lang=\"fr\" tells assistive technology this page is in French -->\n<html lang=\"fr\">\n  <head><title>Bienvenue</title></head>\n  <body><p>Bienvenue sur notre site.</p></body>\n</html>"
+  },
+  "howToTest": "View the page source and check the opening `<html>` tag for a `lang` attribute, such as `lang=\"en\"` or `lang=\"fr\"`. Confirm the value matches the language the page is actually written in. Browser developer tools also show this: most let you inspect the `<html>` element directly and see its computed `lang` value without digging through raw source.",
+  "check": {
+    "question": "A web page's entire content is written in Spanish, but the `<html>` tag has no `lang` attribute set. Does this pass SC 3.1.1 Language of Page?",
+    "choices": [
+      "Yes, because the visible text is clearly in Spanish to a human reader",
+      "No, because the page's language must be set in code so assistive technology can determine it",
+      "Yes, because most browsers can detect the language automatically",
+      "It depends only on whether the page has a title"
+    ],
+    "answer": 1
+  },
+  "references": []
+}

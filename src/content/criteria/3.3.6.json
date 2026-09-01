@@ -1,0 +1,25 @@
+{
+  "id": "3.3.6",
+  "name": "Error Prevention (All)",
+  "level": "AAA",
+  "principle": "Understandable",
+  "explanation": "For any page that requires submitting information, not just legal, financial, or data-modifying pages, at least one safeguard must be in place. The submission can be reversible after the fact. The entered data can be automatically checked, with the user given a chance to correct errors. Or a review-and-confirm step can appear before the submission is finalized. This extends the same three-option safeguard from SC 3.3.4 to cover every kind of form submission, not just high-stakes ones.",
+  "whoItAffects": "People with disabilities that affect reading, motor control, or memory are more likely to make an unintended error while filling out any form. This holds true even for forms that don't involve money or legal terms. A safeguard like a confirmation step or automatic error checking gives everyone a chance to catch and fix mistakes before they cause a problem. This matters most for these users. Without any of these safeguards, even a minor form, like a comment or a survey, can create frustrating consequences from a simple slip.",
+  "codeExample": {
+    "lang": "html",
+    "bad": "<!-- A newsletter signup form submits immediately with no way to review\n     or undo the submission -->\n<form action=\"/subscribe\" method=\"post\">\n  <input type=\"email\" name=\"email\">\n  <button type=\"submit\">Subscribe</button>\n</form>",
+    "good": "<!-- The form validates the email format and shows an error with a\n     chance to correct it before submission succeeds -->\n<form action=\"/subscribe\" method=\"post\">\n  <input type=\"email\" name=\"email\" required pattern=\"[^@]+@[^@]+\\.[^@]+\">\n  <button type=\"submit\">Subscribe</button>\n</form>"
+  },
+  "howToTest": "Find any page on the site that asks the user to submit information, regardless of how minor it seems. Submit the form and check whether the submission is reversible afterward, whether the data is checked for errors with a chance to fix them, or whether a confirmation step appears before it's finalized. If none of these three safeguards apply, this fails.",
+  "check": {
+    "question": "A site's comment form submits instantly with no confirmation step, no validation of the entered text, and no way to edit or delete the comment after posting. Does this pass SC 3.3.6 Error Prevention (All)?",
+    "choices": [
+      "Yes, because comment forms are typically low-stakes",
+      "No, because none of the three required safeguards (reversible, checked, or confirmed) are present",
+      "Yes, because the user typed the comment themselves",
+      "It depends only on the length of the comment"
+    ],
+    "answer": 1
+  },
+  "references": []
+}
