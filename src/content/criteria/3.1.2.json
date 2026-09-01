@@ -1,0 +1,25 @@
+{
+  "id": "3.1.2",
+  "name": "Language of Parts",
+  "level": "AA",
+  "principle": "Understandable",
+  "explanation": "When a passage or phrase switches to a different language than the rest of the page, that shift needs to be marked in code with a `lang` attribute on the surrounding element. This lets assistive technology switch pronunciation rules for just that piece of text. There are exceptions: proper names, technical terms, and words that have become part of the surrounding language, like \"café\" in English text, don't need to be marked separately.",
+  "whoItAffects": "Screen reader users depend on accurate language markup to hear foreign words pronounced correctly. Without it, a screen reader keeps using the page's main language rules straight through a quoted phrase in another language. The pronunciation that comes out doesn't match the actual words. This matters even more when scripts differ a lot, like a page switching between English and Japanese, or between left-to-right and right-to-left languages. In those cases, the wrong rules can make the text completely unintelligible when read aloud.",
+  "codeExample": {
+    "lang": "html",
+    "bad": "<!-- The French phrase gets read with English pronunciation rules -->\n<p>Our team's motto is \"L'union fait la force,\" which drives our work.</p>",
+    "good": "<!-- lang=\"fr\" on the span switches pronunciation rules for that phrase -->\n<p>Our team's motto is <span lang=\"fr\">\"L'union fait la force,\"</span> which drives our work.</p>"
+  },
+  "howToTest": "Scan the page for any passage or phrase in a language different from the page's main language. Check the HTML around each one for a `lang` attribute on the containing element, like a `<span>` or `<blockquote>`. Turn on a screen reader and listen to how it pronounces the passage. If it uses the wrong language's pronunciation rules, this fails, unless the phrase falls under an exception like a proper name or a foreign word that's become common usage.",
+  "check": {
+    "question": "An English-language article includes a block quote entirely in German, but the quote isn't wrapped in an element with `lang=\"de\"`. Does this pass SC 3.1.2 Language of Parts?",
+    "choices": [
+      "Yes, because the surrounding article is properly marked as English",
+      "No, because the German passage needs its own language markup so it can be pronounced correctly",
+      "Yes, because block quotes are exempt from language marking",
+      "It depends only on how long the quote is"
+    ],
+    "answer": 1
+  },
+  "references": []
+}

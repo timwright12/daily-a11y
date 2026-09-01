@@ -1,0 +1,25 @@
+{
+  "id": "3.2.4",
+  "name": "Consistent Identification",
+  "level": "AA",
+  "principle": "Understandable",
+  "explanation": "Components that do the same job across multiple pages in a site need consistent names, labels, and icons. A search feature shouldn't be called \"Search\" on one page and \"Find\" on another. A print icon shouldn't change its shape or its accessible name between pages if it prints the page both times. This doesn't mean every component has to look pixel-identical, only that its identification, what it's called and how it's announced to assistive technology, stays consistent for a given function.",
+  "whoItAffects": "Screen reader users build a mental model of what different controls do based on their announced name. Switching names for the same function forces them to relearn something they already understood. People with cognitive disabilities are affected similarly. Recognizing a familiar icon or label by its consistent appearance and name reduces the effort needed to use a site they've used before. Inconsistent naming turns a simple, familiar action into something that has to be puzzled out again on every new page.",
+  "codeExample": {
+    "lang": "html",
+    "bad": "<!-- Page A -->\n<button aria-label=\"Search\">🔍</button>\n\n<!-- Page B: same function, different accessible name -->\n<button aria-label=\"Find on page\">🔍</button>",
+    "good": "<!-- Both pages use the same accessible name for the same function -->\n<button aria-label=\"Search\">🔍</button>"
+  },
+  "howToTest": "Identify components that appear on multiple pages and perform the same function, such as a search box, a print button, or a shopping cart icon. Check their visible label and accessible name, using a browser's accessibility inspector or a screen reader, on each page where they appear. If the same function is labeled or named differently from one page to the next, this fails.",
+  "check": {
+    "question": "A site's shopping cart icon is labeled \"Cart\" on the homepage but \"My Bag\" on the checkout page, even though both link to the same shopping cart. Does this pass SC 3.2.4 Consistent Identification?",
+    "choices": [
+      "Yes, because both labels clearly relate to shopping",
+      "No, because the same function is identified inconsistently across pages",
+      "Yes, because checkout pages are allowed to use different terminology",
+      "It depends only on the icon's visual design"
+    ],
+    "answer": 1
+  },
+  "references": []
+}

@@ -1,0 +1,25 @@
+{
+  "id": "3.3.8",
+  "name": "Accessible Authentication (Minimum)",
+  "level": "AA",
+  "principle": "Understandable",
+  "explanation": "Logging in shouldn't require a cognitive function test, like remembering a password or solving a puzzle, unless an alternative is also offered. Acceptable alternatives include letting a password manager fill in the field, or allowing copy and paste. Object recognition, like picking a specific image, also counts. So does personal content the user already knows, like a photo of their own pet. This mainly targets ongoing logins for existing accounts, not the initial process of creating one.",
+  "whoItAffects": "People with cognitive disabilities, including memory impairments, often struggle to recall passwords or solve puzzle-based challenges. This can lock them out of their own accounts entirely. People with dyslexia may have trouble typing a password accurately without a copy-paste option or a password manager. Supporting these alternatives means logging in no longer depends on a skill that has nothing to do with proving who someone is.",
+  "codeExample": {
+    "lang": "html",
+    "bad": "<!-- The password field blocks pasting, forcing users to manually\n     type and remember their password every time -->\n<input type=\"password\" onpaste=\"return false\">",
+    "good": "<!-- Pasting is allowed, so password managers and copy-paste both work -->\n<input type=\"password\">"
+  },
+  "howToTest": "Go to the login page and try pasting a password into the password field. Try using a password manager's autofill feature. If either is blocked, check whether another accessible alternative to a cognitive function test, like object recognition or personal content recognition, is offered instead. If pasting and autofill are both blocked and no alternative exists, this fails.",
+  "check": {
+    "question": "A login form disables pasting into the password field and offers no alternative authentication method, forcing users to manually type their password from memory every time. Does this pass SC 3.3.8 Accessible Authentication (Minimum)?",
+    "choices": [
+      "Yes, because blocking paste is a common security practice",
+      "No, because this requires a cognitive function test (recalling and typing a password) with no accessible alternative offered",
+      "Yes, because password fields are always exempt from this criterion",
+      "It depends only on the minimum password length required"
+    ],
+    "answer": 1
+  },
+  "references": []
+}

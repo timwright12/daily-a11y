@@ -1,0 +1,25 @@
+{
+  "id": "3.2.3",
+  "name": "Consistent Navigation",
+  "level": "AA",
+  "principle": "Understandable",
+  "explanation": "When the same navigation menu, search box, or other navigational block appears on multiple pages within a site, it needs to stay in the same relative order every time it appears. The exact wording or number of items can still change. A menu can even expand or add a submenu. But the overall order relative to other repeated blocks must stay consistent. The only exception is when the user themselves asks for a different order, like customizing their own layout.",
+  "whoItAffects": "People with low vision benefit from navigation staying in the same place. They often rely on remembering roughly where things are laid out on the screen. People with cognitive disabilities benefit even more directly. Building a spatial habit for where the menu or search box sits reduces the mental effort of relearning a page's layout each time. Screen reader users navigating sequentially also expect repeated blocks to show up in the same order relative to each other. A shuffled order disrupts their sense of the page structure.",
+  "codeExample": {
+    "lang": "html",
+    "bad": "<!-- Page A -->\n<nav>Home | Products | About | Contact</nav>\n<aside>Search</aside>\n\n<!-- Page B: the search box now comes before the nav, with no user request -->\n<aside>Search</aside>\n<nav>Home | Products | About | Contact</nav>",
+    "good": "<!-- Both pages keep the same relative order -->\n<nav>Home | Products | About | Contact</nav>\n<aside>Search</aside>"
+  },
+  "howToTest": "Visit several pages within the same site and note the relative order of repeated navigation elements, like the main menu, a search box, or a sidebar. Compare that order across pages. If a repeated block appears in a different position relative to the others, without the user having requested a change, this fails.",
+  "check": {
+    "question": "A site's main navigation menu appears above the page content on the homepage, but below the page content on every other page, with no option for the user to control this. Does this pass SC 3.2.3 Consistent Navigation?",
+    "choices": [
+      "Yes, because the same menu items appear on every page",
+      "No, because the navigation's relative position changed across pages without the user requesting it",
+      "Yes, because the homepage is allowed to look different from other pages",
+      "It depends only on how many menu items there are"
+    ],
+    "answer": 1
+  },
+  "references": []
+}

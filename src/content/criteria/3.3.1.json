@@ -1,0 +1,25 @@
+{
+  "id": "3.3.1",
+  "name": "Error Identification",
+  "level": "A",
+  "principle": "Understandable",
+  "explanation": "When a form submission is automatically checked and an error is found, the specific field with the error needs to be identified, and the error needs to be described in text. Simply redisplaying the form with a red border or a color change isn't enough. The text description has to say what's wrong, so the user understands the problem without having to guess based on visual cues alone.",
+  "whoItAffects": "Screen reader users can't perceive a red border or a color change. A text description is the only way they learn an error occurred and where it is. People with low vision may miss a subtle visual indicator entirely, especially if color is the only signal used. People with cognitive disabilities benefit from a clear, specific description of the error. A vague or missing explanation leaves them unsure what to fix or why their submission failed.",
+  "codeExample": {
+    "lang": "html",
+    "bad": "<!-- Only a red border shows something is wrong; no text explains what -->\n<label for=\"email\">Email</label>\n<input type=\"email\" id=\"email\" style=\"border: 2px solid red;\">",
+    "good": "<!-- A text error message identifies the field and describes the problem -->\n<label for=\"email\">Email</label>\n<input type=\"email\" id=\"email\" aria-describedby=\"email-error\" aria-invalid=\"true\">\n<span id=\"email-error\">Enter a valid email address, like name@example.com.</span>"
+  },
+  "howToTest": "Submit a form with a deliberately invalid entry, such as an empty required field or a badly formatted email. Check whether a text message appears that identifies which field has the problem and describes what's wrong. Turn on a screen reader and confirm it announces the error text, not just a visual style change. If no text description appears, this fails.",
+  "check": {
+    "question": "A form field turns red and gets a thicker border after a failed submission, but no text anywhere states what the error is or which field it belongs to. Does this pass SC 3.3.1 Error Identification?",
+    "choices": [
+      "Yes, because the red border makes clear something is wrong",
+      "No, because the error must also be identified and described to the user in text",
+      "Yes, because most users understand that red means an error",
+      "It depends only on how thick the border is"
+    ],
+    "answer": 1
+  },
+  "references": []
+}

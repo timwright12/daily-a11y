@@ -1,0 +1,25 @@
+{
+  "id": "3.3.5",
+  "name": "Help",
+  "level": "AAA",
+  "principle": "Understandable",
+  "explanation": "Context-sensitive help needs to be available for completing tasks on the page. This means help that's relevant to the specific field or step a user is on, not just a generic help page somewhere else on the site. It can take the form of tooltips, inline hint text, a help icon next to a complex field, or a link to a specific section of documentation. Help doesn't need to be shown for every single field, only where a plain label or instruction isn't already enough on its own.",
+  "whoItAffects": "People with cognitive disabilities benefit from help that's available exactly where and when they need it. Hunting through a separate general help page while also trying to remember what they were doing on the form breaks their concentration. People with limited short-term memory face a similar problem. Navigating away from a task to find help, then having to reconstruct where they left off, adds unnecessary difficulty. Context-sensitive help removes that extra step by keeping guidance attached to the specific task at hand.",
+  "codeExample": {
+    "lang": "html",
+    "bad": "<!-- No help is available for a field that most users find confusing -->\n<label for=\"routing\">Routing number</label>\n<input type=\"text\" id=\"routing\">",
+    "good": "<!-- A help icon links to a specific explanation right next to the field -->\n<label for=\"routing\">Routing number</label>\n<input type=\"text\" id=\"routing\" aria-describedby=\"routing-help\">\n<a id=\"routing-help\" href=\"/help/routing-number\">What's a routing number?</a>"
+  },
+  "howToTest": "Look for form fields or steps that are commonly confusing or unfamiliar. Check whether help specific to that field or step is available nearby, such as a tooltip, hint text, or a link to a targeted explanation. If the only available help is a generic page unrelated to the specific task, or no help exists at all for a field that clearly needs it, this fails.",
+  "check": {
+    "question": "A tax form has a complex field labeled \"Adjusted gross income\" with no tooltip, hint, or link explaining what it means, though the site does have a general FAQ page elsewhere. Does this pass SC 3.3.5 Help?",
+    "choices": [
+      "Yes, because a general FAQ page exists somewhere on the site",
+      "No, because context-sensitive help specific to this field isn't available where the user needs it",
+      "Yes, because tax terminology is expected to be understood by users filling out tax forms",
+      "It depends only on how long the FAQ page is"
+    ],
+    "answer": 1
+  },
+  "references": []
+}

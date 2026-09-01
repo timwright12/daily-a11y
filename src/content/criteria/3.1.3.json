@@ -1,0 +1,25 @@
+{
+  "id": "3.1.3",
+  "name": "Unusual Words",
+  "level": "AAA",
+  "principle": "Understandable",
+  "explanation": "When a page uses a word or phrase in an unusual, restricted, or figurative way, like idioms, jargon, or slang, a way to look up its specific meaning needs to be available. This doesn't apply to every uncommon word. It applies when the surrounding context alone doesn't make the meaning clear, and a reader would genuinely need a definition to understand it. A glossary, an inline definition, or a link to an explanation all satisfy this.",
+  "whoItAffects": "This mainly affects people with cognitive, language, or learning disabilities who struggle to work out meaning from context. Idioms and figurative language are especially hard, since they don't mean what their individual words suggest. It also affects people with visual disabilities who use screen magnifiers. Zooming in narrows their view of the page. That can strip away the surrounding context that would otherwise help them guess a word's meaning.",
+  "codeExample": {
+    "lang": "html",
+    "bad": "<!-- \"Break the ice\" is idiomatic; nothing explains it for readers\n     who don't already know the phrase -->\n<p>The host asked a fun question to break the ice before the meeting.</p>",
+    "good": "<!-- A definition is available via a linked glossary entry -->\n<p>The host asked a fun question to\n  <a href=\"/glossary#break-the-ice\">break the ice</a>\n  before the meeting.</p>"
+  },
+  "howToTest": "Read through the page's content and flag any idioms, jargon, or words used in a specialized or figurative sense that a general reader in the target audience might not understand from context. For each one, check whether a definition mechanism exists nearby, such as a glossary link, a tooltip, or an inline explanation. If an unusual term has no way to look up its meaning, this fails.",
+  "check": {
+    "question": "An article aimed at a general audience uses the idiom \"cut corners\" with no glossary, link, or explanation provided anywhere on the page. Does this pass SC 3.1.3 Unusual Words?",
+    "choices": [
+      "Yes, because most readers are familiar with common idioms",
+      "No, because no mechanism is available for readers to look up the idiom's specific meaning",
+      "Yes, because idioms are a normal part of natural language",
+      "It depends only on the length of the article"
+    ],
+    "answer": 1
+  },
+  "references": []
+}

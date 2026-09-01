@@ -1,0 +1,25 @@
+{
+  "id": "3.3.4",
+  "name": "Error Prevention (Legal, Financial, Data)",
+  "level": "AA",
+  "principle": "Understandable",
+  "explanation": "For pages that create legal or financial commitments, delete or modify stored user data, or submit test answers, at least one safeguard must be in place. The submission can be reversible, meaning the user can undo it afterward. The data can be automatically checked for errors, with a chance to fix them before final submission. Or the user can review and confirm the information before it's finalized. Any one of these three options satisfies the requirement.",
+  "whoItAffects": "People with motor disabilities are more likely to trigger an action by mistake, like an accidental click or a stray keystroke. A safeguard against irreversible consequences protects against costly slips. People with cognitive disabilities may misread a form or misunderstand a step. A review-and-confirm stage catches that mistake before it turns into a real financial or legal problem. Without one of these safeguards, everyone faces higher stakes for a simple, easily made error.",
+  "codeExample": {
+    "lang": "html",
+    "bad": "<!-- Clicking submit immediately finalizes a payment with no review\n     or confirmation step -->\n<form action=\"/complete-purchase\" method=\"post\">\n  <button type=\"submit\">Pay Now</button>\n</form>",
+    "good": "<!-- A review step shows the order details and requires explicit\n     confirmation before the charge is finalized -->\n<form action=\"/review-order\" method=\"post\">\n  <button type=\"submit\">Review Order Before Paying</button>\n</form>\n<!-- The review page then shows a final \"Confirm Payment\" button -->"
+  },
+  "howToTest": "Find a page that involves a financial transaction, a legal commitment, or the deletion or modification of stored data. Attempt to complete the action. Check whether it's reversible afterward, whether the entered data is checked with a chance to correct errors, or whether a review-and-confirm step appears before it's finalized. If none of these three safeguards exist, this fails.",
+  "check": {
+    "question": "An online banking page lets a user delete a saved payee with a single click, with no confirmation dialog, no undo option, and no way to reverse the deletion afterward. Does this pass SC 3.3.4 Error Prevention (Legal, Financial, Data)?",
+    "choices": [
+      "Yes, because deleting a payee is a simple action",
+      "No, because none of the three required safeguards (reversible, checked, or confirmed) are present",
+      "Yes, because the user chose to click the delete button themselves",
+      "It depends only on how the delete button is labeled"
+    ],
+    "answer": 1
+  },
+  "references": []
+}

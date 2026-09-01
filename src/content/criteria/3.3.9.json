@@ -1,0 +1,25 @@
+{
+  "id": "3.3.9",
+  "name": "Accessible Authentication (Enhanced)",
+  "level": "AAA",
+  "principle": "Understandable",
+  "explanation": "This is a stricter version of SC 3.3.8. Logging in still shouldn't require a cognitive function test unless an alternative is offered. But this AAA version drops the object recognition and personal content exceptions that the Level AA version allows. Only two options remain. One is another authentication method that doesn't rely on a cognitive function test at all. The other is a mechanism that actively helps the user complete the cognitive test, such as a password manager built into the page.",
+  "whoItAffects": "People with cognitive disabilities are affected the same way as with SC 3.3.8. But this stricter version removes fallback options like picking out objects in images. That kind of test can still be difficult for some users with visual or cognitive impairments. This version benefits people who find even object recognition challenging. It ensures that methods like biometrics, single sign-on, or fully supported password managers are available as genuine alternatives, not just object-based puzzles.",
+  "codeExample": {
+    "lang": "html",
+    "bad": "<!-- The only alternative to typing a password is an image-based\n     object recognition puzzle, which this stricter AAA criterion doesn't accept -->\n<p>Forgot your password? Complete this image puzzle instead.</p>",
+    "good": "<!-- A biometric or single sign-on option is offered as a genuine\n     alternative that avoids a cognitive function test entirely -->\n<button>Sign in with Face ID</button>\n<button>Sign in with Google</button>"
+  },
+  "howToTest": "Go to the login page and list every available way to authenticate. For each one that relies on a cognitive function test, like typing a remembered password, check whether a genuine alternative exists that avoids cognitive testing entirely. Biometrics and single sign-on both count. If the only alternatives offered are object recognition puzzles, this fails the stricter AAA version, even if it passes SC 3.3.8.",
+  "check": {
+    "question": "A site offers password login and, as its only alternative, an image-based puzzle asking users to identify all pictures containing a bicycle. Does this pass SC 3.3.9 Accessible Authentication (Enhanced)?",
+    "choices": [
+      "Yes, because an alternative to typing the password is provided",
+      "No, because object recognition puzzles don't count as a valid alternative under this stricter AAA criterion",
+      "Yes, because image puzzles are commonly used for security",
+      "It depends only on how many images are shown in the puzzle"
+    ],
+    "answer": 1
+  },
+  "references": []
+}
