@@ -43,8 +43,8 @@ main.insertAdjacentHTML(
   "beforeend",
   `
   <div class="share">
-    <button id="share-button" type="button">Copy today's result</button>
-    <p id="share-status" role="status"></p>
+    <button id="share-button" class="btn-outline" type="button">Copy today's result</button>
+    <p id="share-status" class="share-status" role="status"></p>
   </div>
 `,
 );
