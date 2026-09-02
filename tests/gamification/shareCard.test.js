@@ -6,7 +6,7 @@ describe("buildShareText", () => {
 
   it("includes criterion id, name, and day number with no check result", () => {
     const text = buildShareText(criterion, 42, null);
-    expect(text).toContain("Day 42");
+    expect(text).toContain("42 days in a row");
     expect(text).toContain("1.4.3");
     expect(text).toContain("Contrast (Minimum)");
     expect(text).not.toMatch(/correct|incorrect/i);
@@ -14,7 +14,7 @@ describe("buildShareText", () => {
 
   it("includes a correct-answer note when checkResult is true", () => {
     const text = buildShareText(criterion, 42, true);
-    expect(text).toMatch(/got it right|correct/i);
+    expect(text).toMatch(/nailed it|correct/i);
   });
 
   it("includes an incorrect-answer note when checkResult is false", () => {
