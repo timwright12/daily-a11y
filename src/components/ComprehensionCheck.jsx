@@ -31,21 +31,34 @@ export default function ComprehensionCheck({
   }
 
   return (
-    <section aria-labelledby="check-heading">
-      <h2 id="check-heading">Check your understanding</h2>
+    <section
+      aria-labelledby="check-heading"
+      className="pt-10 border-t border-rule mt-10"
+    >
+      <h2
+        id="check-heading"
+        className="font-mono text-[0.8rem] font-semibold tracking-[0.08em] uppercase text-ink-quiet mb-5"
+      >
+        Check your understanding
+      </h2>
       {alreadyAnswered && (
-        <p className="banner banner-success">
+        <p className="rounded-[0.3em] text-[0.95rem] font-semibold px-[1.4em] py-[0.7em] mb-5 text-center bg-moss-bg text-moss border border-moss">
           You already answered today&apos;s knowledge check.
         </p>
       )}
       <form onSubmit={handleSubmit}>
-        <fieldset>
-          <legend>{criterion.check.question}</legend>
-          <ul className="check-choices">
+        <fieldset className="border-0 m-0 p-0">
+          <legend className="p-0 font-display font-medium text-xl leading-[1.4] text-ink mb-5">
+            {criterion.check.question}
+          </legend>
+          <ul className="flex flex-col gap-[0.6rem] m-0 mb-5 p-0 list-none">
             {criterion.check.choices.map((choice, index) => {
               const id = `check-choice-${index}`;
               return (
-                <li key={id}>
+                <li
+                  key={id}
+                  className="flex items-start gap-[0.7rem] px-4 py-[0.85rem] border border-rule rounded-[0.4em]"
+                >
                   <input
                     type="radio"
                     name="check-choice"
@@ -54,16 +67,24 @@ export default function ComprehensionCheck({
                     checked={selected === String(index)}
                     onChange={(event) => setSelected(event.target.value)}
                     required
+                    className="mt-[0.2em] accent-signal shrink-0"
                   />
-                  <label htmlFor={id}>{choice}</label>
+                  <label htmlFor={id} className="text-base leading-[1.5]">
+                    {choice}
+                  </label>
                 </li>
               );
             })}
           </ul>
         </fieldset>
-        <button type="submit">Submit answer</button>
+        <button
+          type="submit"
+          className="font-body font-semibold text-[0.95rem] text-paper bg-ink border border-ink rounded-[0.3em] px-[1.4em] py-[0.7em] cursor-pointer hover:bg-signal hover:border-signal"
+        >
+          Submit answer
+        </button>
       </form>
-      <p className="check-result" role="status">
+      <p className="font-mono text-[0.9rem] mt-3 mb-0" role="status">
         {result}
       </p>
     </section>

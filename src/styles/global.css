@@ -1,0 +1,64 @@
+/* src/styles/global.css */
+@import "tailwindcss";
+@config "../../tailwind.config.mjs";
+
+:root {
+  /* light-only: this design has one deliberate palette, no dark-mode
+     equivalent yet. `light dark` would let Chrome auto-adjust our custom
+     colors under a dark OS preference, which breaks the AA contrast we've
+     verified for this palette. */
+  color-scheme: light;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  @apply font-body text-ink bg-paper;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+:focus-visible {
+  @apply outline-[3px] outline-signal outline-offset-2;
+}
+
+/* The admin page's masthead spans the full admin layout instead of being
+   capped to the reading-width column used everywhere else. This depends on
+   the ancestor `body.admin` class set by admin.astro, so it can't be
+   expressed as a utility class scoped to the Masthead component alone. */
+body.admin .masthead {
+  max-width: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .hero,
+  section {
+    animation: rise 0.4s ease-out both;
+  }
+  section:nth-of-type(2) {
+    animation-delay: 0.05s;
+  }
+  section:nth-of-type(3) {
+    animation-delay: 0.1s;
+  }
+  section:nth-of-type(4) {
+    animation-delay: 0.15s;
+  }
+  section:nth-of-type(5) {
+    animation-delay: 0.2s;
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

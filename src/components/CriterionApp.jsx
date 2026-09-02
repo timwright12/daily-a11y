@@ -20,24 +20,37 @@ import { buildShareText } from "../gamification/shareCard.js";
 const LAUNCH_DATE = new Date("2026-08-30T00:00:00Z");
 
 function CriterionContent({ criterion, initialAnswer, onAnswered }) {
+  const sectionClass = "pt-10 border-t border-rule mt-10 first:mt-0";
+  const headingClass =
+    "font-mono text-[0.8rem] font-semibold tracking-[0.08em] uppercase text-ink-quiet mb-5";
+  const bodyClass = "m-0 text-[1.0625rem] max-w-[38rem]";
+
   return (
     <>
       <Hero criterion={criterion} />
-      <section aria-labelledby="explanation-heading">
-        <h2 id="explanation-heading">What this means</h2>
-        <p>{criterion.explanation}</p>
+      <section aria-labelledby="explanation-heading" className={sectionClass}>
+        <h2 id="explanation-heading" className={headingClass}>
+          What this means
+        </h2>
+        <p className={bodyClass}>{criterion.explanation}</p>
       </section>
-      <section aria-labelledby="who-heading">
-        <h2 id="who-heading">Who it affects</h2>
-        <p>{criterion.whoItAffects}</p>
+      <section aria-labelledby="who-heading" className={sectionClass}>
+        <h2 id="who-heading" className={headingClass}>
+          Who it affects
+        </h2>
+        <p className={bodyClass}>{criterion.whoItAffects}</p>
       </section>
-      <section aria-labelledby="code-heading">
-        <h2 id="code-heading">Code example</h2>
+      <section aria-labelledby="code-heading" className={sectionClass}>
+        <h2 id="code-heading" className={headingClass}>
+          Code example
+        </h2>
         <CodeSpread codeExample={criterion.codeExample} />
       </section>
-      <section aria-labelledby="test-heading">
-        <h2 id="test-heading">How to test it</h2>
-        <p>{criterion.howToTest}</p>
+      <section aria-labelledby="test-heading" className={sectionClass}>
+        <h2 id="test-heading" className={headingClass}>
+          How to test it
+        </h2>
+        <p className={bodyClass}>{criterion.howToTest}</p>
       </section>
       <ComprehensionCheck
         criterion={criterion}
@@ -102,8 +115,10 @@ function TodayApp({ criteria }) {
 
   return (
     <>
-      <p className="label-mono">{statusText}</p>
-      <main>
+      <p className="m-0 font-mono text-[0.8rem] text-ink-quiet tracking-[0.01em]">
+        {statusText}
+      </p>
+      <main className="max-w-[42rem] mx-auto pt-10 px-5 pb-20">
         <CriterionContent
           criterion={criterion}
           initialAnswer={
@@ -126,7 +141,7 @@ function RandomApp({ criteria }) {
   const [criterion] = useState(() => criteria[randomIndex(criteria.length)]);
 
   return (
-    <main>
+    <main className="max-w-[42rem] mx-auto pt-10 px-5 pb-20">
       <CriterionContent criterion={criterion} initialAnswer={null} />
       <RerollLink />
     </main>
@@ -137,21 +152,21 @@ function BrowseApp({ criteria }) {
   const [selected, setSelected] = useState(null);
 
   return (
-    <div className="admin-layout">
+    <div className="grid grid-cols-[18rem_1fr] items-start max-[720px]:grid-cols-1">
       <AdminList
         criteria={criteria}
         activeCriterionId={selected ? selected.id : null}
         onSelect={setSelected}
       />
-      <main className="admin-content">
+      <main className="max-w-[42rem] m-0 pt-10 px-8 pb-20">
         {selected ? (
           <CriterionContent criterion={selected} initialAnswer={null} />
         ) : (
           <>
-            <h1 className="admin-placeholder-heading heading-display">
+            <h1 className="font-display font-medium text-[1.75rem] leading-[1.2] mb-3">
               Browse WCAG success criteria
             </h1>
-            <p className="admin-placeholder">
+            <p className="text-ink-quiet text-[1.0625rem] m-0">
               Select a criterion from the list to preview it.
             </p>
           </>

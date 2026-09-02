@@ -5,9 +5,19 @@ export interface Props {
 }
 const { label } = Astro.props;
 ---
-<header>
-  <div class="masthead">
-    <a href="/daily-a11y/" class="masthead-mark">Daily Accessibility</a>
-    {label && <span class="admin-label label-mono">{label}</span>}
+<header class="border-b border-rule">
+  <div class="masthead max-w-[42rem] mx-auto px-5 py-[1.25rem] flex items-baseline justify-between gap-4 flex-wrap">
+    <a
+      href="/daily-a11y/"
+      class="font-mono font-semibold text-[0.9rem] tracking-[0.02em] text-ink no-underline"
+      >Daily Accessibility</a
+    >
+    {
+      label && (
+        <span class="m-0 font-mono text-[0.8rem] text-ink-quiet tracking-[0.01em]">
+          {label}
+        </span>
+      )
+    }
   </div>
 </header>

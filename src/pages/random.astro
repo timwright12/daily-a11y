@@ -3,6 +3,9 @@
 import Masthead from "../components/Masthead.astro";
 import CriterionApp from "../components/CriterionApp.jsx";
 import { getSortedCriteria } from "../lib/criteria.ts";
+import "../styles/global.css";
+import "../styles/prism-overrides.css";
+import "prismjs/themes/prism.css";
 
 const criteria = await getSortedCriteria();
 ---
