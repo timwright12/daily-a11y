@@ -42,7 +42,7 @@ export default function ComprehensionCheck({
         Check your understanding
       </h2>
       {alreadyAnswered && (
-        <p className="rounded-[0.3em] text-[0.95rem] font-semibold px-[1.4em] py-[0.7em] mb-5 text-center bg-moss-bg text-moss border border-moss">
+        <p className="max-w-[38rem] rounded-[0.3em] text-[0.95rem] font-semibold px-[1.4em] py-[0.7em] mb-5 text-center bg-moss-bg text-moss border border-moss">
           You already answered today&apos;s knowledge check.
         </p>
       )}
@@ -84,7 +84,10 @@ export default function ComprehensionCheck({
           Submit answer
         </button>
       </form>
-      <p className="font-mono text-[0.9rem] mt-3 mb-0" role="status">
+      <p
+        className="max-w-[38rem] font-mono text-[0.9rem] mt-3 mb-0"
+        role="status"
+      >
         {result}
       </p>
     </section>

@@ -20,7 +20,15 @@ import { buildShareText } from "../gamification/shareCard.js";
 const LAUNCH_DATE = new Date("2026-08-30T00:00:00Z");
 
 function CriterionContent({ criterion, initialAnswer, onAnswered }) {
-  const sectionClass = "pt-10 border-t border-rule mt-10 first:mt-0";
+  // Every section shares a top border/padding; a section-after-a-section
+  // additionally gets margin-top for extra breathing room (matching the old
+  // CSS's `section + section { margin-top }`). The first section here is
+  // preceded by Hero, not another section, so it skips that extra margin —
+  // Tailwind's `first:` variant can't express this because it targets "first
+  // child of the parent <main>" (which is Hero's own div, not this section),
+  // not "first section," so the no-margin variant is spelled out explicitly.
+  const firstSectionClass = "pt-10 border-t border-rule";
+  const sectionClass = `${firstSectionClass} mt-10`;
   const headingClass =
     "font-mono text-[0.8rem] font-semibold tracking-[0.08em] uppercase text-ink-quiet mb-5";
   const bodyClass = "m-0 text-[1.0625rem] max-w-[38rem]";
@@ -28,7 +36,10 @@ function CriterionContent({ criterion, initialAnswer, onAnswered }) {
   return (
     <>
       <Hero criterion={criterion} />
-      <section aria-labelledby="explanation-heading" className={sectionClass}>
+      <section
+        aria-labelledby="explanation-heading"
+        className={firstSectionClass}
+      >
         <h2 id="explanation-heading" className={headingClass}>
           What this means
         </h2>

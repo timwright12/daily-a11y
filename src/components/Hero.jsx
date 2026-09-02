@@ -1,4 +1,7 @@
 // src/components/Hero.jsx
+const badgeClass =
+  "inline-flex items-center font-mono text-[0.75rem] font-medium tracking-[0.03em] text-ink-quiet border border-rule rounded-[0.2em] px-[0.6em] py-[0.25em]";
+
 export default function Hero({ criterion }) {
   return (
     <div className="hero mb-12">
@@ -9,12 +12,8 @@ export default function Hero({ criterion }) {
         {criterion.name}
       </h1>
       <div className="flex gap-[0.6rem] flex-wrap">
-        <span className="inline-flex items-center font-mono text-xs font-medium tracking-[0.03em] text-ink-quiet border border-rule rounded-[0.2em] px-[0.6em] py-[0.25em]">
-          Level {criterion.level}
-        </span>
-        <span className="inline-flex items-center font-mono text-xs font-medium tracking-[0.03em] text-ink-quiet border border-rule rounded-[0.2em] px-[0.6em] py-[0.25em]">
-          {criterion.principle}
-        </span>
+        <span className={badgeClass}>Level {criterion.level}</span>
+        <span className={badgeClass}>{criterion.principle}</span>
       </div>
     </div>
   );

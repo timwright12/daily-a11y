@@ -1,7 +1,7 @@
 // astro.config.mjs
 import { defineConfig } from "astro/config";
 import react from "@astrojs/react";
-import tailwindcss from "@tailwindcss/vite";
+import tailwindcss from "@tailwindcss/postcss";
 
 export default defineConfig({
   site: "https://timwright12.github.io",
@@ -9,6 +9,10 @@ export default defineConfig({
   trailingSlash: "always",
   integrations: [react()],
   vite: {
-    plugins: [tailwindcss()],
+    css: {
+      postcss: {
+        plugins: [tailwindcss()],
+      },
+    },
   },
 });
