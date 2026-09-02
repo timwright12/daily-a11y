@@ -23,7 +23,7 @@ const stateSchema = z.object({
     .default(null),
 });
 
-function defaultState() {
+export function defaultState() {
   return {
     streak: { count: 0, lastAnsweredDay: null },
     coverage: [],

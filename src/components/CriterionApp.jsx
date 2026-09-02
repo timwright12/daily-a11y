@@ -1,5 +1,5 @@
 // src/components/CriterionApp.jsx
-import { useState, useEffect, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import Hero from "./Hero.jsx";
 import CodeSpread from "./CodeSpread.jsx";
 import ComprehensionCheck from "./ComprehensionCheck.jsx";
@@ -12,7 +12,7 @@ import {
   puzzleDayNumber,
   randomIndex,
 } from "../rotation.js";
-import { readState, writeState } from "../storage.js";
+import { readState, writeState, defaultState } from "../storage.js";
 import { recordAnswer } from "../gamification/streak.js";
 import { markSeen, coverageSummary } from "../gamification/coverage.js";
 import { buildShareText } from "../gamification/shareCard.js";
@@ -85,24 +85,50 @@ function TodayApp({ criteria }) {
   );
   const criterion = criteria[todayIndex];
 
-  const [state, setState] = useState(() => {
+  // Astro prerenders this island on the server (no localStorage there), then
+  // hydrates the same markup in the browser. Starting from defaultState()
+  // here — the same value readState() falls back to on the server — keeps
+  // the client's first render identical to the server-rendered HTML it's
+  // hydrating onto; the real, possibly-answered state is then loaded in the
+  // effect below, which only runs after that first render is reconciled.
+  const [state, setState] = useState(defaultState);
+
+  // react-hooks/set-state-in-effect generally warns against syncing state via
+  // an effect in favor of computing it during render, but there's no
+  // render-time alternative for a genuinely external, browser-only source
+  // like localStorage that must stay unread until after the SSR-matching
+  // first render — this is the same mount-effect shape React's own
+  // hydration-mismatch guidance recommends (see readState()'s doc comment in
+  // storage.js), applied through regular state instead of
+  // useSyncExternalStore, which doesn't fit here since this state isn't only
+  // a localStorage mirror — handleAnswered also owns and updates it.
+  useEffect(() => {
     const initial = readState();
     const withCoverage = {
       ...initial,
       coverage: markSeen(initial.coverage, criterion.id),
     };
     writeState(withCoverage);
-    return withCoverage;
-  });
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setState(withCoverage);
+    // criterion.id is stable for the component's lifetime (today's rotation
+    // doesn't change without a reload), so this effect is intentionally
+    // mount-only.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const alreadyAnsweredToday =
     state.lastAnswer !== null &&
     state.lastAnswer.day === todayDayNumber &&
     state.lastAnswer.criterionId === criterion.id;
 
-  const [lastCheckResult, setLastCheckResult] = useState(
-    alreadyAnsweredToday ? state.lastAnswer.correct : null,
-  );
+  // Derived from state rather than its own useState: state.lastAnswer
+  // already carries the outcome of the most recent submit (handleAnswered
+  // writes it in the same update that makes alreadyAnsweredToday true), so a
+  // second piece of state kept in sync via an effect would be redundant.
+  const lastCheckResult = alreadyAnsweredToday
+    ? state.lastAnswer.correct
+    : null;
 
   function handleAnswered(isCorrect, choice) {
     const nextState = {
@@ -117,7 +143,6 @@ function TodayApp({ criteria }) {
     };
     writeState(nextState);
     setState(nextState);
-    setLastCheckResult(isCorrect);
   }
 
   const { seen, total } = coverageSummary(state.coverage, criteria.length);
@@ -149,7 +174,22 @@ function TodayApp({ criteria }) {
 }
 
 function RandomApp({ criteria }) {
-  const [criterion] = useState(() => criteria[randomIndex(criteria.length)]);
+  // Math.random() can't agree between the server's prerender and the
+  // client's first hydration render, so a random pick made directly in a
+  // useState initializer is a hydration mismatch (React error #418) whenever
+  // the two picks differ. Both start from the same index (0) instead — the
+  // criterion the server actually rendered — then re-roll to a genuinely
+  // random pick after mount, once hydration is safely past the point where
+  // mismatches matter. Reroll (the "Show me another" link) already reloads
+  // this page and re-triggers this same mount effect, so the end result —
+  // a random criterion once JS has run — is unchanged.
+  const [criterion, setCriterion] = useState(() => criteria[0]);
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setCriterion(criteria[randomIndex(criteria.length)]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <main className="max-w-[42rem] mx-auto pt-10 px-5 pb-20">

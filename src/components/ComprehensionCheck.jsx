@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function ComprehensionCheck({
   criterion,
@@ -15,7 +15,26 @@ export default function ComprehensionCheck({
         : "Not quite — review the explanation above."
       : "",
   );
-  const [alreadyAnswered] = useState(initialAnswer !== null);
+  const [alreadyAnswered, setAlreadyAnswered] = useState(
+    initialAnswer !== null,
+  );
+
+  // TodayApp can't know whether today's criterion was already answered until
+  // after its own mount effect reads localStorage (see CriterionApp.jsx), so
+  // initialAnswer may arrive as null on this component's first render and
+  // switch to a real value on a later render. useState's initializer only
+  // runs once, so it wouldn't pick that up — sync explicitly when it happens.
+  useEffect(() => {
+    if (initialAnswer === null) return;
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setSelected(String(initialAnswer.choice));
+    setResult(
+      initialAnswer.correct
+        ? "Correct!"
+        : "Not quite — review the explanation above.",
+    );
+    setAlreadyAnswered(true);
+  }, [initialAnswer]);
 
   function handleSubmit(event) {
     event.preventDefault();

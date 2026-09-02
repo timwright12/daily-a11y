@@ -1,5 +1,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent, act } from "@testing-library/react";
+import { renderToString } from "react-dom/server";
+import { hydrateRoot } from "react-dom/client";
 import CriterionApp from "../../src/components/CriterionApp.jsx";
 
 function makeMemoryLocalStorage() {
@@ -32,6 +34,58 @@ const criteria = [
     references: [],
   },
 ];
+
+// Roots created by serverRenderThenHydrate(), unmounted and detached after
+// each test so a hydrated tree from one test can't leak into the next
+// test's DOM queries (e.g. a duplicate "Non-text Content" heading).
+let hydratedRoots = [];
+
+afterEach(async () => {
+  for (const { root, container } of hydratedRoots) {
+    await act(async () => root.unmount());
+    container.remove();
+  }
+  hydratedRoots = [];
+});
+
+// Astro prerenders client:load islands on the server (no localStorage there),
+// then hydrates the same markup in the browser. If a component reads
+// browser-only or nondeterministic state (localStorage, Math.random())
+// synchronously during its first render instead of in a useEffect, the
+// client's first render disagrees with the server-rendered HTML it's
+// hydrating onto — a real hydration mismatch (React error #418), not just a
+// static-render check. This replicates that exact two-phase render — with
+// localStorage genuinely absent for the server phase, as it is in real
+// Astro SSR — so the mismatch (if any) actually reproduces.
+async function serverRenderThenHydrate(element) {
+  const clientLocalStorage = globalThis.localStorage;
+  // storage.js branches on `typeof localStorage === "undefined"`; a stubbed
+  // globalThis.localStorage makes that check pass even after `delete`, so
+  // fully unstub it for the server-render phase.
+  vi.unstubAllGlobals();
+
+  const html = renderToString(element);
+
+  vi.stubGlobal("localStorage", clientLocalStorage);
+  vi.stubGlobal("navigator", {
+    clipboard: { writeText: vi.fn().mockResolvedValue(undefined) },
+  });
+
+  const container = document.createElement("div");
+  container.innerHTML = html;
+  document.body.appendChild(container);
+
+  const recoverableErrors = [];
+  let root;
+  await act(async () => {
+    root = hydrateRoot(container, element, {
+      onRecoverableError: (error) => recoverableErrors.push(error),
+    });
+  });
+
+  hydratedRoots.push({ root, container });
+  return { container, recoverableErrors };
+}
 
 describe("CriterionApp today mode", () => {
   beforeEach(() => {
@@ -129,6 +183,32 @@ describe("CriterionApp today mode", () => {
     expect(navigator.clipboard.writeText).toHaveBeenCalledOnce();
     expect(await screen.findByText("Copied to clipboard!")).toBeInTheDocument();
   });
+
+  it("hydrates cleanly against server-rendered markup when localStorage already holds an answered state", async () => {
+    // Seed localStorage as if a previous visit already answered today's
+    // criterion — this is exactly the state a real reload would have, and is
+    // what the server (which has no localStorage) cannot know about.
+    localStorage.setItem(
+      "daily-a11y-state",
+      JSON.stringify({
+        streak: { count: 1, lastAnsweredDay: 0 },
+        coverage: ["1.1.1"],
+        lastAnswer: {
+          day: Math.floor(Date.now() / 86400000),
+          criterionId: "1.1.1",
+          choice: 1,
+          correct: true,
+        },
+      }),
+    );
+
+    const element = <CriterionApp mode="today" criteria={criteria} />;
+    const { container, recoverableErrors } =
+      await serverRenderThenHydrate(element);
+
+    expect(recoverableErrors).toEqual([]);
+    expect(container.textContent).toMatch(/already answered/i);
+  });
 });
 
 describe("CriterionApp random mode", () => {
@@ -141,6 +221,30 @@ describe("CriterionApp random mode", () => {
       screen.getByRole("link", { name: "Show me another" }),
     ).toBeInTheDocument();
     expect(screen.queryByText(/^Streak:/)).not.toBeInTheDocument();
+  });
+
+  it("hydrates cleanly even when the server and client would otherwise roll different random picks", async () => {
+    // A single-criterion fixture can't expose a random-index mismatch —
+    // Math.floor(Math.random() * 1) is always 0. Two criteria plus a
+    // Math.random mock that returns a different value per call forces the
+    // server render and the client's first render to want different
+    // criteria, which is exactly the scenario that must not reach the DOM
+    // as a hydration mismatch.
+    const twoCriteria = [
+      criteria[0],
+      { ...criteria[0], id: "1.1.2", name: "Second Criterion" },
+    ];
+    const randomValues = [0.1, 0.9];
+    let call = 0;
+    vi.spyOn(Math, "random").mockImplementation(
+      () => randomValues[call++ % randomValues.length],
+    );
+
+    const element = <CriterionApp mode="random" criteria={twoCriteria} />;
+    const { recoverableErrors } = await serverRenderThenHydrate(element);
+
+    Math.random.mockRestore();
+    expect(recoverableErrors).toEqual([]);
   });
 });
 
