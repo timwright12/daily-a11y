@@ -55,6 +55,25 @@ describe("CriterionApp today mode", () => {
     ).toBeInTheDocument();
   });
 
+  it("renders the criterion's explanation, who-it-affects, and how-to-test text", () => {
+    render(<CriterionApp mode="today" criteria={criteria} />);
+    expect(
+      screen.getByText(criteria[0].explanation, {
+        selector: "#explanation-heading + p",
+      }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(criteria[0].whoItAffects, {
+        selector: "#who-heading + p",
+      }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(criteria[0].howToTest, {
+        selector: "#test-heading + p",
+      }),
+    ).toBeInTheDocument();
+  });
+
   it("persists coverage for today's criterion to localStorage on mount", () => {
     render(<CriterionApp mode="today" criteria={criteria} />);
     const stored = JSON.parse(localStorage.getItem("daily-a11y-state"));
