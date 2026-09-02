@@ -1,18 +1,20 @@
-<!doctype html>
+---
+// src/pages/admin.astro
+import Masthead from "../components/Masthead.astro";
+import CriterionApp from "../components/CriterionApp.jsx";
+import { getSortedCriteria } from "../lib/criteria.ts";
+
+const criteria = await getSortedCriteria();
+---
 <html lang="en">
   <head>
-    <!-- Google tag (gtag.js) -->
-    <script
-      async
-      src="https://www.googletagmanager.com/gtag/js?id=G-GM2G1R939T"
-    ></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-GM2G1R939T"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag() {
         dataLayer.push(arguments);
       }
       gtag("js", new Date());
-
       gtag("config", "G-GM2G1R939T");
     </script>
 
@@ -24,10 +26,7 @@
       content="Browse every WCAG 2.2 success criterion covered by Daily Accessibility, with plain-language explanations, code examples, and manual testing steps."
     />
     <meta name="robots" content="noindex, nofollow" />
-    <link
-      rel="canonical"
-      href="https://timwright12.github.io/daily-a11y/admin/"
-    />
+    <link rel="canonical" href="https://timwright12.github.io/daily-a11y/admin/" />
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -35,10 +34,9 @@
       href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="/src/style.css" />
   </head>
   <body class="admin">
-    <div id="app"></div>
-    <script type="module" src="/src/admin.js"></script>
+    <Masthead label="Browse criteria" />
+    <CriterionApp client:load mode="browse" criteria={criteria} />
   </body>
 </html>

@@ -1,0 +1,13 @@
+---
+// src/components/Masthead.astro
+export interface Props {
+  label?: string;
+}
+const { label } = Astro.props;
+---
+<header>
+  <div class="masthead">
+    <a href="/daily-a11y/" class="masthead-mark">Daily Accessibility</a>
+    {label && <span class="admin-label label-mono">{label}</span>}
+  </div>
+</header>
