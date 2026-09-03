@@ -1,5 +1,6 @@
 ---
 // src/pages/random.astro
+import BaseHead from "../components/BaseHead.astro";
 import Masthead from "../components/Masthead.astro";
 import CriterionApp from "../components/CriterionApp.jsx";
 import { getSortedCriteria } from "../lib/criteria.ts";
@@ -11,31 +12,11 @@ const criteria = await getSortedCriteria();
 ---
 <html lang="en">
   <head>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-GM2G1R939T"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag() {
-        dataLayer.push(arguments);
-      }
-      gtag("js", new Date());
-      gtag("config", "G-GM2G1R939T");
-    </script>
-
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Random criterion — Daily Accessibility</title>
-    <meta
-      name="description"
-      content="Get a random WCAG 2.2 success criterion to learn, with a plain-language explanation, a code example, and a quick comprehension check."
-    />
-    <meta name="robots" content="noindex, nofollow" />
-    <link rel="canonical" href="https://timwright12.github.io/daily-a11y/random/" />
-    <link rel="icon" type="image/png" href="/daily-a11y/favicon.png" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap"
-      rel="stylesheet"
+    <BaseHead
+      title="Random criterion — Daily Accessibility"
+      description="Get a random WCAG 2.2 success criterion to learn, with a plain-language explanation, a code example, and a quick comprehension check."
+      canonicalPath="random/"
+      noindex
     />
   </head>
   <body>
