@@ -1,0 +1,83 @@
+/* src/styles/global.css */
+@import "tailwindcss/index.css";
+@config "../../tailwind.config.mjs";
+
+:root {
+  /* light-only: this design has one deliberate palette, no dark-mode
+     equivalent yet. `light dark` would let Chrome auto-adjust our custom
+     colors under a dark OS preference, which breaks the AA contrast we've
+     verified for this palette. */
+  color-scheme: light;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  @apply font-body text-ink bg-paper;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+:focus-visible {
+  @apply outline-[3px] outline-signal outline-offset-2;
+}
+
+/* The admin page's masthead spans the full admin layout instead of being
+   capped to the reading-width column used everywhere else. This depends on
+   the ancestor `body.admin` class set by admin.astro, so it can't be
+   expressed as a utility class scoped to the Masthead component alone. */
+body.admin .masthead {
+  max-width: none;
+}
+
+/* The code-panel backgrounds (color-mix(in srgb, var(--signal-bg) 55%, #f5f3ef)
+   and the moss equivalent) must live outside Tailwind's `@layer utilities` —
+   Prism's own theme (prismjs/themes/prism.css) sets an unlayered
+   `background` on `pre[class*="language-"]`, and per the CSS cascade,
+   unlayered normal declarations always beat layered ones regardless of
+   specificity, so a `bg-[...]` utility class here would silently lose.
+   Equal-specificity unlayered rules still lose to Prism's on source order
+   (Prism's stylesheet is imported last but can land earlier or later than
+   ours once Astro/Vite merges all three imported stylesheets into one
+   chunk, and that merge order isn't something we control), so `!important`
+   is the only reliable way to win regardless of merge order. */
+pre.code-panel-bad {
+  background: #f6f0ec !important;
+}
+
+pre.code-panel-good {
+  background: #f1f2ec !important;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .hero,
+  section {
+    animation: rise 0.4s ease-out both;
+  }
+  section:nth-of-type(2) {
+    animation-delay: 0.05s;
+  }
+  section:nth-of-type(3) {
+    animation-delay: 0.1s;
+  }
+  section:nth-of-type(4) {
+    animation-delay: 0.15s;
+  }
+  section:nth-of-type(5) {
+    animation-delay: 0.2s;
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

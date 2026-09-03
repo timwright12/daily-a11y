@@ -10,9 +10,10 @@ import { z } from "zod";
  * technical vocabulary as-is (DOM, ARIA, viewport, contrast ratio, etc.) —
  * the target is sentence structure, not vocabulary simplification, so don't
  * expect to hit grade 9 on fields that legitimately need that vocabulary.
- * These three fields render into a single <p> via `textContent` (see
- * render.js), so `\n\n` paragraph breaks are invisible — write each as one
- * flowing block, not multiple paragraphs.
+ * These three fields each render into their own <p> as JSX text
+ * interpolation (see CriterionApp.jsx's CriterionContent function), so
+ * `\n\n` paragraph breaks are invisible — write each as one flowing block,
+ * not multiple paragraphs.
  */
 const codeExampleSchema = z.object({
   lang: z.string().min(1),

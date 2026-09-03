@@ -13,4 +13,4 @@ npm run dev
 
 ## Adding or editing criteria content
 
-Criteria live in `src/content/criteria/*.json`, one file per success criterion, validated against `src/content/schema.js`. Before writing or editing `explanation`, `whoItAffects`, or `howToTest`, read the content style convention documented at the top of `src/content/schema.js` — it covers target reading level and a rendering constraint on paragraph breaks.
+Criteria live in `src/content/criteria/*.json`, one file per success criterion, validated against `src/content/criterionSchema.js`. Before writing or editing `explanation`, `whoItAffects`, or `howToTest`, read the content style convention documented at the top of `src/content/criterionSchema.js` — it covers target reading level and a rendering constraint on paragraph breaks.

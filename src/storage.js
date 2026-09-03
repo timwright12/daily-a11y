@@ -23,7 +23,7 @@ const stateSchema = z.object({
     .default(null),
 });
 
-function defaultState() {
+export function defaultState() {
   return {
     streak: { count: 0, lastAnsweredDay: null },
     coverage: [],
@@ -32,6 +32,10 @@ function defaultState() {
 }
 
 export function readState() {
+  // Astro prerenders client:load islands on the server (no localStorage there)
+  // before hydrating in the browser. Fall back to defaults during that pass.
+  if (typeof localStorage === "undefined") return defaultState();
+
   const raw = localStorage.getItem(STORAGE_KEY);
   if (raw === null) return defaultState();
 
@@ -47,5 +51,6 @@ export function readState() {
 }
 
 export function writeState(state) {
+  if (typeof localStorage === "undefined") return;
   localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
 }

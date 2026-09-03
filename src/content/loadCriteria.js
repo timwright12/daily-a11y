@@ -1,4 +1,4 @@
-import { criterionSchema } from "./schema.js";
+import { criterionSchema } from "./criterionSchema.js";
 
 export function loadCriteria(rawEntries) {
   if (rawEntries.length === 0) {

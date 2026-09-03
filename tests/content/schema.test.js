@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { criterionSchema } from "../../src/content/schema.js";
+import { criterionSchema } from "../../src/content/criterionSchema.js";
 
 function validCriterion(overrides = {}) {
   return {
