@@ -8,12 +8,8 @@ export default function ComprehensionCheck({
   const [selected, setSelected] = useState(
     initialAnswer ? String(initialAnswer.choice) : "",
   );
-  const [result, setResult] = useState(
-    initialAnswer
-      ? initialAnswer.correct
-        ? "Correct!"
-        : "Not quite — review the explanation above."
-      : "",
+  const [isCorrect, setIsCorrect] = useState(
+    initialAnswer ? initialAnswer.correct : null,
   );
   const [alreadyAnswered, setAlreadyAnswered] = useState(
     initialAnswer !== null,
@@ -28,11 +24,7 @@ export default function ComprehensionCheck({
     if (initialAnswer === null) return;
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setSelected(String(initialAnswer.choice));
-    setResult(
-      initialAnswer.correct
-        ? "Correct!"
-        : "Not quite — review the explanation above.",
-    );
+    setIsCorrect(initialAnswer.correct);
     setAlreadyAnswered(true);
   }, [initialAnswer]);
 
@@ -41,12 +33,10 @@ export default function ComprehensionCheck({
     if (selected === "") return;
 
     const choice = Number(selected);
-    const isCorrect = choice === criterion.check.answer;
-    setResult(
-      isCorrect ? "Correct!" : "Not quite — review the explanation above.",
-    );
+    const correct = choice === criterion.check.answer;
+    setIsCorrect(correct);
 
-    if (onAnswered) onAnswered(isCorrect, choice);
+    if (onAnswered) onAnswered(correct, choice);
   }
 
   return (
@@ -107,8 +97,31 @@ export default function ComprehensionCheck({
         className="max-w-[38rem] font-mono text-[0.9rem] mt-3 mb-0"
         role="status"
       >
-        {result}
+        {isCorrect === null
+          ? ""
+          : isCorrect
+            ? "Correct!"
+            : "Not quite — review the explanation above."}
       </p>
+      {isCorrect && (
+        <p className="max-w-[38rem] text-[0.95rem] mt-3 mb-0">
+          Ready for more?{" "}
+          <a
+            className="text-ink underline hover:text-signal"
+            href={`${import.meta.env.BASE_URL}random/`}
+          >
+            Test yourself with a random criterion
+          </a>
+          , or{" "}
+          <a
+            className="text-ink underline hover:text-signal"
+            href={`${import.meta.env.BASE_URL}browse/`}
+          >
+            browse the full list
+          </a>{" "}
+          to explore at your own pace.
+        </p>
+      )}
     </section>
   );
 }

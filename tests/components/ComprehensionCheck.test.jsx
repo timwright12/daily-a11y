@@ -28,6 +28,21 @@ describe("ComprehensionCheck", () => {
     expect(screen.getByRole("status")).toHaveTextContent("Correct!");
   });
 
+  it("offers links to a random criterion and the full list when correct", () => {
+    render(<ComprehensionCheck criterion={criterion} />);
+    fireEvent.click(screen.getByLabelText("Choice B"));
+    fireEvent.click(screen.getByRole("button", { name: "Submit answer" }));
+
+    const randomLink = screen.getByRole("link", {
+      name: /test yourself with a random criterion/i,
+    });
+    const browseLink = screen.getByRole("link", {
+      name: /browse the full list/i,
+    });
+    expect(randomLink).toHaveAttribute("href", "/random/");
+    expect(browseLink).toHaveAttribute("href", "/browse/");
+  });
+
   it("shows the review message when the selected choice does not match", () => {
     render(<ComprehensionCheck criterion={criterion} />);
     fireEvent.click(screen.getByLabelText("Choice A"));
@@ -35,6 +50,13 @@ describe("ComprehensionCheck", () => {
     expect(screen.getByRole("status")).toHaveTextContent(
       "Not quite — review the explanation above.",
     );
+  });
+
+  it("does not offer the random/browse links when the answer is incorrect", () => {
+    render(<ComprehensionCheck criterion={criterion} />);
+    fireEvent.click(screen.getByLabelText("Choice A"));
+    fireEvent.click(screen.getByRole("button", { name: "Submit answer" }));
+    expect(screen.queryByRole("link")).not.toBeInTheDocument();
   });
 
   it("does nothing when submitted with no choice selected", () => {
@@ -78,7 +100,7 @@ describe("ComprehensionCheck with initialAnswer", () => {
     expect(screen.getByLabelText("Choice A")).not.toBeChecked();
   });
 
-  it("shows the persisted result text", () => {
+  it("shows the persisted result text and links", () => {
     render(
       <ComprehensionCheck
         criterion={criterion}
@@ -86,6 +108,11 @@ describe("ComprehensionCheck with initialAnswer", () => {
       />,
     );
     expect(screen.getByRole("status")).toHaveTextContent("Correct!");
+    expect(
+      screen.getByRole("link", {
+        name: /test yourself with a random criterion/i,
+      }),
+    ).toBeInTheDocument();
   });
 
   it("leaves radios and submit enabled so the user can re-answer", () => {
