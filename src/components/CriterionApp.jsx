@@ -6,18 +6,11 @@ import ComprehensionCheck from "./ComprehensionCheck.jsx";
 import ShareBar from "./ShareBar.jsx";
 import RerollLink from "./RerollLink.jsx";
 import BrowseList from "./BrowseList.jsx";
-import {
-  daysSinceEpoch,
-  getTodayIndex,
-  puzzleDayNumber,
-  randomIndex,
-} from "../rotation.js";
+import { daysSinceEpoch, getTodayIndex, randomIndex } from "../rotation.js";
 import { readState, writeState, defaultState } from "../storage.js";
 import { recordAnswer, currentStreak } from "../gamification/streak.js";
 import { markSeen, coverageSummary } from "../gamification/coverage.js";
 import { buildShareText } from "../gamification/shareCard.js";
-
-const LAUNCH_DATE = new Date("2026-08-30T00:00:00Z");
 
 function CriterionContent({ criterion, initialAnswer, onAnswered }) {
   // Every section shares a top border/padding; a section-after-a-section
@@ -75,10 +68,6 @@ function CriterionContent({ criterion, initialAnswer, onAnswered }) {
 function TodayApp({ criteria }) {
   const today = useMemo(() => new Date(), []);
   const todayDayNumber = useMemo(() => daysSinceEpoch(today), [today]);
-  const todayPuzzleDay = useMemo(
-    () => puzzleDayNumber(today, LAUNCH_DATE),
-    [today],
-  );
   const todayIndex = useMemo(
     () => getTodayIndex(today, criteria.length),
     [today, criteria.length],
@@ -166,7 +155,11 @@ function TodayApp({ criteria }) {
 
   const { seen, total } = coverageSummary(state.coverage, criteria.length);
   const statusText = `Streak: ${state.streak.count} day${state.streak.count === 1 ? "" : "s"} — ${seen} of ${total} criteria seen`;
-  const shareText = buildShareText(criterion, todayPuzzleDay, lastCheckResult);
+  const shareText = buildShareText(
+    criterion,
+    state.streak.count,
+    lastCheckResult,
+  );
 
   return (
     <>

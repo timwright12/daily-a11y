@@ -239,6 +239,32 @@ describe("CriterionApp today mode", () => {
     expect(await screen.findByText("Copied to clipboard!")).toBeInTheDocument();
   });
 
+  it("shares the user's actual answer streak, matching the masthead status line", async () => {
+    localStorage.setItem(
+      "daily-a11y-state",
+      JSON.stringify({
+        streak: { count: 4, lastAnsweredDay: daysSinceEpoch(new Date()) - 1 },
+        coverage: [],
+        lastAnswer: null,
+      }),
+    );
+
+    render(<CriterionApp mode="today" criteria={criteria} />);
+    fireEvent.click(screen.getByLabelText("A"));
+    fireEvent.click(screen.getByRole("button", { name: "Submit answer" }));
+
+    expect(screen.getByText(/^Streak: 5 days —/)).toBeInTheDocument();
+
+    fireEvent.click(
+      screen.getByRole("button", { name: "Copy today's result" }),
+    );
+    await Promise.resolve();
+
+    expect(navigator.clipboard.writeText).toHaveBeenCalledWith(
+      expect.stringContaining("5 days in a row"),
+    );
+  });
+
   it("hydrates cleanly against server-rendered markup when localStorage already holds an answered state", async () => {
     // Seed localStorage as if a previous visit already answered today's
     // criterion — this is exactly the state a real reload would have, and is
