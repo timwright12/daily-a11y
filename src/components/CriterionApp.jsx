@@ -12,7 +12,35 @@ import { recordAnswer, currentStreak } from "../gamification/streak.js";
 import { markSeen, coverageSummary } from "../gamification/coverage.js";
 import { buildShareText } from "../gamification/shareCard.js";
 
-function CriterionContent({ criterion, initialAnswer, onAnswered }) {
+function RelatedCriteria({ criterion, criteria, sectionClass, headingClass }) {
+  if (criterion.relatedCriteria.length === 0) return null;
+
+  const related = criterion.relatedCriteria
+    .map((id) => criteria.find((candidate) => candidate.id === id))
+    .filter(Boolean);
+
+  return (
+    <section aria-labelledby="related-heading" className={sectionClass}>
+      <h2 id="related-heading" className={headingClass}>
+        Related criteria
+      </h2>
+      <ul className="list-none m-0 p-0 flex flex-col gap-2">
+        {related.map((relatedCriterion) => (
+          <li key={relatedCriterion.id}>
+            <a
+              href={`${import.meta.env.BASE_URL}browse/#${relatedCriterion.id}`}
+              className="text-[1.0625rem] text-ink"
+            >
+              {relatedCriterion.id} {relatedCriterion.name}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
+}
+
+function CriterionContent({ criterion, criteria, initialAnswer, onAnswered }) {
   // Every section shares a top border/padding; a section-after-a-section
   // additionally gets margin-top for extra breathing room (matching the old
   // CSS's `section + section { margin-top }`). The first section here is
@@ -56,6 +84,12 @@ function CriterionContent({ criterion, initialAnswer, onAnswered }) {
         </h2>
         <p className={bodyClass}>{criterion.howToTest}</p>
       </section>
+      <RelatedCriteria
+        criterion={criterion}
+        criteria={criteria}
+        sectionClass={sectionClass}
+        headingClass={headingClass}
+      />
       <ComprehensionCheck
         criterion={criterion}
         initialAnswer={initialAnswer}
@@ -179,6 +213,7 @@ function TodayApp({ criteria }) {
       <main className="max-w-[42rem] mx-auto pt-10 px-5 pb-20">
         <CriterionContent
           criterion={criterion}
+          criteria={criteria}
           initialAnswer={
             wasAlreadyAnsweredOnLoad && alreadyAnsweredToday
               ? {
@@ -215,7 +250,11 @@ function RandomApp({ criteria }) {
 
   return (
     <main className="max-w-[42rem] mx-auto pt-10 px-5 pb-20">
-      <CriterionContent criterion={criterion} initialAnswer={null} />
+      <CriterionContent
+        criterion={criterion}
+        criteria={criteria}
+        initialAnswer={null}
+      />
       <RerollLink />
     </main>
   );
@@ -223,6 +262,31 @@ function RandomApp({ criteria }) {
 
 function BrowseApp({ criteria }) {
   const [selected, setSelected] = useState(null);
+
+  // location.hash lets a related-criteria link (/browse/#<id>) deep-link
+  // into a specific criterion. This is unavailable during Astro's server
+  // prerender, so the initial value is read in a mount effect rather than
+  // the useState initializer above (see TodayApp's mount effect for why: SSR
+  // has no window to read from). A related-criteria link's target is this
+  // same /browse/ page, so clicking one only changes the URL fragment
+  // in-place rather than remounting BrowseApp — a "hashchange" listener is
+  // needed to react to that, not just a one-time mount read.
+  useEffect(() => {
+    function selectFromHash() {
+      const hashId = window.location.hash.slice(1);
+      if (!hashId) return;
+      const match = criteria.find((criterion) => criterion.id === hashId);
+      if (match) {
+        setSelected(match);
+      }
+    }
+
+    selectFromHash();
+    window.addEventListener("hashchange", selectFromHash);
+    return () => window.removeEventListener("hashchange", selectFromHash);
+    // criteria is stable for this component's lifetime.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className="grid grid-cols-[18rem_1fr] items-start max-[720px]:grid-cols-1">
@@ -233,7 +297,11 @@ function BrowseApp({ criteria }) {
       />
       <main className="max-w-[42rem] m-0 pt-10 px-8 pb-20">
         {selected ? (
-          <CriterionContent criterion={selected} initialAnswer={null} />
+          <CriterionContent
+            criterion={selected}
+            criteria={criteria}
+            initialAnswer={null}
+          />
         ) : (
           <>
             <h1 className="font-display font-medium text-[1.75rem] leading-[1.2] mb-3">

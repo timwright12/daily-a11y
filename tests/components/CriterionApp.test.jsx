@@ -33,6 +33,37 @@ const criteria = [
     howToTest: "x",
     check: { question: "Q?", choices: ["A", "B"], answer: 1 },
     references: [],
+    relatedCriteria: [],
+  },
+];
+
+const criteriaWithRelated = [
+  criteria[0],
+  {
+    id: "1.4.3",
+    name: "Contrast (Minimum)",
+    level: "AA",
+    principle: "Perceivable",
+    explanation: "x",
+    whoItAffects: "x",
+    codeExample: { lang: "css", bad: "a", good: "b" },
+    howToTest: "x",
+    check: { question: "Q?", choices: ["A", "B"], answer: 1 },
+    references: [],
+    relatedCriteria: ["1.4.6"],
+  },
+  {
+    id: "1.4.6",
+    name: "Contrast (Enhanced)",
+    level: "AAA",
+    principle: "Perceivable",
+    explanation: "x",
+    whoItAffects: "x",
+    codeExample: { lang: "css", bad: "a", good: "b" },
+    howToTest: "x",
+    check: { question: "Q?", choices: ["A", "B"], answer: 1 },
+    references: [],
+    relatedCriteria: ["1.4.3"],
   },
 ];
 
@@ -330,6 +361,10 @@ describe("CriterionApp random mode", () => {
 });
 
 describe("CriterionApp browse mode", () => {
+  afterEach(() => {
+    window.location.hash = "";
+  });
+
   it("shows the placeholder until a criterion is selected", () => {
     render(<CriterionApp mode="browse" criteria={criteria} />);
     expect(
@@ -348,5 +383,59 @@ describe("CriterionApp browse mode", () => {
       "aria-current",
       "true",
     );
+  });
+
+  it("auto-selects the criterion matching the URL hash on mount", () => {
+    window.location.hash = "#1.4.6";
+    render(<CriterionApp mode="browse" criteria={criteriaWithRelated} />);
+
+    expect(
+      screen.getByRole("heading", { name: "Contrast (Enhanced)" }),
+    ).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /1\.4\.6/ })).toHaveAttribute(
+      "aria-current",
+      "true",
+    );
+  });
+
+  it("shows the placeholder when the URL hash does not match any criterion", () => {
+    window.location.hash = "#9.9.9";
+    render(<CriterionApp mode="browse" criteria={criteria} />);
+
+    expect(
+      screen.getByText("Select a criterion from the list to preview it."),
+    ).toBeInTheDocument();
+  });
+
+  it("selects the matching criterion when the URL hash changes after mount (e.g. a related-criteria link click, which doesn't remount the page)", () => {
+    render(<CriterionApp mode="browse" criteria={criteriaWithRelated} />);
+
+    window.location.hash = "#1.4.6";
+    fireEvent(window, new Event("hashchange"));
+
+    expect(
+      screen.getByRole("heading", { name: "Contrast (Enhanced)" }),
+    ).toBeInTheDocument();
+  });
+});
+
+describe("CriterionApp related criteria", () => {
+  it("renders links to related criteria when relatedCriteria is non-empty", () => {
+    // browse mode selects deterministically via click, unlike "random" mode
+    // (which re-rolls via Math.random() on every mount) or "today" mode
+    // (whose index depends on the current date) — either of those would make
+    // which criterion renders, and therefore this assertion, nondeterministic.
+    render(<CriterionApp mode="browse" criteria={criteriaWithRelated} />);
+    fireEvent.click(screen.getByRole("button", { name: /1\.4\.3/ }));
+
+    const link = screen.getByRole("link", { name: /contrast \(enhanced\)/i });
+    expect(link).toHaveAttribute("href", expect.stringContaining("#1.4.6"));
+  });
+
+  it("does not render a related-criteria section when relatedCriteria is empty", () => {
+    render(<CriterionApp mode="today" criteria={criteria} />);
+    expect(
+      screen.queryByRole("heading", { name: /related criteria/i }),
+    ).not.toBeInTheDocument();
   });
 });

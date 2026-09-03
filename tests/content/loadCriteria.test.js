@@ -1,5 +1,9 @@
 import { describe, it, expect } from "vitest";
-import { loadCriteria, sortCriteria } from "../../src/content/loadCriteria.js";
+import {
+  loadCriteria,
+  sortCriteria,
+  assertRelatedCriteriaExist,
+} from "../../src/content/loadCriteria.js";
 
 function validCriterion(overrides = {}) {
   return {
@@ -21,6 +25,7 @@ function validCriterion(overrides = {}) {
       answer: 1,
     },
     references: [],
+    relatedCriteria: [],
     ...overrides,
   };
 }
@@ -43,6 +48,34 @@ describe("loadCriteria", () => {
 
   it("throws when given an empty array", () => {
     expect(() => loadCriteria([])).toThrow(/no criteria/i);
+  });
+
+  it("accepts relatedCriteria ids that reference other loaded criteria", () => {
+    const result = loadCriteria([
+      validCriterion({ relatedCriteria: ["1.1.1"] }),
+      validCriterion({ id: "1.1.1", name: "Non-text Content" }),
+    ]);
+    expect(result[0].relatedCriteria).toEqual(["1.1.1"]);
+  });
+
+  it("throws a descriptive error when relatedCriteria references a nonexistent criterion", () => {
+    const bad = validCriterion({ relatedCriteria: ["9.9.9"] });
+    expect(() => loadCriteria([bad])).toThrow(/9\.9\.9/);
+  });
+});
+
+describe("assertRelatedCriteriaExist", () => {
+  it("does not throw when every relatedCriteria id is present in the set", () => {
+    const criteria = [
+      validCriterion({ relatedCriteria: ["1.1.1"] }),
+      validCriterion({ id: "1.1.1", name: "Non-text Content" }),
+    ];
+    expect(() => assertRelatedCriteriaExist(criteria)).not.toThrow();
+  });
+
+  it("throws a descriptive error when a relatedCriteria id has no matching criterion", () => {
+    const criteria = [validCriterion({ relatedCriteria: ["9.9.9"] })];
+    expect(() => assertRelatedCriteriaExist(criteria)).toThrow(/9\.9\.9/);
   });
 });
 
