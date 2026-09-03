@@ -27,4 +27,18 @@ describe("buildShareText", () => {
     const text = buildShareText(criterion, 42, false);
     expect(text).toMatch(/missed it|incorrect/i);
   });
+
+  it("appends the site URL", () => {
+    const text = buildShareText(criterion, 42, null);
+    expect(text).toContain("https://timwright12.github.io/daily-a11y/");
+  });
+
+  it("appends the site URL for correct and incorrect results too", () => {
+    expect(buildShareText(criterion, 42, true)).toContain(
+      "https://timwright12.github.io/daily-a11y/",
+    );
+    expect(buildShareText(criterion, 42, false)).toContain(
+      "https://timwright12.github.io/daily-a11y/",
+    );
+  });
 });
