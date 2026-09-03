@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { render, screen, fireEvent, act } from "@testing-library/react";
+import { render, screen, fireEvent, act, within } from "@testing-library/react";
 import { renderToString } from "react-dom/server";
 import { hydrateRoot } from "react-dom/client";
 import CriterionApp from "../../src/components/CriterionApp.jsx";
@@ -33,6 +33,37 @@ const criteria = [
     howToTest: "x",
     check: { question: "Q?", choices: ["A", "B"], answer: 1 },
     references: [],
+    relatedCriteria: [],
+  },
+];
+
+const criteriaWithRelated = [
+  criteria[0],
+  {
+    id: "1.4.3",
+    name: "Contrast (Minimum)",
+    level: "AA",
+    principle: "Perceivable",
+    explanation: "x",
+    whoItAffects: "x",
+    codeExample: { lang: "css", bad: "a", good: "b" },
+    howToTest: "x",
+    check: { question: "Q?", choices: ["A", "B"], answer: 1 },
+    references: [],
+    relatedCriteria: ["1.4.6"],
+  },
+  {
+    id: "1.4.6",
+    name: "Contrast (Enhanced)",
+    level: "AAA",
+    principle: "Perceivable",
+    explanation: "x",
+    whoItAffects: "x",
+    codeExample: { lang: "css", bad: "a", good: "b" },
+    howToTest: "x",
+    check: { question: "Q?", choices: ["A", "B"], answer: 1 },
+    references: [],
+    relatedCriteria: ["1.4.3"],
   },
 ];
 
@@ -329,7 +360,22 @@ describe("CriterionApp random mode", () => {
   });
 });
 
+// BrowseList's sidebar items and the related-criteria links are both plain
+// <a href="#<id>"> tags: real browsers navigate same-page hash links and
+// fire "hashchange" on click, but jsdom's fireEvent.click doesn't perform
+// that navigation (verified directly against jsdom — it neither updates
+// location.hash nor dispatches the event), so tests simulate what a real
+// click does rather than only firing the click event.
+function clickHashLink(link) {
+  window.location.hash = link.getAttribute("href");
+  fireEvent(window, new Event("hashchange"));
+}
+
 describe("CriterionApp browse mode", () => {
+  afterEach(() => {
+    window.location.hash = "";
+  });
+
   it("shows the placeholder until a criterion is selected", () => {
     render(<CriterionApp mode="browse" criteria={criteria} />);
     expect(
@@ -339,14 +385,100 @@ describe("CriterionApp browse mode", () => {
 
   it("renders the selected criterion and marks it active in the list on click", () => {
     render(<CriterionApp mode="browse" criteria={criteria} />);
-    fireEvent.click(screen.getByRole("button", { name: /1\.1\.1/ }));
+    clickHashLink(screen.getByRole("link", { name: /1\.1\.1/ }));
 
     expect(
       screen.getByRole("heading", { name: "Non-text Content" }),
     ).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /1\.1\.1/ })).toHaveAttribute(
+    expect(screen.getByRole("link", { name: /1\.1\.1/ })).toHaveAttribute(
       "aria-current",
       "true",
     );
+  });
+
+  it("auto-selects the criterion matching the URL hash on mount", () => {
+    window.location.hash = "#1.4.6";
+    render(<CriterionApp mode="browse" criteria={criteriaWithRelated} />);
+
+    expect(
+      screen.getByRole("heading", { name: "Contrast (Enhanced)" }),
+    ).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /1\.4\.6/ })).toHaveAttribute(
+      "aria-current",
+      "true",
+    );
+  });
+
+  it("shows the placeholder when the URL hash does not match any criterion", () => {
+    window.location.hash = "#9.9.9";
+    render(<CriterionApp mode="browse" criteria={criteria} />);
+
+    expect(
+      screen.getByText("Select a criterion from the list to preview it."),
+    ).toBeInTheDocument();
+  });
+
+  it("selects the matching criterion when the URL hash changes after mount (e.g. a related-criteria link click, which doesn't remount the page)", () => {
+    render(<CriterionApp mode="browse" criteria={criteriaWithRelated} />);
+
+    window.location.hash = "#1.4.6";
+    fireEvent(window, new Event("hashchange"));
+
+    expect(
+      screen.getByRole("heading", { name: "Contrast (Enhanced)" }),
+    ).toBeInTheDocument();
+  });
+
+  it("moves focus to the new criterion's heading when the URL hash changes, so screen reader users aren't stranded on a removed link", () => {
+    render(<CriterionApp mode="browse" criteria={criteriaWithRelated} />);
+
+    window.location.hash = "#1.4.6";
+    fireEvent(window, new Event("hashchange"));
+
+    expect(
+      screen.getByRole("heading", { name: "Contrast (Enhanced)" }),
+    ).toHaveFocus();
+  });
+
+  it("resets a previously-answered comprehension check when switching to a different criterion", () => {
+    render(<CriterionApp mode="browse" criteria={criteriaWithRelated} />);
+    const sidebar = screen.getByRole("navigation", {
+      name: "WCAG success criteria",
+    });
+    clickHashLink(within(sidebar).getByRole("link", { name: /1\.4\.3/ }));
+    fireEvent.click(screen.getByLabelText("B"));
+    fireEvent.click(screen.getByRole("button", { name: "Submit answer" }));
+    expect(screen.getByText("Correct!")).toBeInTheDocument();
+
+    clickHashLink(within(sidebar).getByRole("link", { name: /1\.4\.6/ }));
+
+    expect(screen.queryByText("Correct!")).not.toBeInTheDocument();
+    expect(screen.getByLabelText("B")).not.toBeChecked();
+  });
+});
+
+describe("CriterionApp related criteria", () => {
+  it("renders links to related criteria when relatedCriteria is non-empty", () => {
+    // browse mode selects deterministically via click, unlike "random" mode
+    // (which re-rolls via Math.random() on every mount) or "today" mode
+    // (whose index depends on the current date) — either of those would make
+    // which criterion renders, and therefore this assertion, nondeterministic.
+    render(<CriterionApp mode="browse" criteria={criteriaWithRelated} />);
+    clickHashLink(screen.getByRole("link", { name: /1\.4\.3/ }));
+
+    const relatedSection = screen
+      .getByRole("heading", { name: "Related criteria" })
+      .closest("section");
+    const link = within(relatedSection).getByRole("link", {
+      name: /contrast \(enhanced\)/i,
+    });
+    expect(link).toHaveAttribute("href", expect.stringContaining("#1.4.6"));
+  });
+
+  it("does not render a related-criteria section when relatedCriteria is empty", () => {
+    render(<CriterionApp mode="today" criteria={criteria} />);
+    expect(
+      screen.queryByRole("heading", { name: /related criteria/i }),
+    ).not.toBeInTheDocument();
   });
 });

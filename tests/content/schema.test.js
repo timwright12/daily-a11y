@@ -80,4 +80,24 @@ describe("criterionSchema", () => {
     delete input.explanation;
     expect(() => criterionSchema.parse(input)).toThrow();
   });
+
+  it("defaults relatedCriteria to an empty array when omitted", () => {
+    const input = validCriterion();
+    delete input.relatedCriteria;
+    const parsed = criterionSchema.parse(input);
+    expect(parsed.relatedCriteria).toEqual([]);
+  });
+
+  it("accepts relatedCriteria ids that match the SC number pattern", () => {
+    const parsed = criterionSchema.parse(
+      validCriterion({ relatedCriteria: ["1.4.6", "2.4.7"] }),
+    );
+    expect(parsed.relatedCriteria).toEqual(["1.4.6", "2.4.7"]);
+  });
+
+  it("rejects a relatedCriteria entry that does not match the SC number pattern", () => {
+    expect(() =>
+      criterionSchema.parse(validCriterion({ relatedCriteria: ["not-an-id"] })),
+    ).toThrow();
+  });
 });

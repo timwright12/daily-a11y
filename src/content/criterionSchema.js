@@ -45,4 +45,14 @@ export const criterionSchema = z.object({
   howToTest: z.string().min(1),
   check: checkSchema,
   references: z.array(z.string()).default([]),
+  relatedCriteria: z
+    .array(
+      z
+        .string()
+        .regex(
+          /^\d\.\d+\.\d+$/,
+          "relatedCriteria entries must look like a WCAG SC number, e.g. 1.4.3",
+        ),
+    )
+    .default([]),
 });

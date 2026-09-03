@@ -21,5 +21,6 @@
     ],
     "answer": 0
   },
-  "references": []
+  "references": [],
+  "relatedCriteria": ["2.4.9"]
 }

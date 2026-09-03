@@ -1,5 +1,5 @@
 // src/components/CriterionApp.jsx
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import Hero from "./Hero.jsx";
 import CodeSpread from "./CodeSpread.jsx";
 import ComprehensionCheck from "./ComprehensionCheck.jsx";
@@ -12,7 +12,35 @@ import { recordAnswer, currentStreak } from "../gamification/streak.js";
 import { markSeen, coverageSummary } from "../gamification/coverage.js";
 import { buildShareText } from "../gamification/shareCard.js";
 
-function CriterionContent({ criterion, initialAnswer, onAnswered }) {
+function RelatedCriteria({ criterion, criteria, sectionClass, headingClass }) {
+  if (criterion.relatedCriteria.length === 0) return null;
+
+  const related = criterion.relatedCriteria
+    .map((id) => criteria.find((candidate) => candidate.id === id))
+    .filter(Boolean);
+
+  return (
+    <section aria-labelledby="related-heading" className={sectionClass}>
+      <h2 id="related-heading" className={headingClass}>
+        Related criteria
+      </h2>
+      <ul className="list-none m-0 p-0 flex flex-col gap-2">
+        {related.map((relatedCriterion) => (
+          <li key={relatedCriterion.id}>
+            <a
+              href={`${import.meta.env.BASE_URL}browse/#${relatedCriterion.id}`}
+              className="text-[1.0625rem] text-ink underline hover:text-signal"
+            >
+              {relatedCriterion.id} {relatedCriterion.name}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
+}
+
+function CriterionContent({ criterion, criteria, initialAnswer, onAnswered }) {
   // Every section shares a top border/padding; a section-after-a-section
   // additionally gets margin-top for extra breathing room (matching the old
   // CSS's `section + section { margin-top }`). The first section here is
@@ -56,6 +84,12 @@ function CriterionContent({ criterion, initialAnswer, onAnswered }) {
         </h2>
         <p className={bodyClass}>{criterion.howToTest}</p>
       </section>
+      <RelatedCriteria
+        criterion={criterion}
+        criteria={criteria}
+        sectionClass={sectionClass}
+        headingClass={headingClass}
+      />
       <ComprehensionCheck
         criterion={criterion}
         initialAnswer={initialAnswer}
@@ -178,7 +212,9 @@ function TodayApp({ criteria }) {
       </header>
       <main className="max-w-[42rem] mx-auto pt-10 px-5 pb-20">
         <CriterionContent
+          key={criterion.id}
           criterion={criterion}
+          criteria={criteria}
           initialAnswer={
             wasAlreadyAnsweredOnLoad && alreadyAnsweredToday
               ? {
@@ -215,7 +251,12 @@ function RandomApp({ criteria }) {
 
   return (
     <main className="max-w-[42rem] mx-auto pt-10 px-5 pb-20">
-      <CriterionContent criterion={criterion} initialAnswer={null} />
+      <CriterionContent
+        key={criterion.id}
+        criterion={criterion}
+        criteria={criteria}
+        initialAnswer={null}
+      />
       <RerollLink />
     </main>
   );
@@ -223,17 +264,74 @@ function RandomApp({ criteria }) {
 
 function BrowseApp({ criteria }) {
   const [selected, setSelected] = useState(null);
+  // Tracks whether the pending `selected` update came from a hashchange
+  // (any link that sets location.hash — a sidebar item or a related-criteria
+  // link) rather than the initial mount, so the focus-move effect below only
+  // fires for that case — see its own comment for why.
+  const focusOnNextSelectRef = useRef(false);
+
+  // Both BrowseList's sidebar links and the related-criteria links point at
+  // this page's own #<id> fragment, so selection is driven entirely by
+  // location.hash — there's no separate onSelect/click-handler path. This is
+  // unavailable during Astro's server prerender, so the initial value is
+  // read in a mount effect rather than the useState initializer above (see
+  // TodayApp's mount effect for why: SSR has no window to read from). Any
+  // later change to the hash — whether the URL was edited directly or a
+  // same-page link was clicked — only changes the URL fragment in-place
+  // rather than remounting BrowseApp, so a "hashchange" listener is needed
+  // to react to that, not just a one-time mount read.
+  useEffect(() => {
+    function selectFromHash() {
+      const hashId = window.location.hash.slice(1);
+      if (!hashId) return null;
+      return criteria.find((criterion) => criterion.id === hashId) ?? null;
+    }
+
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setSelected(selectFromHash());
+
+    function handleHashChange() {
+      const match = selectFromHash();
+      if (match) {
+        focusOnNextSelectRef.current = true;
+        setSelected(match);
+      }
+    }
+
+    window.addEventListener("hashchange", handleHashChange);
+    return () => window.removeEventListener("hashchange", handleHashChange);
+    // criteria is stable for this component's lifetime.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // A hashchange means the user activated a same-page link (e.g. a
+  // related-criteria link) rather than loading the URL fresh, so the browser
+  // never gives the new content any focus on its own. This runs after
+  // `selected`'s new value has actually committed to the DOM (unlike doing
+  // it inline in handleHashChange above, where the old heading, or none
+  // yet, would still be what's rendered) and moves focus to the criterion
+  // heading, matching standard SPA route-change focus handling, so screen
+  // reader users aren't left stranded on a link that just disappeared.
+  useEffect(() => {
+    if (!focusOnNextSelectRef.current) return;
+    focusOnNextSelectRef.current = false;
+    document.getElementById("criterion-heading")?.focus();
+  }, [selected]);
 
   return (
     <div className="grid grid-cols-[18rem_1fr] items-start max-[720px]:grid-cols-1">
       <BrowseList
         criteria={criteria}
         activeCriterionId={selected ? selected.id : null}
-        onSelect={setSelected}
       />
       <main className="max-w-[42rem] m-0 pt-10 px-8 pb-20">
         {selected ? (
-          <CriterionContent criterion={selected} initialAnswer={null} />
+          <CriterionContent
+            key={selected.id}
+            criterion={selected}
+            criteria={criteria}
+            initialAnswer={null}
+          />
         ) : (
           <>
             <h1 className="font-display font-medium text-[1.75rem] leading-[1.2] mb-3">
