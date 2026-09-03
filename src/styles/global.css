@@ -25,11 +25,11 @@ body {
   @apply outline-[3px] outline-signal outline-offset-2;
 }
 
-/* The admin page's masthead spans the full admin layout instead of being
+/* The browse page's masthead spans the full browse layout instead of being
    capped to the reading-width column used everywhere else. This depends on
-   the ancestor `body.admin` class set by admin.astro, so it can't be
+   the ancestor `body.browse` class set by browse.astro, so it can't be
    expressed as a utility class scoped to the Masthead component alone. */
-body.admin .masthead {
+body.browse .masthead {
   max-width: none;
 }
 

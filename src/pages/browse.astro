@@ -1,9 +1,9 @@
 ---
-// src/pages/admin.astro
+// src/pages/browse.astro
 import BaseHead from "../components/BaseHead.astro";
 import Masthead from "../components/Masthead.astro";
 import CriterionApp from "../components/CriterionApp.jsx";
-import { getSortedCriteria } from "../lib/criteria.ts";
+import { getSortedCriteria } from "../lib/criteria";
 import "../styles/global.css";
 import "../styles/prism-overrides.css";
 import "prismjs/themes/prism.css";
@@ -15,11 +15,11 @@ const criteria = await getSortedCriteria();
     <BaseHead
       title="Browse criteria — Daily Accessibility"
       description="Browse every WCAG 2.2 success criterion covered by Daily Accessibility, with plain-language explanations, code examples, and manual testing steps."
-      canonicalPath="admin/"
+      canonicalPath="browse/"
       noindex
     />
   </head>
-  <body class="admin">
+  <body class="browse">
     <Masthead label="Browse criteria" />
     <CriterionApp client:load mode="browse" criteria={criteria} />
   </body>

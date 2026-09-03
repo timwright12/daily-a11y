@@ -5,7 +5,7 @@ import CodeSpread from "./CodeSpread.jsx";
 import ComprehensionCheck from "./ComprehensionCheck.jsx";
 import ShareBar from "./ShareBar.jsx";
 import RerollLink from "./RerollLink.jsx";
-import AdminList from "./AdminList.jsx";
+import BrowseList from "./BrowseList.jsx";
 import {
   daysSinceEpoch,
   getTodayIndex,
@@ -232,7 +232,7 @@ function BrowseApp({ criteria }) {
 
   return (
     <div className="grid grid-cols-[18rem_1fr] items-start max-[720px]:grid-cols-1">
-      <AdminList
+      <BrowseList
         criteria={criteria}
         activeCriterionId={selected ? selected.id : null}
         onSelect={setSelected}

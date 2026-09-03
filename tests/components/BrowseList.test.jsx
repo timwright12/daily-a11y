@@ -1,17 +1,17 @@
-// tests/components/AdminList.test.jsx
+// tests/components/BrowseList.test.jsx
 import { describe, it, expect, vi } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
-import AdminList from "../../src/components/AdminList.jsx";
+import BrowseList from "../../src/components/BrowseList.jsx";
 
 const criteria = [
   { id: "1.1.1", name: "Non-text Content" },
   { id: "1.2.1", name: "Audio-only and Video-only" },
 ];
 
-describe("AdminList", () => {
+describe("BrowseList", () => {
   it("renders a list item with id and name for each criterion", () => {
     render(
-      <AdminList
+      <BrowseList
         criteria={criteria}
         activeCriterionId={null}
         onSelect={vi.fn()}
@@ -25,7 +25,7 @@ describe("AdminList", () => {
   it("calls onSelect with the clicked criterion", () => {
     const onSelect = vi.fn();
     render(
-      <AdminList
+      <BrowseList
         criteria={criteria}
         activeCriterionId={null}
         onSelect={onSelect}
@@ -37,7 +37,7 @@ describe("AdminList", () => {
 
   it("marks the active criterion's button with aria-current and is-active", () => {
     render(
-      <AdminList
+      <BrowseList
         criteria={criteria}
         activeCriterionId="1.1.1"
         onSelect={vi.fn()}

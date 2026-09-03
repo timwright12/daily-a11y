@@ -1,5 +1,5 @@
-// src/components/AdminList.jsx
-export default function AdminList({ criteria, activeCriterionId, onSelect }) {
+// src/components/BrowseList.jsx
+export default function BrowseList({ criteria, activeCriterionId, onSelect }) {
   return (
     <nav
       className="border-r border-rule h-[calc(100vh-4.5rem)] overflow-y-auto sticky top-0 max-[720px]:static max-[720px]:h-auto max-[720px]:max-h-[20rem] max-[720px]:border-r-0 max-[720px]:border-b max-[720px]:border-rule"
