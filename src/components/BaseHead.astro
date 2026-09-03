@@ -12,8 +12,12 @@ interface Props {
 
 const { title, description, canonicalPath, noindex = false } = Astro.props;
 
-const canonicalUrl = new URL(canonicalPath, Astro.site);
-const ogImageUrl = new URL("/daily-a11y/favicon.png", Astro.site);
+// canonicalPath is site-root-relative (e.g. "random/"), not base-relative —
+// combining it with BASE_URL here keeps every page free of the base path,
+// so it only ever needs to change in one place: astro.config.mjs.
+const canonicalUrl = new URL(import.meta.env.BASE_URL + canonicalPath, Astro.site);
+const ogImageUrl = new URL(import.meta.env.BASE_URL + "favicon.png", Astro.site);
+const faviconHref = `${import.meta.env.BASE_URL}favicon.png`;
 ---
 
 <!-- Google tag (gtag.js) -->
@@ -33,7 +37,7 @@ const ogImageUrl = new URL("/daily-a11y/favicon.png", Astro.site);
 <meta name="description" content={description} />
 {noindex && <meta name="robots" content="noindex, nofollow" />}
 <link rel="canonical" href={canonicalUrl} />
-<link rel="icon" type="image/png" href="/daily-a11y/favicon.png" />
+<link rel="icon" type="image/png" href={faviconHref} />
 
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="Daily Accessibility" />

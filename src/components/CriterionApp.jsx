@@ -172,7 +172,7 @@ function TodayApp({ criteria }) {
       <header className="border-b border-rule">
         <div className="masthead max-w-[42rem] mx-auto px-5 py-[1.25rem] flex items-baseline justify-between gap-4 flex-wrap">
           <a
-            href="/daily-a11y/"
+            href={import.meta.env.BASE_URL}
             className="font-mono font-semibold text-[0.9rem] tracking-[0.02em] text-ink no-underline"
           >
             Daily Accessibility
