@@ -1,5 +1,5 @@
 export function buildShareText(criterion, dayNumber, checkResult) {
-  const header = `${dayNumber} days in a row! Just got my daily dose of accessibility, learning about ${criterion.id} ${criterion.name}`;
+  const header = `${dayNumber} days in a row! Just got my daily dose of accessibility, learning about ${criterion.id} ${criterion.name}. `;
 
   if (checkResult === true) {
     return `${header}\nNailed it!`;
