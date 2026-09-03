@@ -29,7 +29,7 @@ function RelatedCriteria({ criterion, criteria, sectionClass, headingClass }) {
           <li key={relatedCriterion.id}>
             <a
               href={`${import.meta.env.BASE_URL}browse/#${relatedCriterion.id}`}
-              className="text-[1.0625rem] text-ink"
+              className="text-[1.0625rem] text-ink underline hover:text-signal"
             >
               {relatedCriterion.id} {relatedCriterion.name}
             </a>
@@ -264,20 +264,22 @@ function RandomApp({ criteria }) {
 
 function BrowseApp({ criteria }) {
   const [selected, setSelected] = useState(null);
-  // Tracks whether the pending `selected` update came from a hashchange (a
-  // related-criteria link click) rather than the initial mount or a sidebar
-  // click, so the focus-move effect below only fires for that case — see its
-  // own comment for why a hashchange specifically needs it.
+  // Tracks whether the pending `selected` update came from a hashchange
+  // (any link that sets location.hash — a sidebar item or a related-criteria
+  // link) rather than the initial mount, so the focus-move effect below only
+  // fires for that case — see its own comment for why.
   const focusOnNextSelectRef = useRef(false);
 
-  // location.hash lets a related-criteria link (/browse/#<id>) deep-link
-  // into a specific criterion. This is unavailable during Astro's server
-  // prerender, so the initial value is read in a mount effect rather than
-  // the useState initializer above (see TodayApp's mount effect for why: SSR
-  // has no window to read from). A related-criteria link's target is this
-  // same /browse/ page, so clicking one only changes the URL fragment
-  // in-place rather than remounting BrowseApp — a "hashchange" listener is
-  // needed to react to that, not just a one-time mount read.
+  // Both BrowseList's sidebar links and the related-criteria links point at
+  // this page's own #<id> fragment, so selection is driven entirely by
+  // location.hash — there's no separate onSelect/click-handler path. This is
+  // unavailable during Astro's server prerender, so the initial value is
+  // read in a mount effect rather than the useState initializer above (see
+  // TodayApp's mount effect for why: SSR has no window to read from). Any
+  // later change to the hash — whether the URL was edited directly or a
+  // same-page link was clicked — only changes the URL fragment in-place
+  // rather than remounting BrowseApp, so a "hashchange" listener is needed
+  // to react to that, not just a one-time mount read.
   useEffect(() => {
     function selectFromHash() {
       const hashId = window.location.hash.slice(1);
@@ -321,7 +323,6 @@ function BrowseApp({ criteria }) {
       <BrowseList
         criteria={criteria}
         activeCriterionId={selected ? selected.id : null}
-        onSelect={setSelected}
       />
       <main className="max-w-[42rem] m-0 pt-10 px-8 pb-20">
         {selected ? (

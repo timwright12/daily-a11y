@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { render, screen, fireEvent, act } from "@testing-library/react";
+import { render, screen, fireEvent, act, within } from "@testing-library/react";
 import { renderToString } from "react-dom/server";
 import { hydrateRoot } from "react-dom/client";
 import CriterionApp from "../../src/components/CriterionApp.jsx";
@@ -360,6 +360,17 @@ describe("CriterionApp random mode", () => {
   });
 });
 
+// BrowseList's sidebar items and the related-criteria links are both plain
+// <a href="#<id>"> tags: real browsers navigate same-page hash links and
+// fire "hashchange" on click, but jsdom's fireEvent.click doesn't perform
+// that navigation (verified directly against jsdom — it neither updates
+// location.hash nor dispatches the event), so tests simulate what a real
+// click does rather than only firing the click event.
+function clickHashLink(link) {
+  window.location.hash = link.getAttribute("href");
+  fireEvent(window, new Event("hashchange"));
+}
+
 describe("CriterionApp browse mode", () => {
   afterEach(() => {
     window.location.hash = "";
@@ -374,12 +385,12 @@ describe("CriterionApp browse mode", () => {
 
   it("renders the selected criterion and marks it active in the list on click", () => {
     render(<CriterionApp mode="browse" criteria={criteria} />);
-    fireEvent.click(screen.getByRole("button", { name: /1\.1\.1/ }));
+    clickHashLink(screen.getByRole("link", { name: /1\.1\.1/ }));
 
     expect(
       screen.getByRole("heading", { name: "Non-text Content" }),
     ).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /1\.1\.1/ })).toHaveAttribute(
+    expect(screen.getByRole("link", { name: /1\.1\.1/ })).toHaveAttribute(
       "aria-current",
       "true",
     );
@@ -392,7 +403,7 @@ describe("CriterionApp browse mode", () => {
     expect(
       screen.getByRole("heading", { name: "Contrast (Enhanced)" }),
     ).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /1\.4\.6/ })).toHaveAttribute(
+    expect(screen.getByRole("link", { name: /1\.4\.6/ })).toHaveAttribute(
       "aria-current",
       "true",
     );
@@ -431,12 +442,15 @@ describe("CriterionApp browse mode", () => {
 
   it("resets a previously-answered comprehension check when switching to a different criterion", () => {
     render(<CriterionApp mode="browse" criteria={criteriaWithRelated} />);
-    fireEvent.click(screen.getByRole("button", { name: /1\.4\.3/ }));
+    const sidebar = screen.getByRole("navigation", {
+      name: "WCAG success criteria",
+    });
+    clickHashLink(within(sidebar).getByRole("link", { name: /1\.4\.3/ }));
     fireEvent.click(screen.getByLabelText("B"));
     fireEvent.click(screen.getByRole("button", { name: "Submit answer" }));
     expect(screen.getByText("Correct!")).toBeInTheDocument();
 
-    fireEvent.click(screen.getByRole("button", { name: /1\.4\.6/ }));
+    clickHashLink(within(sidebar).getByRole("link", { name: /1\.4\.6/ }));
 
     expect(screen.queryByText("Correct!")).not.toBeInTheDocument();
     expect(screen.getByLabelText("B")).not.toBeChecked();
@@ -450,9 +464,14 @@ describe("CriterionApp related criteria", () => {
     // (whose index depends on the current date) — either of those would make
     // which criterion renders, and therefore this assertion, nondeterministic.
     render(<CriterionApp mode="browse" criteria={criteriaWithRelated} />);
-    fireEvent.click(screen.getByRole("button", { name: /1\.4\.3/ }));
+    clickHashLink(screen.getByRole("link", { name: /1\.4\.3/ }));
 
-    const link = screen.getByRole("link", { name: /contrast \(enhanced\)/i });
+    const relatedSection = screen
+      .getByRole("heading", { name: "Related criteria" })
+      .closest("section");
+    const link = within(relatedSection).getByRole("link", {
+      name: /contrast \(enhanced\)/i,
+    });
     expect(link).toHaveAttribute("href", expect.stringContaining("#1.4.6"));
   });
 

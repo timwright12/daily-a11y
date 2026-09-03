@@ -1,6 +1,6 @@
 // tests/components/BrowseList.test.jsx
-import { describe, it, expect, vi } from "vitest";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { describe, it, expect } from "vitest";
+import { render, screen } from "@testing-library/react";
 import BrowseList from "../../src/components/BrowseList.jsx";
 
 const criteria = [
@@ -10,44 +10,31 @@ const criteria = [
 
 describe("BrowseList", () => {
   it("renders a list item with id and name for each criterion", () => {
-    render(
-      <BrowseList
-        criteria={criteria}
-        activeCriterionId={null}
-        onSelect={vi.fn()}
-      />,
-    );
+    render(<BrowseList criteria={criteria} activeCriterionId={null} />);
     expect(screen.getByText("1.1.1")).toBeInTheDocument();
     expect(screen.getByText("Non-text Content")).toBeInTheDocument();
     expect(screen.getByText("1.2.1")).toBeInTheDocument();
   });
 
-  it("calls onSelect with the clicked criterion", () => {
-    const onSelect = vi.fn();
-    render(
-      <BrowseList
-        criteria={criteria}
-        activeCriterionId={null}
-        onSelect={onSelect}
-      />,
+  it("renders each criterion as a link to its hash fragment", () => {
+    render(<BrowseList criteria={criteria} activeCriterionId={null} />);
+    expect(screen.getByRole("link", { name: /1\.1\.1/ })).toHaveAttribute(
+      "href",
+      "#1.1.1",
     );
-    fireEvent.click(screen.getByRole("button", { name: /1\.2\.1/ }));
-    expect(onSelect).toHaveBeenCalledExactlyOnceWith(criteria[1]);
+    expect(screen.getByRole("link", { name: /1\.2\.1/ })).toHaveAttribute(
+      "href",
+      "#1.2.1",
+    );
   });
 
-  it("marks the active criterion's button with aria-current and is-active", () => {
-    render(
-      <BrowseList
-        criteria={criteria}
-        activeCriterionId="1.1.1"
-        onSelect={vi.fn()}
-      />,
-    );
-    const activeButton = screen.getByRole("button", { name: /1\.1\.1/ });
-    const inactiveButton = screen.getByRole("button", { name: /1\.2\.1/ });
-    expect(activeButton).toHaveAttribute("aria-current", "true");
-    expect(activeButton.className).toContain("is-active");
-    expect(inactiveButton).not.toHaveAttribute("aria-current");
-    expect(inactiveButton.className).not.toContain("is-active");
+  it("marks the active criterion's link with aria-current and is-active", () => {
+    render(<BrowseList criteria={criteria} activeCriterionId="1.1.1" />);
+    const activeLink = screen.getByRole("link", { name: /1\.1\.1/ });
+    const inactiveLink = screen.getByRole("link", { name: /1\.2\.1/ });
+    expect(activeLink).toHaveAttribute("aria-current", "true");
+    expect(activeLink.className).toContain("is-active");
+    expect(inactiveLink).not.toHaveAttribute("aria-current");
+    expect(inactiveLink.className).not.toContain("is-active");
   });
 });
