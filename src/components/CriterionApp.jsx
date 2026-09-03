@@ -1,5 +1,5 @@
 // src/components/CriterionApp.jsx
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import Hero from "./Hero.jsx";
 import CodeSpread from "./CodeSpread.jsx";
 import ComprehensionCheck from "./ComprehensionCheck.jsx";
@@ -212,6 +212,7 @@ function TodayApp({ criteria }) {
       </header>
       <main className="max-w-[42rem] mx-auto pt-10 px-5 pb-20">
         <CriterionContent
+          key={criterion.id}
           criterion={criterion}
           criteria={criteria}
           initialAnswer={
@@ -251,6 +252,7 @@ function RandomApp({ criteria }) {
   return (
     <main className="max-w-[42rem] mx-auto pt-10 px-5 pb-20">
       <CriterionContent
+        key={criterion.id}
         criterion={criterion}
         criteria={criteria}
         initialAnswer={null}
@@ -262,6 +264,11 @@ function RandomApp({ criteria }) {
 
 function BrowseApp({ criteria }) {
   const [selected, setSelected] = useState(null);
+  // Tracks whether the pending `selected` update came from a hashchange (a
+  // related-criteria link click) rather than the initial mount or a sidebar
+  // click, so the focus-move effect below only fires for that case — see its
+  // own comment for why a hashchange specifically needs it.
+  const focusOnNextSelectRef = useRef(false);
 
   // location.hash lets a related-criteria link (/browse/#<id>) deep-link
   // into a specific criterion. This is unavailable during Astro's server
@@ -274,19 +281,40 @@ function BrowseApp({ criteria }) {
   useEffect(() => {
     function selectFromHash() {
       const hashId = window.location.hash.slice(1);
-      if (!hashId) return;
-      const match = criteria.find((criterion) => criterion.id === hashId);
+      if (!hashId) return null;
+      return criteria.find((criterion) => criterion.id === hashId) ?? null;
+    }
+
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setSelected(selectFromHash());
+
+    function handleHashChange() {
+      const match = selectFromHash();
       if (match) {
+        focusOnNextSelectRef.current = true;
         setSelected(match);
       }
     }
 
-    selectFromHash();
-    window.addEventListener("hashchange", selectFromHash);
-    return () => window.removeEventListener("hashchange", selectFromHash);
+    window.addEventListener("hashchange", handleHashChange);
+    return () => window.removeEventListener("hashchange", handleHashChange);
     // criteria is stable for this component's lifetime.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // A hashchange means the user activated a same-page link (e.g. a
+  // related-criteria link) rather than loading the URL fresh, so the browser
+  // never gives the new content any focus on its own. This runs after
+  // `selected`'s new value has actually committed to the DOM (unlike doing
+  // it inline in handleHashChange above, where the old heading, or none
+  // yet, would still be what's rendered) and moves focus to the criterion
+  // heading, matching standard SPA route-change focus handling, so screen
+  // reader users aren't left stranded on a link that just disappeared.
+  useEffect(() => {
+    if (!focusOnNextSelectRef.current) return;
+    focusOnNextSelectRef.current = false;
+    document.getElementById("criterion-heading")?.focus();
+  }, [selected]);
 
   return (
     <div className="grid grid-cols-[18rem_1fr] items-start max-[720px]:grid-cols-1">
@@ -298,6 +326,7 @@ function BrowseApp({ criteria }) {
       <main className="max-w-[42rem] m-0 pt-10 px-8 pb-20">
         {selected ? (
           <CriterionContent
+            key={selected.id}
             criterion={selected}
             criteria={criteria}
             initialAnswer={null}

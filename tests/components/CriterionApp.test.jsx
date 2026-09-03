@@ -417,6 +417,30 @@ describe("CriterionApp browse mode", () => {
       screen.getByRole("heading", { name: "Contrast (Enhanced)" }),
     ).toBeInTheDocument();
   });
+
+  it("moves focus to the new criterion's heading when the URL hash changes, so screen reader users aren't stranded on a removed link", () => {
+    render(<CriterionApp mode="browse" criteria={criteriaWithRelated} />);
+
+    window.location.hash = "#1.4.6";
+    fireEvent(window, new Event("hashchange"));
+
+    expect(
+      screen.getByRole("heading", { name: "Contrast (Enhanced)" }),
+    ).toHaveFocus();
+  });
+
+  it("resets a previously-answered comprehension check when switching to a different criterion", () => {
+    render(<CriterionApp mode="browse" criteria={criteriaWithRelated} />);
+    fireEvent.click(screen.getByRole("button", { name: /1\.4\.3/ }));
+    fireEvent.click(screen.getByLabelText("B"));
+    fireEvent.click(screen.getByRole("button", { name: "Submit answer" }));
+    expect(screen.getByText("Correct!")).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole("button", { name: /1\.4\.6/ }));
+
+    expect(screen.queryByText("Correct!")).not.toBeInTheDocument();
+    expect(screen.getByLabelText("B")).not.toBeChecked();
+  });
 });
 
 describe("CriterionApp related criteria", () => {
