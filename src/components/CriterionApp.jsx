@@ -102,6 +102,19 @@ function TodayApp({ criteria }) {
   // storage.js), applied through regular state instead of
   // useSyncExternalStore, which doesn't fit here since this state isn't only
   // a localStorage mirror — handleAnswered also owns and updates it.
+
+  // Whether today's criterion was already answered as of page load — captured
+  // once, inside the mount effect below, from the freshly-loaded localStorage
+  // state rather than derived live from `state` on every render. This is what
+  // gates the "already answered" banner: deriving it live from `state` would
+  // flip it from false to true the instant handleAnswered updates state after
+  // a fresh submit in this same session, showing the "already answered"
+  // banner one frame after the user just answered. The result text itself
+  // (correct/incorrect) is unaffected — that's still derived from `state` on
+  // every render via lastCheckResult below.
+  const [wasAlreadyAnsweredOnLoad, setWasAlreadyAnsweredOnLoad] =
+    useState(false);
+
   useEffect(() => {
     const initial = readState();
     const withCoverage = {
@@ -111,6 +124,11 @@ function TodayApp({ criteria }) {
     writeState(withCoverage);
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setState(withCoverage);
+    setWasAlreadyAnsweredOnLoad(
+      withCoverage.lastAnswer !== null &&
+        withCoverage.lastAnswer.day === todayDayNumber &&
+        withCoverage.lastAnswer.criterionId === criterion.id,
+    );
     // criterion.id is stable for the component's lifetime (today's rotation
     // doesn't change without a reload), so this effect is intentionally
     // mount-only.
@@ -151,14 +169,24 @@ function TodayApp({ criteria }) {
 
   return (
     <>
-      <p className="m-0 font-mono text-[0.8rem] text-ink-quiet tracking-[0.01em]">
-        {statusText}
-      </p>
+      <header className="border-b border-rule">
+        <div className="masthead max-w-[42rem] mx-auto px-5 py-[1.25rem] flex items-baseline justify-between gap-4 flex-wrap">
+          <a
+            href="/daily-a11y/"
+            className="font-mono font-semibold text-[0.9rem] tracking-[0.02em] text-ink no-underline"
+          >
+            Daily Accessibility
+          </a>
+          <p className="m-0 font-mono text-[0.8rem] text-ink-quiet tracking-[0.01em]">
+            {statusText}
+          </p>
+        </div>
+      </header>
       <main className="max-w-[42rem] mx-auto pt-10 px-5 pb-20">
         <CriterionContent
           criterion={criterion}
           initialAnswer={
-            alreadyAnsweredToday
+            wasAlreadyAnsweredOnLoad && alreadyAnsweredToday
               ? {
                   choice: state.lastAnswer.choice,
                   correct: state.lastAnswer.correct,

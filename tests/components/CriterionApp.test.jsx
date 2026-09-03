@@ -3,6 +3,7 @@ import { render, screen, fireEvent, act } from "@testing-library/react";
 import { renderToString } from "react-dom/server";
 import { hydrateRoot } from "react-dom/client";
 import CriterionApp from "../../src/components/CriterionApp.jsx";
+import { daysSinceEpoch } from "../../src/rotation.js";
 
 function makeMemoryLocalStorage() {
   let store = {};
@@ -173,6 +174,21 @@ describe("CriterionApp today mode", () => {
     expect(screen.getByLabelText("A")).toBeChecked();
   });
 
+  it("does not show the already-answered banner immediately after a fresh submit, only the result text", () => {
+    render(<CriterionApp mode="today" criteria={criteria} />);
+    fireEvent.click(screen.getByLabelText("A"));
+    fireEvent.click(screen.getByRole("button", { name: "Submit answer" }));
+
+    expect(
+      screen.queryByText(/already answered today's knowledge check/i),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.getByText(
+        /^(Correct!|Not quite — review the explanation above\.)$/,
+      ),
+    ).toBeInTheDocument();
+  });
+
   it("copies today's result to the clipboard when the share button is clicked", async () => {
     render(<CriterionApp mode="today" criteria={criteria} />);
     fireEvent.click(
@@ -194,7 +210,7 @@ describe("CriterionApp today mode", () => {
         streak: { count: 1, lastAnsweredDay: 0 },
         coverage: ["1.1.1"],
         lastAnswer: {
-          day: Math.floor(Date.now() / 86400000),
+          day: daysSinceEpoch(new Date()),
           criterionId: "1.1.1",
           choice: 1,
           correct: true,

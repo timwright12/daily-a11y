@@ -1,6 +1,5 @@
 ---
 // src/pages/index.astro
-import Masthead from "../components/Masthead.astro";
 import CriterionApp from "../components/CriterionApp.jsx";
 import { getSortedCriteria } from "../lib/criteria.ts";
 import "../styles/global.css";
@@ -58,7 +57,6 @@ const criteria = await getSortedCriteria();
     />
   </head>
   <body>
-    <Masthead />
     <CriterionApp client:load mode="today" criteria={criteria} />
   </body>
 </html>
