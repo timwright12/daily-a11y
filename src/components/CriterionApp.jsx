@@ -13,7 +13,7 @@ import {
   randomIndex,
 } from "../rotation.js";
 import { readState, writeState, defaultState } from "../storage.js";
-import { recordAnswer } from "../gamification/streak.js";
+import { recordAnswer, currentStreak } from "../gamification/streak.js";
 import { markSeen, coverageSummary } from "../gamification/coverage.js";
 import { buildShareText } from "../gamification/shareCard.js";
 
@@ -117,17 +117,17 @@ function TodayApp({ criteria }) {
 
   useEffect(() => {
     const initial = readState();
-    const withCoverage = {
+    const withCurrentStreak = {
       ...initial,
-      coverage: markSeen(initial.coverage, criterion.id),
+      streak: currentStreak(initial.streak, todayDayNumber),
     };
-    writeState(withCoverage);
+    writeState(withCurrentStreak);
     // eslint-disable-next-line react-hooks/set-state-in-effect
-    setState(withCoverage);
+    setState(withCurrentStreak);
     setWasAlreadyAnsweredOnLoad(
-      withCoverage.lastAnswer !== null &&
-        withCoverage.lastAnswer.day === todayDayNumber &&
-        withCoverage.lastAnswer.criterionId === criterion.id,
+      withCurrentStreak.lastAnswer !== null &&
+        withCurrentStreak.lastAnswer.day === todayDayNumber &&
+        withCurrentStreak.lastAnswer.criterionId === criterion.id,
     );
     // criterion.id is stable for the component's lifetime (today's rotation
     // doesn't change without a reload), so this effect is intentionally
@@ -152,6 +152,7 @@ function TodayApp({ criteria }) {
     const nextState = {
       ...state,
       streak: recordAnswer(state.streak, todayDayNumber),
+      coverage: markSeen(state.coverage, criterion.id),
       lastAnswer: {
         day: todayDayNumber,
         criterionId: criterion.id,

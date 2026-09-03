@@ -106,7 +106,7 @@ describe("CriterionApp today mode", () => {
       screen.getByRole("heading", { name: "Non-text Content" }),
     ).toBeInTheDocument();
     expect(
-      screen.getByText(/^Streak: 0 days — 1 of 1 criteria seen$/),
+      screen.getByText(/^Streak: 0 days — 0 of 1 criteria seen$/),
     ).toBeInTheDocument();
   });
 
@@ -129,20 +129,59 @@ describe("CriterionApp today mode", () => {
     ).toBeInTheDocument();
   });
 
-  it("persists coverage for today's criterion to localStorage on mount", () => {
+  it("does not mark today's criterion as seen just from loading the page", () => {
     render(<CriterionApp mode="today" criteria={criteria} />);
     const stored = JSON.parse(localStorage.getItem("daily-a11y-state"));
-    expect(stored.coverage).toContain("1.1.1");
+    expect(stored.coverage).not.toContain("1.1.1");
   });
 
-  it("records a streak and updates the status line when an answer is submitted", () => {
+  it("records a streak, marks the criterion seen, and updates the status line when an answer is submitted", () => {
     render(<CriterionApp mode="today" criteria={criteria} />);
     fireEvent.click(screen.getByLabelText("A"));
     fireEvent.click(screen.getByRole("button", { name: "Submit answer" }));
 
-    expect(screen.getByText(/^Streak: 1 day —/)).toBeInTheDocument();
+    expect(
+      screen.getByText(/^Streak: 1 day — 1 of 1 criteria seen$/),
+    ).toBeInTheDocument();
     const stored = JSON.parse(localStorage.getItem("daily-a11y-state"));
     expect(stored.streak.count).toBe(1);
+    expect(stored.coverage).toContain("1.1.1");
+  });
+
+  it("keeps criteria-seen count once earned, even after the streak later breaks", () => {
+    localStorage.setItem(
+      "daily-a11y-state",
+      JSON.stringify({
+        streak: { count: 5, lastAnsweredDay: daysSinceEpoch(new Date()) - 3 },
+        coverage: ["9.9.1", "9.9.2", "9.9.3", "9.9.4", "9.9.5"],
+        lastAnswer: null,
+      }),
+    );
+
+    render(<CriterionApp mode="today" criteria={criteria} />);
+
+    expect(
+      screen.getByText(/^Streak: 0 days — 5 of 1 criteria seen$/),
+    ).toBeInTheDocument();
+  });
+
+  it("breaks a stale streak to 0 on load when a day was missed, and persists the break", () => {
+    localStorage.setItem(
+      "daily-a11y-state",
+      JSON.stringify({
+        streak: { count: 5, lastAnsweredDay: daysSinceEpoch(new Date()) - 3 },
+        coverage: [],
+        lastAnswer: null,
+      }),
+    );
+
+    render(<CriterionApp mode="today" criteria={criteria} />);
+
+    expect(
+      screen.getByText(/^Streak: 0 days — 0 of 1 criteria seen$/),
+    ).toBeInTheDocument();
+    const stored = JSON.parse(localStorage.getItem("daily-a11y-state"));
+    expect(stored.streak.count).toBe(0);
   });
 
   it("persists the selected choice and criterion id as lastAnswer on submit", () => {
