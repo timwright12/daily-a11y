@@ -54,7 +54,7 @@ export default function ShareBar({ shareText }) {
   }
 
   return (
-    <div className="flex items-center gap-4 flex-wrap mt-12 pt-10 border-t border-rule">
+    <div className="no-print flex items-center gap-4 flex-wrap mt-12 pt-10 border-t border-rule">
       <button
         type="button"
         ref={triggerRef}

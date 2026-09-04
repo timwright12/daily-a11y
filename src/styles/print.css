@@ -1,0 +1,37 @@
+/* src/styles/print.css
+   Print-only rules for criterion pages (today/random/browse). Hides
+   interactive chrome that's meaningless on paper and lets the criterion
+   content expand to full print width. */
+
+@media print {
+  /* Masthead (Masthead.astro on random/browse, TodayApp's inline header
+     with the gamification status line on today) — always the page's only
+     <header>. */
+  header,
+  nav[aria-label="WCAG success criteria"],
+  .no-print {
+    display: none !important;
+  }
+
+  /* Collapse the browse page's 18rem sidebar + content grid so the
+     criterion fills the print width now that the sidebar is hidden above. */
+  .browse-grid {
+    display: block;
+  }
+
+  a[href]::after {
+    content: " (" attr(href) ")";
+    font-size: 0.85em;
+    font-weight: normal;
+  }
+
+  /* Prism's token colors (see prism-overrides.css) are AA-verified against
+     the code panel backgrounds; without this, most browsers strip
+     backgrounds and let some renderers substitute their own default print
+     colors for token spans, breaking that pairing. */
+  pre,
+  pre .token {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}
