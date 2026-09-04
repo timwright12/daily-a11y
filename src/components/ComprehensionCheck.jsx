@@ -42,7 +42,7 @@ export default function ComprehensionCheck({
   return (
     <section
       aria-labelledby="check-heading"
-      className="pt-10 border-t border-rule mt-10"
+      className="no-print pt-10 border-t border-rule mt-10"
     >
       <h2
         id="check-heading"

@@ -319,7 +319,7 @@ function BrowseApp({ criteria }) {
   }, [selected]);
 
   return (
-    <div className="grid grid-cols-[18rem_1fr] items-start max-[720px]:grid-cols-1">
+    <div className="browse-grid grid grid-cols-[18rem_1fr] items-start max-[720px]:grid-cols-1">
       <BrowseList
         criteria={criteria}
         activeCriterionId={selected ? selected.id : null}
