@@ -78,7 +78,7 @@ export default function ComprehensionCheck({
                     required
                     className="mt-[0.2em] accent-signal shrink-0"
                   />
-                  <label htmlFor={id} className="text-base leading-[1.5]">
+                  <label htmlFor={id} className="text-base leading-normal">
                     {choice}
                   </label>
                 </li>
