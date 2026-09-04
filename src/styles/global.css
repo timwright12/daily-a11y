@@ -12,7 +12,14 @@
   --color-moss: #3f5c3f;
   --color-moss-bg: #edf2ea;
   --color-moss-panel-label: #334a33;
-  --color-rule: #d9d3c7;
+  /* #d9d3c7 (the original value) measured 1.40:1 against paper — well under
+     the 3:1 WCAG 1.4.11 non-text minimum this token needs where it backs a
+     real control border (Hero.jsx's level/principle badges,
+     BrowseList.jsx's search input and selects, ComprehensionCheck.jsx's
+     answer choices). This value clears 3:1 with margin (3.84:1) while
+     staying lighter than ink-quiet, so it still reads as a subtle rule
+     where it's only a decorative section divider. */
+  --color-rule: #8a7c66;
   --color-code-border-bad: #c2a299;
   --color-code-border-good: #abaf9e;
 
