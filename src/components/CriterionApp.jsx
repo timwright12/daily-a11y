@@ -11,6 +11,7 @@ import { readState, writeState, defaultState } from "../storage.js";
 import { recordAnswer, currentStreak } from "../gamification/streak.js";
 import { markSeen, coverageSummary } from "../gamification/coverage.js";
 import { buildShareText } from "../gamification/shareCard.js";
+import { filterCriteria } from "../lib/filterCriteria.js";
 
 function RelatedCriteria({ criterion, criteria, sectionClass, headingClass }) {
   if (criterion.relatedCriteria.length === 0) return null;
@@ -270,6 +271,30 @@ function BrowseApp({ criteria }) {
   // fires for that case — see its own comment for why.
   const focusOnNextSelectRef = useRef(false);
 
+  const [filters, setFilters] = useState({
+    query: "",
+    level: "",
+    principle: "",
+    seenState: "",
+  });
+
+  // coverage (which criterion ids the visitor has already answered) lives in
+  // localStorage, unavailable during Astro's server prerender — same
+  // SSR-safe mount-effect pattern as TodayApp's state load. Starting from []
+  // matches defaultState().coverage, so the "seen/unseen" filter simply
+  // shows everything as unseen until this effect runs, rather than mismatching
+  // hydration.
+  const [coverage, setCoverage] = useState([]);
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setCoverage(readState().coverage);
+  }, []);
+
+  const filteredCriteria = useMemo(
+    () => filterCriteria(criteria, filters, coverage),
+    [criteria, filters, coverage],
+  );
+
   // Both BrowseList's sidebar links and the related-criteria links point at
   // this page's own #<id> fragment, so selection is driven entirely by
   // location.hash — there's no separate onSelect/click-handler path. This is
@@ -321,8 +346,21 @@ function BrowseApp({ criteria }) {
   return (
     <div className="browse-grid grid grid-cols-[18rem_1fr] items-start max-[720px]:grid-cols-1">
       <BrowseList
-        criteria={criteria}
+        criteria={filteredCriteria}
         activeCriterionId={selected ? selected.id : null}
+        filters={filters}
+        onQueryChange={(query) =>
+          setFilters((current) => ({ ...current, query }))
+        }
+        onLevelChange={(level) =>
+          setFilters((current) => ({ ...current, level }))
+        }
+        onPrincipleChange={(principle) =>
+          setFilters((current) => ({ ...current, principle }))
+        }
+        onSeenStateChange={(seenState) =>
+          setFilters((current) => ({ ...current, seenState }))
+        }
       />
       <main className="max-w-[42rem] m-0 pt-10 px-8 pb-20">
         {selected ? (
