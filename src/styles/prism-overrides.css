@@ -72,6 +72,10 @@ pre .token.deleted {
 @media (prefers-color-scheme: dark) {
   pre code[class*="language-"] {
     color: #e6e6e6;
+    /* Prism's base theme applies `text-shadow: 0 1px white` (an emboss
+       effect meant for its light theme) with no dark variant — left as-is,
+       a white shadow under light text on a dark panel reads as a blur. */
+    text-shadow: none;
   }
 
   pre .token.punctuation {
