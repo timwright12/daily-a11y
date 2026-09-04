@@ -9,7 +9,6 @@ export default function BrowseList({
   onQueryChange,
   onLevelChange,
   onPrincipleChange,
-  onSeenStateChange,
 }) {
   return (
     <nav
@@ -64,21 +63,6 @@ export default function BrowseList({
               <option value="Operable">Operable</option>
               <option value="Understandable">Understandable</option>
               <option value="Robust">Robust</option>
-            </select>
-          </div>
-          <div className="flex flex-col gap-1">
-            <label htmlFor="browse-filter-seen" className="sr-only">
-              Seen status
-            </label>
-            <select
-              id="browse-filter-seen"
-              value={filters.seenState}
-              onChange={(event) => onSeenStateChange(event.target.value)}
-              className={selectClass}
-            >
-              <option value="">All criteria</option>
-              <option value="seen">Seen</option>
-              <option value="unseen">Unseen</option>
             </select>
           </div>
         </div>

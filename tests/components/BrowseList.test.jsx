@@ -131,7 +131,6 @@ describe("BrowseList", () => {
     expect(
       screen.getByRole("combobox", { name: /principle/i }),
     ).toBeInTheDocument();
-    expect(screen.getByRole("combobox", { name: /seen/i })).toBeInTheDocument();
   });
 
   it("calls onLevelChange when the level select changes", () => {
