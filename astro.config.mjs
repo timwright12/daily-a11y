@@ -4,8 +4,8 @@ import react from "@astrojs/react";
 import tailwindcss from "@tailwindcss/postcss";
 
 export default defineConfig({
-  site: "https://timwright12.github.io",
-  base: "/daily-a11y",
+  site: "https://daily-a11y.com",
+  base: "/",
   trailingSlash: "always",
   integrations: [react()],
   vite: {
