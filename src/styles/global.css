@@ -3,11 +3,38 @@
 @config "../../tailwind.config.mjs";
 
 :root {
-  /* light-only: this design has one deliberate palette, no dark-mode
-     equivalent yet. `light dark` would let Chrome auto-adjust our custom
-     colors under a dark OS preference, which breaks the AA contrast we've
-     verified for this palette. */
-  color-scheme: light;
+  --color-paper: #faf8f4;
+  --color-ink: #1c1917;
+  --color-ink-quiet: #524c44;
+  --color-signal: #8b2e2e;
+  --color-signal-bg: #f7edea;
+  --color-signal-panel-label: #6e2424;
+  --color-moss: #3f5c3f;
+  --color-moss-bg: #edf2ea;
+  --color-moss-panel-label: #334a33;
+  --color-rule: #d9d3c7;
+
+  /* Both palettes are independently AA-verified (see
+     docs/superpowers/specs/2026-09-04-dark-mode-design.md) — `light dark`
+     tells the browser both are supported, so native form controls and
+     scrollbars also switch instead of staying light-styled on a dark
+     page. */
+  color-scheme: light dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-paper: #16181c;
+    --color-ink: #e6e6e6;
+    --color-ink-quiet: #9ba1ab;
+    --color-signal: #e8807e;
+    --color-signal-bg: #2a1c1c;
+    --color-signal-panel-label: #f5b3b1;
+    --color-moss: #86c98e;
+    --color-moss-bg: #182619;
+    --color-moss-panel-label: #b8e0bd;
+    --color-rule: #666d79;
+  }
 }
 
 * {
@@ -50,6 +77,16 @@ pre.code-panel-bad {
 
 pre.code-panel-good {
   background: #f1f2ec !important;
+}
+
+@media (prefers-color-scheme: dark) {
+  pre.code-panel-bad {
+    background: #201717 !important;
+  }
+
+  pre.code-panel-good {
+    background: #141e15 !important;
+  }
 }
 
 @media (prefers-reduced-motion: no-preference) {
