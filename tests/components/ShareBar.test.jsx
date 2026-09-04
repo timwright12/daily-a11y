@@ -87,7 +87,7 @@ describe("ShareBar", () => {
       await screen.findByText(/text copied.*paste it into your linkedin post/i),
     ).toBeInTheDocument();
     expect(window.open).toHaveBeenCalledWith(
-      "https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Ftimwright12.github.io%2Fdaily-a11y%2F",
+      "https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fdaily-a11y.com%2F",
       "_blank",
       "noopener,noreferrer",
     );

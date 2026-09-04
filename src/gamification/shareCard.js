@@ -1,7 +1,7 @@
 // Matches astro.config.mjs's site + base — a plain .js module has no access
 // to Astro.site at runtime, so the site root is duplicated here rather than
 // imported.
-export const SITE_URL = "https://timwright12.github.io/daily-a11y/";
+export const SITE_URL = "https://daily-a11y.com/";
 
 export function buildShareText(criterion, dayNumber, checkResult) {
   const dayWord = dayNumber === 1 ? "day" : "days";

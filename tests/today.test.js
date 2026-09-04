@@ -36,7 +36,7 @@ describe("buildTodayPayload", () => {
     const payload = buildTodayPayload(
       criteria,
       date,
-      "https://timwright12.github.io/daily-a11y/",
+      "https://daily-a11y.com/",
     );
 
     expect(payload.id).toBe(criteria[expectedIndex].id);
@@ -50,7 +50,7 @@ describe("buildTodayPayload", () => {
     const payload = buildTodayPayload(
       criteria,
       date,
-      "https://timwright12.github.io/daily-a11y/",
+      "https://daily-a11y.com/",
     );
 
     expect(payload).toEqual({
@@ -60,7 +60,7 @@ describe("buildTodayPayload", () => {
       level: "AA",
       principle: "Perceivable",
       explanation: "Text must have enough contrast against its background.",
-      url: "https://timwright12.github.io/daily-a11y/",
+      url: "https://daily-a11y.com/",
     });
     expect(payload.check).toBeUndefined();
   });
@@ -73,7 +73,7 @@ describe("buildTodayPayload", () => {
     const payload = buildTodayPayload(
       criteria,
       date,
-      "https://timwright12.github.io/daily-a11y/",
+      "https://daily-a11y.com/",
     );
 
     expect(payload.date).toBe("2026-09-02");
@@ -90,7 +90,7 @@ describe("buildTodayPayload", () => {
     const payload = buildTodayPayload(
       criteria,
       date,
-      "https://timwright12.github.io/daily-a11y/",
+      "https://daily-a11y.com/",
     );
 
     expect(payload.date).toBe(expectedDate.toISOString().slice(0, 10));
