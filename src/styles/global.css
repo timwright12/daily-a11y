@@ -12,22 +12,9 @@
   --color-moss: #3f5c3f;
   --color-moss-bg: #edf2ea;
   --color-moss-panel-label: #334a33;
-  /* #d9d3c7 (the original value) measured 1.40:1 against paper — well under
-     the 3:1 WCAG 1.4.11 non-text minimum this token needs where it backs a
-     real control border (Hero.jsx's level/principle badges,
-     BrowseList.jsx's search input and selects, ComprehensionCheck.jsx's
-     answer choices). This value clears 3:1 with margin (3.84:1) while
-     staying lighter than ink-quiet, so it still reads as a subtle rule
-     where it's only a decorative section divider. */
   --color-rule: #8a7c66;
   --color-code-border-bad: #c2a299;
   --color-code-border-good: #abaf9e;
-
-  /* Both palettes are independently AA-verified (see
-     docs/superpowers/specs/2026-09-04-dark-mode-design.md) — `light dark`
-     tells the browser both are supported, so native form controls and
-     scrollbars also switch instead of staying light-styled on a dark
-     page. */
   color-scheme: light dark;
 }
 
@@ -63,25 +50,10 @@ body {
   @apply outline-[3px] outline-signal outline-offset-2;
 }
 
-/* The browse page's masthead spans the full browse layout instead of being
-   capped to the reading-width column used everywhere else. This depends on
-   the ancestor `body.browse` class set by browse.astro, so it can't be
-   expressed as a utility class scoped to the Masthead component alone. */
 body.browse .masthead {
   max-width: none;
 }
 
-/* The code-panel backgrounds (color-mix(in srgb, var(--color-signal-bg) 55%, #f5f3ef)
-   and the moss equivalent) must live outside Tailwind's `@layer utilities` —
-   Prism's own theme (prismjs/themes/prism.css) sets an unlayered
-   `background` on `pre[class*="language-"]`, and per the CSS cascade,
-   unlayered normal declarations always beat layered ones regardless of
-   specificity, so a `bg-[...]` utility class here would silently lose.
-   Equal-specificity unlayered rules still lose to Prism's on source order
-   (Prism's stylesheet is imported last but can land earlier or later than
-   ours once Astro/Vite merges all three imported stylesheets into one
-   chunk, and that merge order isn't something we control), so `!important`
-   is the only reliable way to win regardless of merge order. */
 pre.code-panel-bad {
   background: #f6f0ec !important;
 }
@@ -90,9 +62,6 @@ pre.code-panel-good {
   background: #f1f2ec !important;
 }
 
-/* Separate from the :root dark override above — must stay adjacent to the
-   light .code-panel-bad/.code-panel-good rules above for the
-   cascade-ordering reasons explained there. */
 @media (prefers-color-scheme: dark) {
   pre.code-panel-bad {
     background: #201717 !important;
