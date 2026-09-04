@@ -84,10 +84,12 @@ body.browse .masthead {
    is the only reliable way to win regardless of merge order. */
 pre.code-panel-bad {
   background: #f6f0ec !important;
+  text-shadow: none !important;
 }
 
 pre.code-panel-good {
   background: #f1f2ec !important;
+  text-shadow: none !important;
 }
 
 /* Separate from the :root dark override above — must stay adjacent to the
