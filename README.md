@@ -6,7 +6,7 @@ affects, a bad/good code example, manual testing steps, and a comprehension
 check. Built with Astro, React (for interactive islands), and Tailwind CSS,
 deployed to GitHub Pages.
 
-Live at https://timwright12.github.io/daily-a11y/.
+Live at https://daily-a11y.com/.
 
 ## Development
 
