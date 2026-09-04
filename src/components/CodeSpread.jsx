@@ -13,8 +13,8 @@ export default function CodeSpread({ codeExample }) {
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-      {/* border-color is color-mix(in srgb, var(--signal) 30%, var(--rule)) */}
-      <div className="rounded-[0.4em] overflow-hidden border border-[#c2a299]">
+      {/* border-color: --color-code-border-bad, computed as color-mix(in srgb, var(--signal) 30%, var(--rule)) per palette; has a separate dark-mode value, see global.css */}
+      <div className="rounded-[0.4em] overflow-hidden border border-[var(--color-code-border-bad)]">
         <p className="flex items-center gap-[0.5em] font-mono text-[0.75rem] font-semibold tracking-[0.05em] uppercase px-[0.9em] py-[0.6em] text-signal-panel-label bg-signal-bg">
           <span className="text-[0.95em]" aria-hidden="true">
             ✕
@@ -31,8 +31,8 @@ export default function CodeSpread({ codeExample }) {
           </code>
         </pre>
       </div>
-      {/* border-color is color-mix(in srgb, var(--moss) 30%, var(--rule)) */}
-      <div className="rounded-[0.4em] overflow-hidden border border-[#abaf9e]">
+      {/* border-color: --color-code-border-good, computed as color-mix(in srgb, var(--moss) 30%, var(--rule)) per palette; has a separate dark-mode value, see global.css */}
+      <div className="rounded-[0.4em] overflow-hidden border border-[var(--color-code-border-good)]">
         <p className="flex items-center gap-[0.5em] font-mono text-[0.75rem] font-semibold tracking-[0.05em] uppercase px-[0.9em] py-[0.6em] text-moss-panel-label bg-moss-bg">
           <span className="text-[0.95em]" aria-hidden="true">
             ✓

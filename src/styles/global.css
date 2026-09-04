@@ -13,6 +13,8 @@
   --color-moss-bg: #edf2ea;
   --color-moss-panel-label: #334a33;
   --color-rule: #d9d3c7;
+  --color-code-border-bad: #c2a299;
+  --color-code-border-good: #abaf9e;
 
   /* Both palettes are independently AA-verified (see
      docs/superpowers/specs/2026-09-04-dark-mode-design.md) — `light dark`
@@ -34,6 +36,8 @@
     --color-moss-bg: #182619;
     --color-moss-panel-label: #b8e0bd;
     --color-rule: #666d79;
+    --color-code-border-bad: #8d737a;
+    --color-code-border-good: #70897f;
   }
 }
 
@@ -60,7 +64,7 @@ body.browse .masthead {
   max-width: none;
 }
 
-/* The code-panel backgrounds (color-mix(in srgb, var(--signal-bg) 55%, #f5f3ef)
+/* The code-panel backgrounds (color-mix(in srgb, var(--color-signal-bg) 55%, #f5f3ef)
    and the moss equivalent) must live outside Tailwind's `@layer utilities` —
    Prism's own theme (prismjs/themes/prism.css) sets an unlayered
    `background` on `pre[class*="language-"]`, and per the CSS cascade,
@@ -79,6 +83,9 @@ pre.code-panel-good {
   background: #f1f2ec !important;
 }
 
+/* Separate from the :root dark override above — must stay adjacent to the
+   light .code-panel-bad/.code-panel-good rules above for the
+   cascade-ordering reasons explained there. */
 @media (prefers-color-scheme: dark) {
   pre.code-panel-bad {
     background: #201717 !important;
