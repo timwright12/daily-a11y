@@ -4,6 +4,10 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+  # Rebuilds daily shortly after the 05:00 UTC rollover (src/rotation.js) so
+  # the site's "today" content and /today.json don't go stale between pushes.
+  schedule:
+    - cron: "10 5 * * *"
 
 permissions:
   contents: read
