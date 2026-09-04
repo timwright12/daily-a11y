@@ -7,20 +7,20 @@ export default {
       colors: {
         // Modeled on a printed standards document, not a UI brand kit.
         // signal/moss are functional (fail/pass), never decorative.
-        paper: "#faf8f4",
-        ink: "#1c1917",
+        paper: "var(--color-paper)",
+        ink: "var(--color-ink)",
         // Darker than the 4.5:1 AA minimum on purpose: small mono labels
         // need headroom against font-fallback rendering (a slow/blocked
         // Google Font's fallback face measurably lightens effective
         // contrast at these sizes, even though the CSS color is unchanged).
-        "ink-quiet": "#524c44",
-        signal: "#8b2e2e",
-        "signal-bg": "#f7edea",
-        "signal-panel-label": "#6e2424",
-        moss: "#3f5c3f",
-        "moss-bg": "#edf2ea",
-        "moss-panel-label": "#334a33",
-        rule: "#d9d3c7",
+        "ink-quiet": "var(--color-ink-quiet)",
+        signal: "var(--color-signal)",
+        "signal-bg": "var(--color-signal-bg)",
+        "signal-panel-label": "var(--color-signal-panel-label)",
+        moss: "var(--color-moss)",
+        "moss-bg": "var(--color-moss-bg)",
+        "moss-panel-label": "var(--color-moss-panel-label)",
+        rule: "var(--color-rule)",
       },
       fontFamily: {
         display: ["Fraunces", "Georgia", "serif"],

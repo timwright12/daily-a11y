@@ -59,3 +59,73 @@ pre .token.symbol,
 pre .token.deleted {
   color: #990055;
 }
+
+/* Dark-mode equivalents. Prism's base theme (prismjs/themes/prism.css)
+   sets `color: black` on code[class*="language-"]/pre[class*="language-"]
+   with no dark variant, and the light overrides above are calibrated for
+   the light code-panel background — both need a parallel dark set,
+   scoped the same way (see the comment at the top of this file for why
+   the `pre` ancestor selector and specificity matter). Same semantic hue
+   family as the light overrides (pink/rose for functions & tags, orange
+   for operators, green for strings, blue for keywords) so both themes
+   read as one design. */
+@media (prefers-color-scheme: dark) {
+  pre code[class*="language-"] {
+    color: #e6e6e6;
+  }
+
+  pre .token.punctuation {
+    color: #9aa0aa;
+  }
+
+  pre .token.comment,
+  pre .token.prolog,
+  pre .token.doctype,
+  pre .token.cdata {
+    color: #8b93a3;
+  }
+
+  pre .token.operator,
+  pre .token.entity,
+  pre .token.url,
+  pre.language-css .token.string,
+  pre.style .token.string {
+    color: #e0a868;
+  }
+
+  pre .token.function,
+  pre .token.class-name {
+    color: #ff8fa8;
+  }
+
+  pre .token.selector,
+  pre .token.attr-name,
+  pre .token.string,
+  pre .token.char,
+  pre .token.builtin,
+  pre .token.inserted {
+    color: #a8d977;
+  }
+
+  pre .token.regex,
+  pre .token.important,
+  pre .token.variable {
+    color: #e0b34d;
+  }
+
+  pre .token.atrule,
+  pre .token.attr-value,
+  pre .token.keyword {
+    color: #6ec3f0;
+  }
+
+  pre .token.tag,
+  pre .token.property,
+  pre .token.boolean,
+  pre .token.number,
+  pre .token.constant,
+  pre .token.symbol,
+  pre .token.deleted {
+    color: #ff7ab3;
+  }
+}
