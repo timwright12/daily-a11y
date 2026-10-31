@@ -38,7 +38,7 @@
     "@tailwindcss/postcss": "^4.3.3",
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.5",
-    "astro": "^7.2.10",
+    "astro": "^7.3.3",
     "postcss": "^8.5.26",
     "prismjs": "^1.30.0",
     "react": "^19.2.8",
